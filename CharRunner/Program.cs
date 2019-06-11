@@ -10,6 +10,8 @@ namespace CharRunner
     {
         static void Main(string[] args)
         {
+            MsgProcess msg = new MsgProcess();
+            msg.PerformWork();
         }
     }
 }

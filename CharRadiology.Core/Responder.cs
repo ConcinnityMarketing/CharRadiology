@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace CharRadiology.Core
 {
-    public class Class1
+    public abstract class Responder
     {
+
     }
 }
