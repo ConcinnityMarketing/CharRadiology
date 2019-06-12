@@ -141,7 +141,7 @@ namespace CharRadiology
             //EmailReturn webreturn = new EmailReturn();
             BusinessModel bm = new BusinessModel();
             AdminReturn adreturn = new AdminReturn();
-            string Client = "CHR";
+            string Client = "CRAD";
             string Unit = "CONS";
             string App = "WEB";
             //bm.ConfirmSite = ConfigurationManager.AppSettings["confirmSite"].ToString();
@@ -202,7 +202,7 @@ namespace CharRadiology
         {
             List<State> customerList = new List<State>();
             string errdesc;
-            string Client = "CHR";
+            string Client = "CRAD";
             string Unit = "CONS";
             string App = "WEB";
             IDbConnection cn = new SqlConnection();
@@ -228,7 +228,7 @@ namespace CharRadiology
         public PinEntryReturn GetUserPinEntry(PinEntryData chkUser)
         {
             PinEntryReturn webreturn = new PinEntryReturn();
-            string Client = "CHR";
+            string Client = "CRAD";
             string Unit = "CONS";
             string App = "WEB";
             //string Environ = ConfigurationManager.AppSettings["Environment"].ToString();
@@ -276,7 +276,7 @@ namespace CharRadiology
         public PinEntryReturn GetCustomerInfo(PinEntryData chkUser)
         {
             PinEntryReturn webreturn = new PinEntryReturn();
-            string Client = "CHR";
+            string Client = "CRAD";
             string Unit = "CONS";
             string App = "WEB";
             //string Environ = ConfigurationManager.AppSettings["Environment"].ToString();
@@ -324,7 +324,7 @@ namespace CharRadiology
         public ResponseCodeReturn GetResponseCode(PinEntryData chkUser)
         {
             ResponseCodeReturn webreturn = new ResponseCodeReturn();
-            string Client = "CHR";
+            string Client = "CRAD";
             string Unit = "CONS";
             string App = "WEB";
             //string Environ = ConfigurationManager.AppSettings["Environment"].ToString();
@@ -375,7 +375,7 @@ namespace CharRadiology
         public CommunicationReturn GetCommunication(TestingData chkUser)
         {
             CommunicationReturn webreturn = new CommunicationReturn();
-            string Client = "CHR";
+            string Client = "CRAD";
             string Unit = "CONS";
             string App = "WEB";
             //string Environ = ConfigurationManager.AppSettings["Environment"].ToString();
@@ -423,7 +423,7 @@ namespace CharRadiology
         public SurveyReturn SaveCustResponse(ProfileData chkUser)
         {
             SurveyReturn webreturn = new SurveyReturn();
-            string Client = "CHR";
+            string Client = "CRAD";
             string Unit = "CONS";
             string App = "WEB";
             //string Environ = ConfigurationManager.AppSettings["Environment"].ToString();
@@ -474,7 +474,7 @@ namespace CharRadiology
         public MessageReturn UpdateTestingRecords(TestingData chkUser)
         {
             MessageReturn webreturn = new MessageReturn();
-            string Client = "CHR";
+            string Client = "CRAD";
             string Unit = "CONS";
             string App = "WEB";
             //string Environ = ConfigurationManager.AppSettings["Environment"].ToString();
@@ -525,7 +525,7 @@ namespace CharRadiology
         public SurveyReturn SaveCustQA(QAData chkUser)
         {
             SurveyReturn webreturn = new SurveyReturn();
-            string Client = "CHR";
+            string Client = "CRAD";
             string Unit = "CONS";
             string App = "WEB";
             //string Environ = ConfigurationManager.AppSettings["Environment"].ToString();
