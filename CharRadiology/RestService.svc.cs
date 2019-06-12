@@ -8,6 +8,9 @@ using System.Text;
 using NUnit.Framework;
 using NHibernate;
 using NHibernate.Context;
+using NHibernate.Cfg;
+using NHibernate.Dialect;
+using NHibernate.Driver;
 using System.Data;
 using System.Data.Sql;
 using CMParms;
@@ -58,6 +61,41 @@ namespace CharRadiology
             parm.GetSettings();
             return parm.ConnectionString;
         }
+        private NHibernate.Cfg.Configuration ConfigureNHibernate(string conn)
+        {
+            var configuration = new NHibernate.Cfg.Configuration();
+            configuration.SessionFactoryName("BuildIt");
+            //var appSetting = "thread_static";
+            var appSetting = ConfigurationManager.AppSettings["current_session_context_class"];
+            if (appSetting == null)
+            {
+                throw new InvalidOperationException("Must set NHibernate current session context class!");
+            }
+            configuration.Properties.Add("current_session_context_class", appSetting);
+            configuration.DataBaseIntegration(db =>
+            {
+                db.Dialect<MsSql2008Dialect>();
+                db.Driver<SqlClientDriver>();
+                db.KeywordsAutoImport = Hbm2DDLKeyWords.AutoQuote;
+                db.IsolationLevel = IsolationLevel.ReadCommitted;
+                db.ConnectionString = conn;
+                db.Timeout = 10;
+
+                // enabled for testing
+                db.LogFormattedSql = true;
+                db.LogSqlInConsole = true;
+                db.AutoCommentSql = true;
+            });
+
+            return configuration;
+        }
+        public NHibernate.Cfg.Configuration Setup(string conn)
+        {
+            NHibernate.Cfg.Configuration configuration = ConfigureNHibernate(conn);
+            return configuration;
+        }
+
+
         protected void SendErrorEmail(string Text, string Environ)
         {
             string[] namesArray = ConfigurationManager.AppSettings["EmailAddressRecipients"].ToString().Split(',');
@@ -103,13 +141,13 @@ namespace CharRadiology
             //EmailReturn webreturn = new EmailReturn();
             BusinessModel bm = new BusinessModel();
             AdminReturn adreturn = new AdminReturn();
-            string Client = "SPC";
+            string Client = "CHR";
             string Unit = "CONS";
             string App = "WEB";
             //bm.ConfirmSite = ConfigurationManager.AppSettings["confirmSite"].ToString();
             bm.SMTPHost = ConfigurationManager.AppSettings["SMTPHostName"].ToString();
             bm.retries = Convert.ToInt32(ConfigurationManager.AppSettings["Retries"].ToString());
-            bm.WebID = "SPCK";
+            bm.WebID = "CHAR";
             if (chkUser.env == "DEVR")
             {
                 bm.IContactID = ConfigurationManager.AppSettings["IContactSBID"].ToString();
@@ -129,16 +167,17 @@ namespace CharRadiology
 
             // IDbConnection cn = new SqlConnection();
             string errdesc = "";
+            IDbConnection cn = new SqlConnection();
             try
             {
-                // cn.ConnectionString = getConnectionString(chkUser.env.ToUpper(), Client, Unit, App);
-                //cn.Open();
-                //IDbConnection conn = new SqlConnection(
-                //  ISession session = sessions.OpenSession(conn);
-                DefaultKernelFactory.CreateKernel();
-                SessionFactory = ServiceLocator.Get<ISessionFactory>();
-                CurrentSessionContext.Bind(SessionFactory.OpenSession());
-                businessService = new SCMonitor.Core.Services.BusinessService(SessionFactory);
+                string strConnection = getConnectionString(chkUser.env.ToUpper(), Client, Unit, App);
+                cn.ConnectionString = strConnection;
+                cn.Open();
+
+                SessionFactory = Setup(strConnection).BuildSessionFactory();
+
+                CurrentSessionContext.Bind(SessionFactory.OpenSession(cn));
+                businessService = new BusinessService(SessionFactory);
                 webreturn = businessService.MessageProcess(chkUser, bm);
                 //adreturn = businessService.GetAdmins(chkUser, bm);
                 //string text = "\r\n" + "Totals: \r\n" + "Birthdays: " + webreturn.BirthDay_Count + "\r\n" + "Anniversaries: " + webreturn.Anniversary_Count;
@@ -163,16 +202,17 @@ namespace CharRadiology
         {
             List<State> customerList = new List<State>();
             string errdesc;
-            string Client = "SPC";
+            string Client = "CHR";
             string Unit = "CONS";
             string App = "WEB";
             IDbConnection cn = new SqlConnection();
             try
             {
-                cn.ConnectionString = getConnectionString(Search.ENV.ToUpper(), Client, Unit, App);
+                string strConnection = getConnectionString(Search.ENV.ToUpper(), Client, Unit, App);
+                cn.ConnectionString = strConnection;
                 cn.Open();
-                DefaultKernelFactory.CreateKernel();
-                SessionFactory = ServiceLocator.Get<ISessionFactory>();
+                SessionFactory = Setup(strConnection).BuildSessionFactory();
+
                 CurrentSessionContext.Bind(SessionFactory.OpenSession(cn));
                 businessService = new BusinessService(SessionFactory);
 
@@ -188,7 +228,7 @@ namespace CharRadiology
         public PinEntryReturn GetUserPinEntry(PinEntryData chkUser)
         {
             PinEntryReturn webreturn = new PinEntryReturn();
-            string Client = "SPC";
+            string Client = "CHR";
             string Unit = "CONS";
             string App = "WEB";
             //string Environ = ConfigurationManager.AppSettings["Environment"].ToString();
@@ -198,10 +238,11 @@ namespace CharRadiology
             IDbConnection cn = new SqlConnection();
             try
             {
-                cn.ConnectionString = getConnectionString(chkUser.env.ToUpper(), Client, Unit, App);
+                string strConnection = getConnectionString(chkUser.env.ToUpper(), Client, Unit, App);
+                cn.ConnectionString = strConnection;
                 cn.Open();
-                DefaultKernelFactory.CreateKernel();
-                SessionFactory = ServiceLocator.Get<ISessionFactory>();
+                SessionFactory = Setup(strConnection).BuildSessionFactory();
+
                 CurrentSessionContext.Bind(SessionFactory.OpenSession(cn));
                 businessService = new BusinessService(SessionFactory);
                 if (businessService.GetGUID() == chkUser.guid)
@@ -235,7 +276,7 @@ namespace CharRadiology
         public PinEntryReturn GetCustomerInfo(PinEntryData chkUser)
         {
             PinEntryReturn webreturn = new PinEntryReturn();
-            string Client = "SPC";
+            string Client = "CHR";
             string Unit = "CONS";
             string App = "WEB";
             //string Environ = ConfigurationManager.AppSettings["Environment"].ToString();
@@ -245,10 +286,11 @@ namespace CharRadiology
             IDbConnection cn = new SqlConnection();
             try
             {
-                cn.ConnectionString = getConnectionString(chkUser.env.ToUpper(), Client, Unit, App);
+                string strConnection = getConnectionString(chkUser.env.ToUpper(), Client, Unit, App);
+                cn.ConnectionString = strConnection;
                 cn.Open();
-                DefaultKernelFactory.CreateKernel();
-                SessionFactory = ServiceLocator.Get<ISessionFactory>();
+                SessionFactory = Setup(strConnection).BuildSessionFactory();
+
                 CurrentSessionContext.Bind(SessionFactory.OpenSession(cn));
                 businessService = new BusinessService(SessionFactory);
                 if (businessService.GetGUID() == chkUser.guid)
@@ -282,7 +324,7 @@ namespace CharRadiology
         public ResponseCodeReturn GetResponseCode(PinEntryData chkUser)
         {
             ResponseCodeReturn webreturn = new ResponseCodeReturn();
-            string Client = "SPC";
+            string Client = "CHR";
             string Unit = "CONS";
             string App = "WEB";
             //string Environ = ConfigurationManager.AppSettings["Environment"].ToString();
@@ -292,10 +334,11 @@ namespace CharRadiology
             IDbConnection cn = new SqlConnection();
             try
             {
-                cn.ConnectionString = getConnectionString(chkUser.env.ToUpper(), Client, Unit, App);
+                string strConnection = getConnectionString(chkUser.env.ToUpper(), Client, Unit, App);
+                cn.ConnectionString = strConnection;
                 cn.Open();
-                DefaultKernelFactory.CreateKernel();
-                SessionFactory = ServiceLocator.Get<ISessionFactory>();
+                SessionFactory = Setup(strConnection).BuildSessionFactory();
+
                 CurrentSessionContext.Bind(SessionFactory.OpenSession(cn));
                 businessService = new BusinessService(SessionFactory);
                 if (businessService.GetGUID() == chkUser.guid)
@@ -332,7 +375,7 @@ namespace CharRadiology
         public CommunicationReturn GetCommunication(TestingData chkUser)
         {
             CommunicationReturn webreturn = new CommunicationReturn();
-            string Client = "SPC";
+            string Client = "CHR";
             string Unit = "CONS";
             string App = "WEB";
             //string Environ = ConfigurationManager.AppSettings["Environment"].ToString();
@@ -342,10 +385,11 @@ namespace CharRadiology
             IDbConnection cn = new SqlConnection();
             try
             {
-                cn.ConnectionString = getConnectionString(chkUser.env.ToUpper(), Client, Unit, App);
+                string strConnection = getConnectionString(chkUser.env.ToUpper(), Client, Unit, App);
+                cn.ConnectionString = strConnection;
                 cn.Open();
-                DefaultKernelFactory.CreateKernel();
-                SessionFactory = ServiceLocator.Get<ISessionFactory>();
+                SessionFactory = Setup(strConnection).BuildSessionFactory();
+
                 CurrentSessionContext.Bind(SessionFactory.OpenSession(cn));
                 businessService = new BusinessService(SessionFactory);
                 if (businessService.GetGUID() == chkUser.guid)
@@ -379,7 +423,7 @@ namespace CharRadiology
         public SurveyReturn SaveCustResponse(ProfileData chkUser)
         {
             SurveyReturn webreturn = new SurveyReturn();
-            string Client = "SPC";
+            string Client = "CHR";
             string Unit = "CONS";
             string App = "WEB";
             //string Environ = ConfigurationManager.AppSettings["Environment"].ToString();
@@ -389,10 +433,11 @@ namespace CharRadiology
             IDbConnection cn = new SqlConnection();
             try
             {
-                cn.ConnectionString = getConnectionString(chkUser.ENV.ToUpper(), Client, Unit, App);
+                string strConnection = getConnectionString(chkUser.ENV.ToUpper(), Client, Unit, App);
+                cn.ConnectionString = strConnection;
                 cn.Open();
-                DefaultKernelFactory.CreateKernel();
-                SessionFactory = ServiceLocator.Get<ISessionFactory>();
+                SessionFactory = Setup(strConnection).BuildSessionFactory();
+
                 CurrentSessionContext.Bind(SessionFactory.OpenSession(cn));
                 businessService = new BusinessService(SessionFactory);
                 if (businessService.GetGUID() == chkUser.GUID)
@@ -429,7 +474,7 @@ namespace CharRadiology
         public MessageReturn UpdateTestingRecords(TestingData chkUser)
         {
             MessageReturn webreturn = new MessageReturn();
-            string Client = "SPC";
+            string Client = "CHR";
             string Unit = "CONS";
             string App = "WEB";
             //string Environ = ConfigurationManager.AppSettings["Environment"].ToString();
@@ -439,10 +484,11 @@ namespace CharRadiology
             IDbConnection cn = new SqlConnection();
             try
             {
-                cn.ConnectionString = getConnectionString(chkUser.env.ToUpper(), Client, Unit, App);
+                string strConnection = getConnectionString(chkUser.env.ToUpper(), Client, Unit, App);
+                cn.ConnectionString = strConnection;
                 cn.Open();
-                DefaultKernelFactory.CreateKernel();
-                SessionFactory = ServiceLocator.Get<ISessionFactory>();
+                SessionFactory = Setup(strConnection).BuildSessionFactory();
+
                 CurrentSessionContext.Bind(SessionFactory.OpenSession(cn));
                 businessService = new BusinessService(SessionFactory);
                 if (businessService.GetGUID() == chkUser.guid)
@@ -479,7 +525,7 @@ namespace CharRadiology
         public SurveyReturn SaveCustQA(QAData chkUser)
         {
             SurveyReturn webreturn = new SurveyReturn();
-            string Client = "SPC";
+            string Client = "CHR";
             string Unit = "CONS";
             string App = "WEB";
             //string Environ = ConfigurationManager.AppSettings["Environment"].ToString();
@@ -489,10 +535,11 @@ namespace CharRadiology
             IDbConnection cn = new SqlConnection();
             try
             {
-                cn.ConnectionString = getConnectionString(chkUser.ENV.ToUpper(), Client, Unit, App);
+                string strConnection = getConnectionString(chkUser.ENV.ToUpper(), Client, Unit, App);
+                cn.ConnectionString = strConnection;
                 cn.Open();
-                DefaultKernelFactory.CreateKernel();
-                SessionFactory = ServiceLocator.Get<ISessionFactory>();
+                SessionFactory = Setup(strConnection).BuildSessionFactory();
+
                 CurrentSessionContext.Bind(SessionFactory.OpenSession(cn));
                 businessService = new BusinessService(SessionFactory);
                 if (businessService.GetGUID() == chkUser.GUID)

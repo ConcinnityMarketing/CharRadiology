@@ -8,6 +8,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CharRadiology.Core", "CharRadiology.Core\CharRadiology.Core.csproj", "{129A1DED-350D-4B39-89FF-71B169C546E7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CharRunner", "CharRunner\CharRunner.csproj", "{34A81C7F-D829-4326-80C8-F6CCC1338F75}"
+	ProjectSection(ProjectDependencies) = postProject
+		{97868BD5-2A71-4516-8459-78022E3329D8} = {97868BD5-2A71-4516-8459-78022E3329D8}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

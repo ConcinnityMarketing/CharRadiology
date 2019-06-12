@@ -6,6 +6,8 @@
       <xs:element minOccurs="0" name="ADDRESS1" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="ADDRESS2" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="CITY" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CLIENT" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="INDIV_ID" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="STATE" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="ZIP" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="guid" nillable="true" type="xs:string" />

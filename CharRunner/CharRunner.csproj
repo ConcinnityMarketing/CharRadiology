@@ -34,7 +34,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -43,12 +46,83 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Connected Services\MessageSvc\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="MsgProcess.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="bin\Debug\CharRunner.exe.config" />
+    <None Include="Connected Services\MessageSvc\CharRunner.MessageSvc.CommunicationReturn.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\MessageSvc\CharRunner.MessageSvc.CompositeType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\MessageSvc\CharRunner.MessageSvc.MessageReturn.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\MessageSvc\CharRunner.MessageSvc.PinEntryReturn.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\MessageSvc\CharRunner.MessageSvc.ResponseCodeReturn.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\MessageSvc\CharRunner.MessageSvc.State.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\MessageSvc\CharRunner.MessageSvc.SurveyReturn.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\MessageSvc\RestService.wsdl" />
+    <None Include="Connected Services\MessageSvc\RestService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\MessageSvc\RestService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\MessageSvc\RestService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\MessageSvc\RestService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\MessageSvc\RestService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\MessageSvc\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\MessageSvc\RestService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\MessageSvc\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\MessageSvc\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\MessageSvc\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\CharRunner.exe" />
+    <Content Include="bin\Debug\CharRunner.pdb" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Release\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

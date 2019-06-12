@@ -65,6 +65,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Services" />
@@ -82,18 +84,62 @@
     <Compile Include="Models\BusinessModel.cs" />
     <Compile Include="Persistence\SqlMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Responder.cs" />
     <Compile Include="RestClient.cs" />
     <Compile Include="Services\BusinessService.cs" />
     <Compile Include="Services\IBusinessService.cs" />
-    <Compile Include="Web References\AddrService\Reference.cs" />
+    <Compile Include="Web References\AddrService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="http://restservices.concinnitymarketing.biz/AddrStndService/RestService.svc">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\AddrService\</RelPath>
+      <UpdateFromURL>http://restservices.concinnitymarketing.biz/AddrStndService/RestService.svc</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>CharRadiology_Core_AddrService_RestService</CachedSettingsPropName>
+    </WebReferenceUrl>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Web References\AddrService\AddrStndReturn.datasource" />
-    <None Include="Web References\AddrService\CompositeType.datasource" />
-    <None Include="Web References\AddrService\GeoCodeReturn.datasource" />
-    <None Include="Web References\AddrService\Reference.map" />
+    <None Include="bin\Debug\callfire-api-client.dll.config" />
+    <None Include="bin\Debug\CharRadiology.Core.dll.config" />
+    <None Include="bin\Release\callfire-api-client.dll.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\AddrService\AddrStndReturn.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AddrService\CompositeType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AddrService\GeoCodeReturn.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AddrService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <None Include="Web References\AddrService\RestService.wsdl" />
     <None Include="Web References\AddrService\RestService.xsd">
       <SubType>Designer</SubType>
@@ -115,7 +161,33 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Web References\AddrService\RestService.disco" />
+    <None Include="Web References\AddrService\RestService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\callfire-api-client.dll" />
+    <Content Include="bin\Debug\callfire-api-client.xml" />
+    <Content Include="bin\Debug\CallFire-csharp-sdk.dll" />
+    <Content Include="bin\Debug\CharRadiology.Core.dll" />
+    <Content Include="bin\Debug\CharRadiology.Core.pdb" />
+    <Content Include="bin\Debug\cmextwebsvc.BusinessLayer.dll" />
+    <Content Include="bin\Debug\CMParms.dll" />
+    <Content Include="bin\Debug\log4net.dll" />
+    <Content Include="bin\Debug\Newtonsoft.Json.dll" />
+    <Content Include="bin\Debug\Newtonsoft.Json.xml" />
+    <Content Include="bin\Debug\NHibernate.dll" />
+    <Content Include="bin\Debug\RestSharp.dll" />
+    <Content Include="bin\Debug\RestSharp.xml" />
+    <Content Include="bin\Release\callfire-api-client.dll" />
+    <Content Include="bin\Release\callfire-api-client.xml" />
+    <Content Include="bin\Release\CallFire-csharp-sdk.dll" />
+    <Content Include="bin\Release\cmextwebsvc.BusinessLayer.dll" />
+    <Content Include="bin\Release\CMParms.dll" />
+    <Content Include="bin\Release\log4net.dll" />
+    <Content Include="bin\Release\Newtonsoft.Json.dll" />
+    <Content Include="bin\Release\Newtonsoft.Json.xml" />
+    <Content Include="bin\Release\NHibernate.dll" />
+    <Content Include="bin\Release\RestSharp.dll" />
+    <Content Include="bin\Release\RestSharp.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

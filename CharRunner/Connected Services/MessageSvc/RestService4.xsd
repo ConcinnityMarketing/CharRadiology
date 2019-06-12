@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/CharRadiology.Core.Models" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/CharRadiology.Core.Models" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:50598/RestService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/CharRadiology.Core.Enums" />
+  <xs:complexType name="MessageData">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="env" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="MessageData" nillable="true" type="tns:MessageData" />
+  <xs:complexType name="MessageReturn">
+    <xs:sequence>
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/CharRadiology.Core.Enums" minOccurs="0" name="code" type="q1:GenericStatusCodes" />
+      <xs:element minOccurs="0" name="desc" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="status" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="MessageReturn" nillable="true" type="tns:MessageReturn" />
+  <xs:complexType name="GenericData">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ENV" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="GUID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="INDIV_ID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RESPONSE_CODE" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SQL" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GenericData" nillable="true" type="tns:GenericData" />
+  <xs:complexType name="ArrayOfState">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="State" nillable="true" type="tns:State" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfState" nillable="true" type="tns:ArrayOfState" />
+  <xs:complexType name="State">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="state_abbr" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="state_name" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="State" nillable="true" type="tns:State" />
+  <xs:complexType name="PinEntryData">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="birth_year" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="brand" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="env" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="guid" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ip" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="pin" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PinEntryData" nillable="true" type="tns:PinEntryData" />
+  <xs:complexType name="PinEntryReturn">
+    <xs:sequence>
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/CharRadiology.Core.Enums" minOccurs="0" name="code" type="q2:PinEntryStatusCodes" />
+      <xs:element minOccurs="0" name="desc" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="indiv_id" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="pinProfile" nillable="true" type="tns:Profile" />
+      <xs:element minOccurs="0" name="sessionid" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="status" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PinEntryReturn" nillable="true" type="tns:PinEntryReturn" />
+  <xs:complexType name="Profile">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="address1" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="address2" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="birth_date" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="city" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="email" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="first_name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="gender" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="last_name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="phone" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="state" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="zip" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Profile" nillable="true" type="tns:Profile" />
+  <xs:complexType name="QAData">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ENV" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EXTERNAL_REF_NUMBER" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="GUID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="INDIV_ID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RESPONSE_CODE" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RESPONSE_DATE" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="q_and_a" nillable="true" type="tns:ArrayOfQuestion" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="QAData" nillable="true" type="tns:QAData" />
+  <xs:complexType name="ArrayOfQuestion">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Question" nillable="true" type="tns:Question" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfQuestion" nillable="true" type="tns:ArrayOfQuestion" />
+  <xs:complexType name="Question">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="answer_table" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="answers" nillable="true" type="tns:ArrayOfAnswer" />
+      <xs:element minOccurs="0" name="multiple_answers" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="question_code" type="xs:int" />
+      <xs:element minOccurs="0" name="question_desc" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="question_order" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Question" nillable="true" type="tns:Question" />
+  <xs:complexType name="ArrayOfAnswer">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Answer" nillable="true" type="tns:Answer" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAnswer" nillable="true" type="tns:ArrayOfAnswer" />
+  <xs:complexType name="Answer">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="answer_code" type="xs:int" />
+      <xs:element minOccurs="0" name="answer_desc" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="answer_order" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Answer" nillable="true" type="tns:Answer" />
+  <xs:complexType name="SurveyReturn">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="TankRecNum" type="xs:int" />
+      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/CharRadiology.Core.Enums" minOccurs="0" name="code" type="q3:SurveyStatusCodes" />
+      <xs:element minOccurs="0" name="desc" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="indiv_id" type="xs:int" />
+      <xs:element minOccurs="0" name="status" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SurveyReturn" nillable="true" type="tns:SurveyReturn" />
+  <xs:complexType name="ProfileData">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ADDRESS1" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ADDRESS2" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="AV_CODE" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="BIRTH_DATE" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CHECK_DIGIT" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CITY" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="COA_DATE" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="COUNTRY" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="COUNTY" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CUST_PWD" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DPBC" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EMAIL" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EMAIL_OPT_CD" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EMAIL_STATUS" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ENV" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EXTERNAL_REF_NUMBER" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FIPS" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FIRST_NAME" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FIRST_RESPONSE" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FIRST_RESPONSE_DATE" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FULL_NAME" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="GENDER" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="GEOCODE_LEVEL" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="GUID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="HOUSENUM" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="INDIV_ID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="KEY_BATCH_ID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LAST_NAME" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LAST_RESPONSE" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LAST_RESPONSE_DATE" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LAT" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LONG" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MATCH_KEY" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MEDIA_CODE" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MGM_ID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MID_NAME" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NAME_SUFX" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PHONE" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PHONE_OPT_CD" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PHONE_STATUS" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PROCEDURE_DATE" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RESPONSE_CODE" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RESPONSE_TYPE" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SIGNATURE" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="STATE" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="STATUS" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TEXT_MESSAGE" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TEXT_MESSAGE_OPT_CD" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TEXT_MESSAGE_STATUS" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TankRecNum" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="USER_ID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="USPS_OPT_CD" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="USPS_STATUS" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="WEB_SOURCE" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="WEB_USER_ID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="WEB_VERSION" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ZIP" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ZIP4" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ProfileData" nillable="true" type="tns:ProfileData" />
+  <xs:complexType name="TestingData">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="env" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="guid" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="indiv_id" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="TestingData" nillable="true" type="tns:TestingData" />
+  <xs:complexType name="ResponseCodeReturn">
+    <xs:sequence>
+      <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/CharRadiology.Core.Enums" minOccurs="0" name="code" type="q4:GenericStatusCodes" />
+      <xs:element minOccurs="0" name="desc" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="response_code" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="status" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ResponseCodeReturn" nillable="true" type="tns:ResponseCodeReturn" />
+  <xs:complexType name="CommunicationReturn">
+    <xs:sequence>
+      <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/CharRadiology.Core.Enums" minOccurs="0" name="code" type="q5:GenericStatusCodes" />
+      <xs:element minOccurs="0" name="desc" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="indiv_id" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="status" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="test1_date" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="test2_date" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CommunicationReturn" nillable="true" type="tns:CommunicationReturn" />
+</xs:schema>

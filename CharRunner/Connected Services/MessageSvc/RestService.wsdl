@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="RestService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://localhost:50598/RestService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost:50598/RestService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:50598/RestService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/CharRadiology" />
+      <xsd:import schemaLocation="http://localhost:50598/RestService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/CharRadiology.Core.Models" />
+      <xsd:import schemaLocation="http://localhost:50598/RestService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/CharRadiology.Core.Enums" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IRestService_GetData_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetData" />
+  </wsdl:message>
+  <wsdl:message name="IRestService_GetData_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRestService_GetDataUsingDataContract_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetDataUsingDataContract" />
+  </wsdl:message>
+  <wsdl:message name="IRestService_GetDataUsingDataContract_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDataUsingDataContractResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRestService_MessageProcessor_InputMessage">
+    <wsdl:part name="parameters" element="tns:MessageProcessor" />
+  </wsdl:message>
+  <wsdl:message name="IRestService_MessageProcessor_OutputMessage">
+    <wsdl:part name="parameters" element="tns:MessageProcessorResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRestService_StateList_InputMessage">
+    <wsdl:part name="parameters" element="tns:StateList" />
+  </wsdl:message>
+  <wsdl:message name="IRestService_StateList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:StateListResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRestService_GetUserPinEntry_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserPinEntry" />
+  </wsdl:message>
+  <wsdl:message name="IRestService_GetUserPinEntry_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserPinEntryResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRestService_GetCustomerInfo_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCustomerInfo" />
+  </wsdl:message>
+  <wsdl:message name="IRestService_GetCustomerInfo_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCustomerInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRestService_SaveCustQA_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveCustQA" />
+  </wsdl:message>
+  <wsdl:message name="IRestService_SaveCustQA_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveCustQAResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRestService_SaveCustResponse_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveCustResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRestService_SaveCustResponse_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveCustResponseResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRestService_UpdateTestingRecords_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateTestingRecords" />
+  </wsdl:message>
+  <wsdl:message name="IRestService_UpdateTestingRecords_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateTestingRecordsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRestService_GetResponseCode_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetResponseCode" />
+  </wsdl:message>
+  <wsdl:message name="IRestService_GetResponseCode_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetResponseCodeResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRestService_GetCommunication_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCommunication" />
+  </wsdl:message>
+  <wsdl:message name="IRestService_GetCommunication_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCommunicationResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IRestService">
+    <wsdl:operation name="GetData">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRestService/GetData" message="tns:IRestService_GetData_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRestService/GetDataResponse" message="tns:IRestService_GetData_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDataUsingDataContract">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRestService/GetDataUsingDataContract" message="tns:IRestService_GetDataUsingDataContract_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRestService/GetDataUsingDataContractResponse" message="tns:IRestService_GetDataUsingDataContract_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="MessageProcessor">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRestService/MessageProcessor" message="tns:IRestService_MessageProcessor_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRestService/MessageProcessorResponse" message="tns:IRestService_MessageProcessor_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="StateList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRestService/StateList" message="tns:IRestService_StateList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRestService/StateListResponse" message="tns:IRestService_StateList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUserPinEntry">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRestService/GetUserPinEntry" message="tns:IRestService_GetUserPinEntry_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRestService/GetUserPinEntryResponse" message="tns:IRestService_GetUserPinEntry_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerInfo">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRestService/GetCustomerInfo" message="tns:IRestService_GetCustomerInfo_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRestService/GetCustomerInfoResponse" message="tns:IRestService_GetCustomerInfo_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveCustQA">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRestService/SaveCustQA" message="tns:IRestService_SaveCustQA_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRestService/SaveCustQAResponse" message="tns:IRestService_SaveCustQA_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveCustResponse">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRestService/SaveCustResponse" message="tns:IRestService_SaveCustResponse_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRestService/SaveCustResponseResponse" message="tns:IRestService_SaveCustResponse_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateTestingRecords">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRestService/UpdateTestingRecords" message="tns:IRestService_UpdateTestingRecords_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRestService/UpdateTestingRecordsResponse" message="tns:IRestService_UpdateTestingRecords_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetResponseCode">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRestService/GetResponseCode" message="tns:IRestService_GetResponseCode_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRestService/GetResponseCodeResponse" message="tns:IRestService_GetResponseCode_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCommunication">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRestService/GetCommunication" message="tns:IRestService_GetCommunication_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRestService/GetCommunicationResponse" message="tns:IRestService_GetCommunication_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IRestService" type="tns:IRestService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetData">
+      <soap:operation soapAction="http://tempuri.org/IRestService/GetData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDataUsingDataContract">
+      <soap:operation soapAction="http://tempuri.org/IRestService/GetDataUsingDataContract" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MessageProcessor">
+      <soap:operation soapAction="http://tempuri.org/IRestService/MessageProcessor" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StateList">
+      <soap:operation soapAction="http://tempuri.org/IRestService/StateList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserPinEntry">
+      <soap:operation soapAction="http://tempuri.org/IRestService/GetUserPinEntry" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerInfo">
+      <soap:operation soapAction="http://tempuri.org/IRestService/GetCustomerInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveCustQA">
+      <soap:operation soapAction="http://tempuri.org/IRestService/SaveCustQA" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveCustResponse">
+      <soap:operation soapAction="http://tempuri.org/IRestService/SaveCustResponse" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateTestingRecords">
+      <soap:operation soapAction="http://tempuri.org/IRestService/UpdateTestingRecords" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetResponseCode">
+      <soap:operation soapAction="http://tempuri.org/IRestService/GetResponseCode" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCommunication">
+      <soap:operation soapAction="http://tempuri.org/IRestService/GetCommunication" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="RestService">
+    <wsdl:port name="BasicHttpBinding_IRestService" binding="tns:BasicHttpBinding_IRestService">
+      <soap:address location="http://localhost:50598/RestService.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
