@@ -34,8 +34,8 @@ namespace CharRunner
             MailMessage message = new MailMessage();
             message.From = new MailAddress(ConfigurationManager.AppSettings["EmailAddressSender"].ToString());
             message.To.Add(new MailAddress(ConfigurationManager.AppSettings["EmailAddressRecipients"].ToString()));
-            message.Subject = "Concinnity REST SCMessages Webservice Error - " + Environ;
-            message.Body = "An error has occured in a SC Messages Webservice Process - Error: " + Text;
+            message.Subject = "Concinnity REST CRAD Messages Webservice Error - " + Environ;
+            message.Body = "An error has occured in a CRAD Messages Webservice Process - Error: " + Text;
             SmtpClient client = new SmtpClient();
             client.Host = ConfigurationManager.AppSettings["SMTPHostName"].ToString();
             client.Send(message);

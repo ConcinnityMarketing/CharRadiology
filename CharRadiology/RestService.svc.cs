@@ -107,7 +107,7 @@ namespace CharRadiology
             {
                 message.To.Add(item);
             }
-            message.Subject = "Concinnity REST SC Monitor Webservice Error - " + Environ;
+            message.Subject = "Concinnity REST CRAD Monitor Webservice Error - " + Environ;
             message.Body = "An error has occured in a Webservice Process - Error: " + Text;
             SmtpClient client = new SmtpClient();
             client.Host = ConfigurationManager.AppSettings["SMTPHostName"].ToString();
