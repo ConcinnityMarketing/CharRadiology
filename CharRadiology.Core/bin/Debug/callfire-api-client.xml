@@ -1,0 +1,2036 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>callfire-api-client</name>
+    </assembly>
+    <members>
+        <!-- Badly formed XML comment ignored for member "T:CallfireApiClient.Api.Account.Model.Request.CallerIdVerificationRequest" -->
+        <member name="T:CallfireApiClient.Api.Account.Model.ApiCredentials">
+            <summary>
+            API credentials
+            </summary>
+        </member>
+        <member name="T:CallfireApiClient.Api.Account.Model.BillingPlanUsage">
+            <summary>
+            Object represents Plan usage statistics
+            </summary>
+        </member>
+        <member name="P:CallfireApiClient.Api.Account.Model.BillingPlanUsage.IntervalStart">
+            <summary>
+            Gets start of usage period
+            </summary>
+            <value>start of usage period</value>
+        </member>
+        <member name="P:CallfireApiClient.Api.Account.Model.BillingPlanUsage.IntervalEnd">
+            <summary>
+            Gets end of usage period
+            </summary>
+            <value>end of usage period</value>
+        </member>
+        <member name="P:CallfireApiClient.Api.Account.Model.BillingPlanUsage.RemainingPlanCredits">
+            <summary>
+            Gets remaining plan credits rounded to nearest whole value
+            </summary>
+            <value>remaining plan credits rounded to nearest whole value</value>
+        </member>
+        <member name="P:CallfireApiClient.Api.Account.Model.BillingPlanUsage.RemainingPayAsYouGoCredits">
+            <summary>
+            Gets remaining pay as you go credits rounded to nearest whole value.
+            </summary>
+            <value>remaining pay as you go credits rounded to nearest whole value.</value>
+        </member>
+        <member name="P:CallfireApiClient.Api.Account.Model.BillingPlanUsage.TotalRemainingCredits">
+            <summary>
+            Gets total remaining credits (remainingPlanCredits + remainingPayAsYouGoCredits)
+            </summary>
+            <value>total remaining credits (remainingPlanCredits + remainingPayAsYouGoCredits)</value>
+        </member>
+        <member name="T:CallfireApiClient.Api.Account.Model.CallerId">
+            <summary>
+            CallerID number
+            </summary>
+        </member>
+        <member name="T:CallfireApiClient.Api.Account.Model.NumberOrder">
+            <summary>
+            NumberOrder
+            </summary>
+        </member>
+        <member name="T:CallfireApiClient.Api.Account.Model.NumberOrderItem">
+            <summary>
+            NumberOrderItem
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:CallfireApiClient.Api.Account.Model.UserAccount" -->
+        <member name="M:CallfireApiClient.Api.Account.MeApi.GetAccount">
+            <summary>
+            Find account details for the user. Details include name, email, and basic account permissions.
+            GET /me/account
+            </summary>
+            <returns>user's account</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Account.MeApi.GetBillingPlanUsage">
+            <summary>
+            Get Plan usage statistics
+            </summary>
+            <returns>BillingPlanUsage object</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Account.MeApi.GetCallerIds">
+            <summary>
+            Returns a list of verified caller ids. If the number is not shown in the list,
+            then it is not verified, and will have to send for a verification code.
+            </summary>
+            <returns>list of callerId numbers</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Account.MeApi.SendVerificationCode(System.String)">
+            <summary>
+            Send generated verification code to callerid number.
+            The verification code is delivered via a phone call.
+            After receiving verification code on phone call POST /callerids/{callerid}/verification-code to verify number.
+            </summary>
+            <param name="callerid">callerid number</param>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Account.MeApi.VerifyCallerId(CallfireApiClient.Api.Account.Model.Request.CallerIdVerificationRequest)">
+            <summary>
+            Verify callerId by providing calling number and verificationCode received on phone.
+            </summary>
+            <param name="request">request object</param>
+            <returns>true or false depending on whether verification was successful or not.</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Account.MeApi.CreateApiCredentials(CallfireApiClient.Api.Account.Model.ApiCredentials)">
+            <summary>
+            Create API credentials for the CallFire API. This endpoint requires full CallFire account
+            credentials to be used, authenticated using Basic Authentication. At this time, the user
+            can only supply the name for the credentials. The generated credentials can be used to
+            access any endpoint on the CallFire API. ApiCredentials.name property required
+            </summary>
+            <param name="credentials">API credentials to create</param>
+            <returns>created credentials</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Account.MeApi.FindApiCredentials(CallfireApiClient.Api.Common.Model.Request.CommonFindRequest)">
+            <summary>
+            Find API credentials associated with current account
+            </summary>
+            <param name="request">request with properties to filter</param>
+            <returns>paged credentials list</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Account.MeApi.GetApiCredentials(System.Int64,System.String)">
+            <summary>
+            Get API credentials by id
+            </summary>
+            <param name="id">id of credentials</param>
+            <param name="fields">limit fields returned. Example fields=id,name</param>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Account.MeApi.DeleteApiCredentials(System.Int64)">
+            <summary>
+            Delete API credentials by id
+            </summary>
+            <param name="id">id of credentials</param>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Account.OrdersApi.OrderKeywords(CallfireApiClient.Api.Keywords.Model.Request.KeywordPurchaseRequest)">
+            <summary>
+            Purchase keywords. Send a list of available keywords into this API to purchase them
+            using CallFire credits. Be sure the account has credits before trying to purchase.
+            GET /me/account
+            </summary>
+            <param name="request">request payload</param>
+            <returns>ResourceId with id of created order</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Account.OrdersApi.OrderNumbers(CallfireApiClient.Api.Numbers.Model.Request.NumberPurchaseRequest)">
+            <summary>
+            Purchase numbers. There are many ways to purchase a number. Set either tollFreeCount or localCount
+            along with some querying fields to purchase numbers by bulk query. Set the list of numbers
+            to purchase by list. Available numbers will be purchased using CallFire credits owned by the user.
+            Be sure the account has credits before trying to purchase.
+            GET /me/account
+            </summary>
+            <param name="request">request payload</param>
+            <returns>ResourceId with id of created order</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Account.OrdersApi.GetOrder(System.Int64,System.String)">
+            <summary>
+            Get order for keyword and/or number orders
+            GET /me/account
+            </summary>
+            <param name="id">id of order</param>
+            <param name="fields">limit fields returned. Example fields=id,name</param>
+            <returns>ResourceId with id of created order</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.CallsTexts.MediaApi.Upload(System.String,System.String)">
+            <summary>
+            Upload media file to account
+            </summary>
+            <param name="file">file to upload</param>
+            <param name="name">name for file uploaded</param>
+            <returns>ResourceId object with sound id</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.CallsTexts.MediaApi.Get(System.Int64,System.String)">
+            <summary>
+            Returns a single Media instance for a given media file id. This is the metadata
+            for the media only.No content data is returned from this API.
+            </summary>
+            <param name="id">id of media file</param>
+            <param name="fields">Limit text fields returned. Example fields=limit,offset,items(id,message)</param>
+            <returns>Media meta object</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.CallsTexts.MediaApi.GetData(System.Int64,CallfireApiClient.Api.CallsTexts.Model.MediaType)">
+            <summary>
+            Returns media file's data as stream, in case there is no appropriate MediaType for your media file pass MediaType.UNKNOWN
+            </summary>
+            <param name="id">id of media file</param>
+            <param name="type">media type: jpeg, png, gif, mp3, mp4, wav</param>
+            <returns>Media meta object</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.CallsTexts.MediaApi.GetData(System.String,CallfireApiClient.Api.CallsTexts.Model.MediaType)">
+            <summary>
+            Returns media file's data as stream
+            </summary>
+            <param name="key">key of media file</param>
+            <param name="type">media type: jpeg, png, gif, mp3, mp4, wav</param>
+            <returns>Media meta object</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.CallsTexts.CallsApi.Find(CallfireApiClient.Api.CallsTexts.Model.Request.FindCallsRequest)">
+            <summary>
+            Finds all calls sent or received by the user, filtered by different properties, broadcast id,
+            toNumber, fromNumber, label, state, etc.Use "campaignId=0" parameter to query
+            for all calls sent through the POST /calls API {@link CallsApi#send(List)}.
+            </summary>
+            <param name="request">request object with different fields to filter</param>
+            <returns>paged list with call objects</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.CallsTexts.CallsApi.Get(System.Int64,System.String)">
+            <summary>
+            Get call by id
+            </summary>
+            <param name="id">id of call</param>
+            <param name="fields">limit fields returned. Example fields=id,name</param>
+            <returns>call object</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.CallsTexts.CallsApi.Send(System.Collections.Generic.IList{CallfireApiClient.Api.CallsTexts.Model.CallRecipient},System.Nullable{System.Int64},System.String)">
+            <summary>
+            Send calls to recipients through default campaign.
+            Use the API to quickly send individual calls.
+            A verified Caller ID and sufficient credits are required to make a call.
+            </summary>
+            <param name="recipients">call recipients</param>
+            <param name="campaignId">specify a campaignId to send calls quickly on a previously created campaign</param>
+            <param name="fields">limit fields returned. Example fields=id,name</param>
+            <returns>list with created call objects</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.CallsTexts.TextsApi.Find(CallfireApiClient.Api.CallsTexts.Model.Request.FindTextsRequest)">
+            <summary>
+            Finds all texts sent or received by the user. Use "campaignId=0"  parameter to query for all
+            texts sent through the POST /texts API.
+            If no limit is given then the last 100 texts will be returned.
+            </summary>
+            <param name="request">request object with different fields to filter</param>
+            <returns>paged list with text objects</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.CallsTexts.TextsApi.Get(System.Int64,System.String)">
+            <summary>
+            Get text by id
+            </summary>
+            <param name="id">id of text</param>
+            <param name="fields">limit fields returned. Example fields=id,name</param>
+            <returns>text object</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.CallsTexts.TextsApi.Send(System.Collections.Generic.List{CallfireApiClient.Api.CallsTexts.Model.TextRecipient},System.Nullable{System.Int64},System.String)">
+            <summary>
+            Send texts to recipients through existing campaign, if null default campaign will be used
+            Use the /texts API to quickly send individual texts.A verified Caller ID and sufficient
+            credits are required to make a call.
+            </summary>
+            <param name="recipients">call recipients</param>
+            <param name="campaignId">specify a campaignId to send calls quickly on a previously created campaign</param>
+            <param name="fields">limit fields returned. Example fields=id,name</param>
+            <returns>list with created text objects</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="T:CallfireApiClient.Api.Campaigns.Model.Batch">
+            <summary>
+            Class represents contact batch which can be added to existing campaign
+            </summary>
+        </member>
+        <member name="T:CallfireApiClient.Api.Campaigns.Model.Broadcast">
+            <summary>
+            Represents base broadcast properties for Text and Call broadcasts
+            </summary>
+        </member>
+        <member name="T:CallfireApiClient.Api.Campaigns.Model.BroadcastStats">
+            <summary>
+            Holds general statistic fields for Text and Call broadcasts
+            </summary>
+        </member>
+        <member name="P:CallfireApiClient.Api.Campaigns.Model.CallBroadcast.DialplanXml">
+            IVR xml document describing dialplan. If dialplanXml != null then this is IVR broadcast
+        </member>
+        <member name="T:CallfireApiClient.Api.Campaigns.Model.CallBroadcastStats">
+            <summary>
+            Statistics information about CallBroadcast
+            </summary>
+        </member>
+        <member name="T:CallfireApiClient.Api.Campaigns.Model.TextAutoReply">
+            <summary>
+            Text auto reply.
+            </summary>
+        </member>
+        <member name="P:CallfireApiClient.Api.Campaigns.Model.TextAutoReply.Id">
+            <summary>
+            Gets or sets the unique ID of text auto reply.
+            </summary>
+        </member>
+        <member name="P:CallfireApiClient.Api.Campaigns.Model.TextAutoReply.Number">
+            <summary>
+            Gets or sets the phone number to configure an auto reply message.
+            </summary>
+        </member>
+        <member name="P:CallfireApiClient.Api.Campaigns.Model.TextAutoReply.Keyword">
+            <summary>
+            Gets or sets the keyword associated with account.
+            </summary>
+        </member>
+        <member name="P:CallfireApiClient.Api.Campaigns.Model.TextAutoReply.Match">
+            <summary>
+            Gets or sets the matching text is either null or empty which represents all matches.
+            All other text, for example 'rocks', will be matched as case insensitive whole words..
+            </summary>
+        </member>
+        <member name="P:CallfireApiClient.Api.Campaigns.Model.TextAutoReply.Message">
+            <summary>
+            Gets or sets the templated message to return as auto reply (ex: 'Here is an echo - ${text.message}').
+            </summary>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.BatchesApi.Get(System.Int64,System.String)">
+            <summary>
+            Returns a single Batch instance for a given batch id.
+            This API is useful for determining the state of a validating batch.
+            </summary>
+            <param name="id">id of batch</param>
+            <param name="fields">limit fields returned. Example fields=id,name</param>
+            <returns>requested batch</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.BatchesApi.Update(CallfireApiClient.Api.Campaigns.Model.Batch)">
+            <summary>
+            Update batch
+            </summary>
+            <param name="batch">batch to update</param>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.CallBroadcastsApi.Find(CallfireApiClient.Api.Campaigns.Model.Request.FindBroadcastsRequest)">
+            <summary>
+            Find all call broadcasts created by the user. Can query on label, name, and the current
+            running status of the campaign.
+            </summary>
+            <param name="request">request object with filtering options</param>
+            <returns>page with CallBroadcast objects</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.CallBroadcastsApi.Create(CallfireApiClient.Api.Campaigns.Model.CallBroadcast,System.Boolean)">
+            <summary>
+            Create a call broadcast campaign using the Call Broadcast API. A campaign can be created with
+            no contacts and bare minimum configuration, but contacts will have to be added further on to use the campaign.
+            If start set to true campaign starts immediately
+            </summary>
+            <param name="broadcast">call broadcast to create</param>
+            <param name="start">if set to true then broadcast will start immediately, by default it set to false</param>
+            <returns>ResourceId object with id of created broadcast</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.CallBroadcastsApi.Get(System.Int64,System.String)">
+            <summary>
+            Get call broadcast by id
+            </summary>
+            <param name="id">id of broadcast</param>
+            <param name="fields">limit fields returned. Example fields=id,message</param>
+            <returns>broadcast object</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.CallBroadcastsApi.Update(CallfireApiClient.Api.Campaigns.Model.CallBroadcast)">
+            <summary>
+            Update broadcast
+            </summary>
+            <param name="broadcast">broadcast to update</param>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.CallBroadcastsApi.Start(System.Int64)">
+            <summary>
+            Starts call broadcast
+            </summary>
+            <param name="id">id of broadcast</param>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.CallBroadcastsApi.Stop(System.Int64)">
+            <summary>
+            Stops call broadcast
+            </summary>
+            <param name="id">id of broadcast</param>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.CallBroadcastsApi.Archive(System.Int64)">
+            <summary>
+            Archives call broadcast
+            </summary>
+            <param name="id">id of broadcast</param>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.CallBroadcastsApi.GetBatches(CallfireApiClient.Api.Common.Model.Request.GetByIdRequest)">
+            <summary>
+            Get call broadcast batches. Retrieve batches associated with call campaign
+            </summary>
+            <param name="request">get request</param>
+            <returns>broadcast batches</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.CallBroadcastsApi.AddBatch(CallfireApiClient.Api.Campaigns.Model.Request.AddBatchRequest)">
+            <summary>
+            Add batch to call broadcast.
+            The add batch API allows the user to add additional batches to an already created call broadcast
+            campaign. The added batch will go through the CallFire validation process, unlike in the
+            recipients version of this API. Because of this, use the scrubDuplicates flag to remove duplicates
+            from your batch. Batches may be added as a contact list id, a list of contact ids, or a list of numbers.
+            </summary>
+            <param name="request">request with contacts</param>
+            <returns>id of created batch</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.CallBroadcastsApi.GetCalls(CallfireApiClient.Api.Common.Model.Request.GetByIdRequest)">
+            <summary>
+            Get calls associated with call broadcast ordered by date
+            </summary>
+            <param name="request">request with properties to filter</param>
+            <returns>calls assosiated with broadcast</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.CallBroadcastsApi.GetStats(System.Int64,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+            <summary>
+            Get statistics on call broadcast
+            </summary>
+            <param name="id">id of call broadcast</param>
+            <param name="fields">limit fields returned. E.g. fields=id,name or fields=items(id,name)</param>
+            <param name="begin">begin date to filter</param>
+            <param name="end">end date to filter</param>
+            <returns>broadcast stats object</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.CallBroadcastsApi.AddRecipients(System.Int64,System.Collections.Generic.IList{CallfireApiClient.Api.Campaigns.Model.Recipient},System.String)">
+            <summary>
+            Use this API to add recipients to an already created call broadcast. Post a list of Recipient
+            objects for them to be immediately added to the call broadcast campaign. These contacts do not
+            go through validation process, and will be acted upon as they are added. Recipients may be added
+            as a list of contact ids, or list of numbers.
+            </summary>
+            <param name="id">id of call broadcast</param>
+            <param name="recipients">recipients to add</param>
+            <param name="fields">limit fields returned. E.g. fields=id,name or fields=items(id,name)</param>
+            <returns>Call objects</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.CampaignSoundsApi.Find(CallfireApiClient.Api.CallsTexts.Model.Request.FindSoundsRequest)">
+            <summary>
+            Find all campaign sounds that were created by the user.
+            These are all of the available sounds to be used in campaigns.
+            </summary>
+            <param name="request">request object with different fields for search</param>
+            <returns>page with campaign sound objects</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.CampaignSoundsApi.Get(System.Int64,System.String)">
+            <summary>
+            Returns a single CampaignSound instance for a given campaign sound id. This is the meta
+            data to the sounds only.No audio data is returned from this API.
+            </summary>
+            <param name="id">id of campaign sound</param>
+            <param name="fields">Limit text fields returned. Example fields=limit,offset,items(id,message)</param>
+            <returns>CampaignSound meta object</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.CampaignSoundsApi.GetMp3(System.Int64)">
+            <summary>
+            Download the MP3 version of the hosted file.
+            </summary>
+            <param name="id">id of sound</param>
+            <returns>mp3 file as input stream</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.CampaignSoundsApi.GetWav(System.Int64)">
+            <summary>
+            Download the WAV version of the hosted file.
+            </summary>
+            <param name="id">id id of sound</param>
+            <returns>wav file as input stream</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.CampaignSoundsApi.RecordViaPhone(CallfireApiClient.Api.Campaigns.Model.CallCreateSound)">
+            <summary>
+            Use this API to create a sound via phone call. Supply the required phone number in
+            the CallCreateSound object inside of the request, and the user will receive a call
+            shortly after with instructions on how to record a sound over the phone.
+            </summary>
+            <param name="callCreateSound"> request object to create campaign sound</param>
+            <returns>ResourceId object with sound id</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.CampaignSoundsApi.Upload(System.String,System.String)">
+            <summary>
+            Upload a MP3 or WAV file to account
+            </summary>
+            <param name="name">contact list name</param>
+            <param name="pathToFile">path to MP3 or WAV file</param>
+            <returns> ResourceId object with sound id</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.CampaignSoundsApi.CreateFromTts(CallfireApiClient.Api.Campaigns.Model.TextToSpeech)">
+            <summary>
+            Use this API to create a sound file via a supplied string of text.
+            </summary>
+            <param name="textToSpeech">TTS object to create</param>
+            <returns> ResourceId object with sound id</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.TextAutoRepliesApi.Find(CallfireApiClient.Api.Campaigns.Model.Request.FindTextAutoRepliesRequest)">
+            <summary>
+            Query for text auto replies using optional number
+            </summary>
+            <param name="request">request object with filtering options</param>
+            <returns>page with TextAutoReply objects</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.TextAutoRepliesApi.Create(CallfireApiClient.Api.Campaigns.Model.TextAutoReply)">
+            
+             Create and configure new text auto reply message for existing number.
+             Auto-replies are text message replies sent to a customer when a customer replies to
+             a text message from a campaign. A keyword will need to have been purchased before an Auto-Reply can be created.
+             <param name="textAutoReply">auto-reply object to create</param>
+             <returns>ResourceId object with id of created auto-reply</returns>
+             <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+             <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+             <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+             <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+             <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+             <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+             <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.TextAutoRepliesApi.Get(System.Int64,System.String)">
+            
+             Get text auto reply
+             <param name="id">id of text auto reply object</param>
+             <param name="fields">limit fields returned. Example fields=id,message</param>
+             <returns>text auto reply object</returns>
+             <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+             <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+             <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+             <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+             <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+             <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+             <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.TextAutoRepliesApi.Delete(System.Int64)">
+            
+             Delete text auto reply message attached to number.
+             Can not delete a TextAutoReply currently active on a campaign.
+             <param name="id">id of text auto reply</param>
+             <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+             <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+             <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+             <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+             <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+             <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+             <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.TextBroadcastsApi.Find(CallfireApiClient.Api.Campaigns.Model.Request.FindBroadcastsRequest)">
+            <summary>
+            Find all text broadcasts created by the user. Can query on label, name, and the current
+            running status of the campaign.
+            </summary>
+            <param name="request">request object with filtering options</param>
+            <returns>page with TextBroadcast objects</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.TextBroadcastsApi.Create(CallfireApiClient.Api.Campaigns.Model.TextBroadcast,System.Boolean)">
+            <summary>
+            Create a text broadcast campaign using the Text Broadcast API. A campaign can be created with
+            no contacts and bare minimum configuration, but contacts will have to be added further on to use the campaign.
+            If start set to true campaign starts immediately
+            </summary>
+            <param name="broadcast">text broadcast to create</param>
+            <param name="start">if set to true then broadcast will start immediately, by default it set to false</param>
+            <returns>ResourceId object with id of created broadcast</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.TextBroadcastsApi.Get(System.Int64,System.String)">
+            <summary>
+            Get text broadcast by id
+            </summary>
+            <param name="id">id of broadcast</param>
+            <param name="fields">limit fields returned. Example fields=id,message</param>
+            <returns>broadcast object</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.TextBroadcastsApi.Update(CallfireApiClient.Api.Campaigns.Model.TextBroadcast)">
+            <summary>
+            Update broadcast
+            </summary>
+            <param name="broadcast">broadcast to update</param>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.TextBroadcastsApi.Start(System.Int64)">
+            <summary>
+            Starts text broadcast
+            </summary>
+            <param name="id">id of broadcast</param>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.TextBroadcastsApi.Stop(System.Int64)">
+            <summary>
+            Stops text broadcast
+            </summary>
+            <param name="id">id of broadcast</param>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.TextBroadcastsApi.Archive(System.Int64)">
+            <summary>
+            Archives text broadcast
+            </summary>
+            <param name="id">id of broadcast</param>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.TextBroadcastsApi.GetBatches(CallfireApiClient.Api.Common.Model.Request.GetByIdRequest)">
+            <summary>
+            Get text broadcast batches. Retrieve batches associated with text campaign
+            </summary>
+            <param name="request">get request</param>
+            <returns>broadcast batches</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.TextBroadcastsApi.AddBatch(CallfireApiClient.Api.Campaigns.Model.Request.AddBatchRequest)">
+            <summary>
+            Add batch to text broadcast.
+            The add batch API allows the user to add additional batches to an already created text broadcast
+            campaign. The added batch will go through the CallFire validation process, unlike in the
+            recipients version of this API. Because of this, use the scrubDuplicates flag to remove duplicates
+            from your batch. Batches may be added as a contact list id, a list of contact ids, or a list of numbers.
+            </summary>
+            <param name="request">request with contacts</param>
+            <returns>id of created batch</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.TextBroadcastsApi.GetTexts(CallfireApiClient.Api.Common.Model.Request.GetByIdRequest)">
+            <summary>
+            Get texts associated with text broadcast ordered by date
+            </summary>
+            <param name="request">request with properties to filter</param>
+            <returns>texts assosiated with broadcast</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.TextBroadcastsApi.GetStats(System.Int64,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+            <summary>
+            Get statistics on text broadcast
+            </summary>
+            <param name="id">id of text broadcast</param>
+            <param name="fields">limit fields returned. E.g. fields=id,name or fields=items(id,name)</param>
+            <param name="begin">begin date to filter</param>
+            <param name="end">end date to filter</param>
+            <returns>broadcast stats object</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Campaigns.TextBroadcastsApi.AddRecipients(System.Int64,System.Collections.Generic.IList{CallfireApiClient.Api.CallsTexts.Model.TextRecipient},System.String)">
+            <summary>
+            Use this API to add recipients to an already created text broadcast. Post a list of Recipient
+            objects for them to be immediately added to the text broadcast campaign. These contacts do not
+            go through validation process, and will be acted upon as they are added. Recipients may be added
+            as a list of contact ids, or list of numbers.
+            </summary>
+            <param name="id">id of text broadcast</param>
+            <param name="recipients">recipients to add</param>
+            <param name="fields">limit fields returned. E.g. fields=id,name or fields=items(id,name)</param>
+            <returns>Text objects</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="T:CallfireApiClient.Api.Common.Model.Request.CommonFindRequest">
+            <summary>
+            Common find request with limit, offset and fields properties
+            </summary>
+        </member>
+        <member name="T:CallfireApiClient.Api.Common.Model.Request.FindRequest">
+            <summary>
+            Contains common fields for finder endpoints
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:CallfireApiClient.Api.Common.Model.Request.FindRequest.Limit" -->
+        <member name="P:CallfireApiClient.Api.Common.Model.Request.FindRequest.Offset">
+            <summary>
+            Get offset to start of page. If value not set, default is 0
+            </summary>
+        </member>
+        <member name="P:CallfireApiClient.Api.Common.Model.Request.FindRequest.Fields">
+             <summary>
+             Get limit fields returned. Example fields=id,items(name,agents(id))
+            </summary>
+        </member>
+        <member name="T:CallfireApiClient.Api.Common.Model.Request.GetByIdRequest">
+            <summary>
+            Find by id request with id, limit, offset and fields properties
+            </summary>
+        </member>
+        <member name="P:CallfireApiClient.Api.Contacts.Model.Request.FindContactsRequest.ContactListId">
+            <summary>
+            Contact list id to search by
+            </summary>
+        </member>
+        <member name="P:CallfireApiClient.Api.Contacts.Model.Request.FindContactsRequest.PropertyName">
+            <summary>
+            Contact property to search by
+            </summary>
+        </member>
+        <member name="P:CallfireApiClient.Api.Contacts.Model.Request.FindContactsRequest.PropertyValue">
+            <summary>
+            Value of contact property to search by
+            </summary>
+        </member>
+        <member name="P:CallfireApiClient.Api.Contacts.Model.Request.FindContactsRequest.Number">
+            <summary>
+            Multiple contact numbers can be specified. If the number parameter is included,
+            the other query parameters are ignored.
+            </summary>
+        </member>
+        <member name="P:CallfireApiClient.Api.Contacts.Model.Request.FindContactsRequest.Id">
+            <summary>
+            Multiple contact ids can be specified. If the id parameter is included,
+            the other query parameters are ignored.
+            </summary>
+        </member>
+        <member name="P:CallfireApiClient.Api.Contacts.Model.Contact.ExternalId">
+            <summary>
+            External id of contact for syncing with external sources
+            </summary>
+        </member>
+        <member name="P:CallfireApiClient.Api.Contacts.Model.Contact.ExternalSystem">
+            <summary>
+            External system that external id refers to
+            </summary>
+        </member>
+        <member name="P:CallfireApiClient.Api.Contacts.Model.Contact.Deleted">
+            <summary>
+            Is contact deleted
+            </summary>
+        </member>
+        <member name="P:CallfireApiClient.Api.Contacts.Model.Contact.Properties">
+            <summary>
+            Map of string properties for contact
+            </summary>
+        </member>
+        <member name="M:CallfireApiClient.Api.Contacts.ContactListsApi.Find(CallfireApiClient.Api.Contacts.Model.Request.FindContactListsRequest)">
+            <summary>
+            Find contact lists by id, name, number, etc...
+            </summary>
+            <param name="request">request object with fields to filter</param>
+            <returns>paged list with contact lists</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:CallfireApiClient.Api.Contacts.ContactListsApi.Create``1(CallfireApiClient.Api.Contacts.Model.Request.CreateContactListRequest{``0})" -->
+        <member name="M:CallfireApiClient.Api.Contacts.ContactListsApi.CreateFromCsv(System.String,System.String)">
+            <summary>
+            Upload contact lists from CSV file
+            Create contact list which includes list of contacts by file.
+            </summary>
+            <param name="name">contact list name</param>
+            <param name="filePath">path to CSV file with contacts to upload</param>
+            <returns>newly created contact list id</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Contacts.ContactListsApi.Get(System.Int64,System.String)">
+            <summary>
+            Get contact list by id
+            </summary>
+            <param name="id">id of contact list</param>
+            <param name="fields">limit fields returned. Example fields=name,status</param>
+            <returns>contact list object</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Contacts.ContactListsApi.Update(CallfireApiClient.Api.Contacts.Model.Request.UpdateContactListRequest)">
+            <summary>
+            Update contact list
+            </summary>
+            <param name="request">object contains properties to update</param>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Contacts.ContactListsApi.Delete(System.Int64)">
+            <summary>
+            Delete contact list
+            </summary>
+            <param name="id">contact list id</param>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Contacts.ContactListsApi.GetListItems(CallfireApiClient.Api.Common.Model.Request.GetByIdRequest)">
+            <summary>
+            Find all entries in a given contact list. Property <b>request.id</b> required
+            </summary>
+            Property <b>request.id</b> required
+            <param name="request">request object with properties to filter</param>
+            <returns>paged list with contact objects from contact list</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Contacts.ContactListsApi.AddListItems``1(CallfireApiClient.Api.Contacts.Model.Request.AddContactListContactsRequest{``0})">
+            <summary>
+            Add contact list items to list
+            </summary>
+            <param name="request">request object with contacts to add</param>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Contacts.ContactListsApi.RemoveListItem(System.Int64,System.Int64)">
+            <summary>
+            Delete single contact list contact by id
+            </summary>
+            <param name="listId">id of contact list</param>
+            <param name="contactId">id of item to remove</param>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Contacts.ContactListsApi.RemoveListItems(System.Int64,System.Collections.Generic.List{System.Int64})">
+            <summary>
+            Delete contact list items
+            </summary>
+            <param name="contactListId">id of contact list</param>
+            <param name="contactIds">ids of items to remove</param>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Contacts.ContactsApi.Find(CallfireApiClient.Api.Contacts.Model.Request.FindContactsRequest)">
+            <summary>
+            Find contacts by id, contact list, or on any property name. Returns a paged list of contacts.
+            </summary>
+            <param name="request">request object with different fields to filter</param>
+            <returns>paged list with contact objects</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Contacts.ContactsApi.Create(System.Collections.Generic.IList{CallfireApiClient.Api.Contacts.Model.Contact})">
+            <summary>
+            Create contacts in the CallFire system. These contacts are not validated on creation.
+            They will be validated upon being added to a campaign.
+            </summary>
+            <param name="contacts">contacts to create</param>
+            <returns>list of ids newly created contacts</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Contacts.ContactsApi.Get(System.Int64,System.String)">
+            <summary>
+            Get contact by id. Deleted contacts can still be retrieved but will be marked deleted
+            and will not show up when quering contacts.
+            </summary>
+            <param name="id">id of contact</param>
+            <param name="fields">limit fields returned. Example fields=id,name</param>
+            <returns>contact object</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Contacts.ContactsApi.Update(CallfireApiClient.Api.Contacts.Model.Contact)">
+            <summary>
+            Update contact
+            </summary>
+            <param name="contact">contact to update</param>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Contacts.ContactsApi.Delete(System.Int64)">
+            <summary>
+            Delete contact by id. This does not actually delete the contact, it just removes the contact from
+            any contact lists and marks the contact as deleted so won't show up in queries anymore.
+            </summary>
+            <param name="id">id of contact</param>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Contacts.ContactsApi.GetHistory(CallfireApiClient.Api.Common.Model.Request.GetByIdRequest)">
+            <summary>
+            Find all texts and calls attributed to a contact.
+            </summary>
+            <param name="request">request to get particular contact's history</param>
+            <returns>a list of calls and texts a contact has been involved with.</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Contacts.DncApi.Find(CallfireApiClient.Api.Contacts.Model.Request.FindDncContactsRequest)">
+            <summary>
+            Find all Do Not Contact (DNC) objects created by the user.
+            These DoNotContact entries only affect calls/texts/campaigns on this account.
+            </summary>
+            <param name="request">find request with different properties to filter</param>
+            <returns>paged list with dnc objects</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Contacts.DncApi.Update(CallfireApiClient.Api.Contacts.Model.DoNotContact)">
+            <summary>
+            Update a Do Not Contact (DNC) contact value. Can toggle whether the DNC is enabled for calls/texts.
+            </summary>
+            <param name="dnc">DNC item to update</param>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Contacts.DncListsApi.Find(CallfireApiClient.Api.Contacts.Model.Request.FindDncListsRequest)">
+            <summary>
+            Find do not contact (DNC) lists
+            </summary>
+            <param name="request">request with properties to find</param>
+            <returns>paged list with dnc lists</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Contacts.DncListsApi.Create(CallfireApiClient.Api.Contacts.Model.DncList)">
+            <summary>
+            Create do not contact (DNC) list.
+            </summary>
+            <param name="dncList">list to create</param>
+            <returns>newly created dnc list id</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Contacts.DncListsApi.GetUniversalDncNumber(System.String,System.String,System.String)">
+            <summary>
+            Search Universal Do Not Contact by number
+            </summary>
+            <param name="toNumber">Phone Number in Do Not Contact list</param>
+            <param name="fromNumber">Searches for entries where fromNumber is communicating with toNumber, or vice versa.</param>
+            <param name="fields">Limit fields returned. Example fields=limit,offset,items(id,name)</param>
+            <returns>list of universal dncs</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Contacts.DncListsApi.Get(System.Int64,System.String)">
+            <summary>
+            Find do not contact (DNC) lists
+            </summary>
+            <param name="id">id of DNC list</param>
+            <param name="fields">limit fields returned. Example fields=name,status</param>
+            <returns>dnc list object</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Contacts.DncListsApi.Delete(System.Int64)">
+            <summary>
+            Delete DNC list
+            </summary>
+            <param name="id">DNC list id</param>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Contacts.DncListsApi.GetListItems(CallfireApiClient.Api.Common.Model.Request.GetByIdRequest)">
+            <summary>
+            Get DNC list items
+            </summary>
+            Property <b>request.id</b> required
+            <param name="request">request object with properties to filter</param>
+            <returns>paged list with dnc items</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Contacts.DncListsApi.AddListItems(CallfireApiClient.Api.Contacts.Model.Request.AddDncListItemsRequest{CallfireApiClient.Api.Contacts.Model.DoNotContact})">
+            <summary>
+            Add DNC list items to list
+            </summary>
+            <param name="request">request object with DNC items to add</param>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Contacts.DncListsApi.RemoveListItem(System.Int64,System.String)">
+            <summary>
+            Delete single DNC list contact by number
+            </summary>
+            <param name="id">id of DNC list</param>
+            <param name="number">number to remove</param>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Contacts.DncListsApi.RemoveListItems(System.Int64,System.Collections.Generic.IList{System.String})">
+            <summary>
+            Delete DNC list items
+            </summary>
+            <param name="id">id of DNC list</param>
+            <param name="numbers">numbers to remove</param>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Keywords.KeywordLeasesApi.Find(CallfireApiClient.Api.Common.Model.Request.CommonFindRequest)">
+            <summary>
+            Find all owned keyword leases for a user. A keyword lease is the ownership information involving a keyword.
+            </summary>
+            <param name="request">request payload</param>
+            <returns>paged list with keyword lease objects</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Keywords.KeywordLeasesApi.Get(System.String,System.String)">
+            <summary>
+            Get keyword lease by keyword
+            </summary>
+            <param name="keyword">leased keyword</param>
+            <param name="fields">Limit fields returned. Example fields=id,name</param>
+            <returns>keyword lease object</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Keywords.KeywordLeasesApi.Update(CallfireApiClient.Api.Keywords.Model.KeywordLease)">
+            <summary>
+            Update keyword lease
+            </summary>
+            <param name="keywordLease">keyword lease payload</param>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Keywords.KeywordsApi.Find(System.Collections.Generic.IList{System.String})">
+            <summary>
+            Find keyword objects by list of keyword names
+            </summary>
+            <param name="keywords">list of keyword names</param>
+            <returns>list with keyword objects</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Keywords.KeywordsApi.IsAvailable(System.String)">
+            <summary>
+            Find an individual keyword for purchase on the CallFire platform.
+            </summary>
+            <param name="keyword">keyword name</param>
+            <returns>boolean with keyword purchase availability</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="P:CallfireApiClient.Api.Numbers.Model.Request.FindByRegionDataRequest.Prefix">
+            <summary>
+            4-7 digit prefix
+            </summary>
+        </member>
+        <member name="P:CallfireApiClient.Api.Numbers.Model.Request.FindByRegionDataRequest.State">
+            <summary>
+            2 letter state code
+            </summary>
+        </member>
+        <member name="P:CallfireApiClient.Api.Numbers.Model.Request.FindByRegionDataRequest.Zipcode">
+            <summary>
+            5 digit zipcode
+            </summary>
+        </member>
+        <member name="P:CallfireApiClient.Api.Numbers.Model.Request.FindByRegionDataRequest.Lata">
+            <summary>
+            Local access and transport area (LATA) code
+            </summary>
+        </member>
+        <member name="P:CallfireApiClient.Api.Numbers.Model.Request.FindByRegionDataRequest.RateCenter">
+            <summary>
+            rate center code
+            </summary>
+        </member>
+        <member name="M:CallfireApiClient.Api.Numbers.NumberLeasesApi.Find(CallfireApiClient.Api.Numbers.Model.Request.FindNumberLeasesRequest)">
+            <summary>
+            Find number leases by prefix, zipcode, etc...
+            This API is useful for finding all numbers currently owned by an account.
+            </summary>
+            <param name="request">request object with different fields to filter</param>
+            <returns>paged leases</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Numbers.NumberLeasesApi.Get(System.String,System.String)">
+            <summary>
+            Get number lease by number
+            </summary>
+            <param name="number">leased phone number</param>
+            <param name="fields">Limit fields returned. Example fields=id,name</param>
+            <returns>object which represents number lease</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Numbers.NumberLeasesApi.Update(CallfireApiClient.Api.Numbers.Model.NumberLease)">
+            <summary>
+            Update number lease
+            </summary>
+            <param name="lease">lease to update</param>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Numbers.NumberLeasesApi.FindConfigs(CallfireApiClient.Api.Numbers.Model.Request.FindNumberLeaseConfigsRequest)">
+            <summary>
+            Find all number lease configs for the user.
+            </summary>
+            <param name="request">request to filter</param>
+            <returns>paged number configs</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Numbers.NumberLeasesApi.GetConfig(System.String,System.String)">
+            <summary>
+            Get number lease config
+            </summary>
+            <param name="number">leased phone number</param>
+            <param name="fields">Limit fields returned. Example fields=id,name</param>
+            <returns>object which represents number lease config</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Numbers.NumberLeasesApi.UpdateConfig(CallfireApiClient.Api.Numbers.Model.NumberConfig)">
+            <summary>
+            Update number lease config
+            </summary>
+            <param name="config">config to update</param>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Numbers.NumbersApi.FindNumbersLocal(CallfireApiClient.Api.Numbers.Model.Request.FindNumbersLocalRequest)">
+            <summary>
+            Find number in local catalog by prefix, zipcode, etc...
+            </summary>
+            <param name="request">request object with different fields to filter</param>
+            <returns>available numbers in catalog</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Numbers.NumbersApi.FindNumberRegions(CallfireApiClient.Api.Numbers.Model.Request.FindNumberRegionsRequest)">
+            <summary>
+            Find number region information. Use this API to obtain detailed region information that
+            can then be used to query for more specific phone numbers than a general query.
+            </summary>
+            <param name="request">request object</param>
+            <returns>paged response</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Numbers.NumbersApi.FindNumbersTollfree(CallfireApiClient.Api.Common.Model.Request.CommonFindRequest)">
+            <summary>
+            Find numbers in the CallFire tollfree numbers catalog that are available for purchase.
+            </summary>
+            <param name="request">request object</param>
+            <returns>list of numbers</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Webhooks.WebhooksApi.Find(CallfireApiClient.Api.Webhooks.Model.Request.FindWebhooksRequest)">
+            <summary>
+            Find all webhooks for the user.
+            Search for webhooks on name, resource, event, callback URL, or whether they are enabled.
+            </summary>
+            <param name="request">request object with different fields to filter</param>
+            <returns>paged list with webhooks</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Webhooks.WebhooksApi.Get(System.Int64,System.String)">
+            <summary>
+            Get webhook by id.
+            </summary>
+            <param name="id">id of webhook</param>
+            <param name="fields">limit fields returned. Example fields=id,name</param>
+            <returns>webhook object</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Webhooks.WebhooksApi.Create(CallfireApiClient.Api.Webhooks.Model.Webhook)">
+            <summary>
+            Create a Webhook for notification in the CallFire system. Use the webhooks API to receive
+            notifications of important CallFire events. Select the resource to listen to, and then choose
+            the events for that resource to receive notifications on. When an event triggers,
+            a POST will be made to the callback URL with a payload of notification information.
+            </summary>
+            <param name="webhook">webhook to create</param>
+            <returns>ResourceId object with id of created webhook</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Webhooks.WebhooksApi.Update(CallfireApiClient.Api.Webhooks.Model.Webhook)">
+            <summary>
+            Update webhook
+            </summary>
+            <param name="webhook">webhook to update</param>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Webhooks.WebhooksApi.Delete(System.Int64)">
+            <summary>
+            Delete webhook by id
+            </summary>
+            <param name="id">id of webhook</param>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Webhooks.SubscriptionsApi.Find(CallfireApiClient.Api.Webhooks.Model.Request.FindSubscriptionsRequest)">
+            <summary>
+            Find all subscriptions for the user.
+            Search for subscriptions on campaign id, resource, event, from number, to number, or whether they are enabled.
+            </summary>
+            <param name="request">request object with different fields to filter</param>
+            <returns>paged list with subscriptions</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Webhooks.SubscriptionsApi.Get(System.Int64,System.String)">
+            <summary>
+            Get subscription by id.
+            </summary>
+            <param name="id">id of subscription</param>
+            <param name="fields">limit fields returned. Example fields=id,name</param>
+            <returns>subscription object</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Webhooks.SubscriptionsApi.Create(CallfireApiClient.Api.Webhooks.Model.Subscription)">
+            <summary>
+            Create a Subscription for notification in the CallFire system. Use the subscriptions API to receive
+            notifications of important CallFire events. Select the resource to listen to, and then choose
+            the events for that resource to receive notifications on. When an event triggers,
+            a POST will be made to the callback URL with a payload of notification information.
+            </summary>
+            <param name="subscription">subscription to create</param>
+            <returns>ResourceId object with id of created subscription</returns>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Webhooks.SubscriptionsApi.Update(CallfireApiClient.Api.Webhooks.Model.Subscription)">
+            <summary>
+            Update subscription
+            </summary>
+            <param name="subscription">subscription to update</param>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="M:CallfireApiClient.Api.Webhooks.SubscriptionsApi.Delete(System.Int64)">
+            <summary>
+            Delete subscription by id
+            </summary>
+            <param name="id">id of subscription</param>
+            <exception cref="T:CallfireApiClient.BadRequestException">          in case HTTP response code is 400 - Bad request, the request was formatted improperly.</exception>
+            <exception cref="T:CallfireApiClient.UnauthorizedException">        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.</exception>
+            <exception cref="T:CallfireApiClient.AccessForbiddenException">     in case HTTP response code is 403 - Forbidden, insufficient permissions.</exception>
+            <exception cref="T:CallfireApiClient.ResourceNotFoundException">    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.</exception>
+            <exception cref="T:CallfireApiClient.InternalServerErrorException"> in case HTTP response code is 500 - Internal Server Error.</exception>
+            <exception cref="T:CallfireApiClient.CallfireApiException">         in case HTTP response code is something different from codes listed above.</exception>
+            <exception cref="T:CallfireApiClient.CallfireClientException">      in case error has occurred in client.</exception>
+        </member>
+        <member name="T:CallfireApiClient.AccessForbiddenException">
+            <summary>
+            Exception thrown in case if platform returns HTTP code 403 - Forbidden, insufficient permissions
+            </summary>
+        </member>
+        <member name="T:CallfireApiClient.BadRequestException">
+            <summary>
+            Exception thrown in case if platform returns HTTP code 400 - Bad request, the request was formatted improperly.
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:CallfireApiClient.CallfireApiException" -->
+        <member name="P:CallfireApiClient.CallfireApiException.ApiErrorMessage">
+            <summary>
+            Gets or sets detailed error message with HTTP code, help link, etc.
+            </summary>
+            <value>The API error message.</value>
+        </member>
+        <member name="T:CallfireApiClient.CallfireClient">
+            <summary>
+            Callfire API v2 .NET client
+            use your API login and password to create client instance object
+            </summary>
+        </member>
+        <member name="T:CallfireApiClient.CallfireClientException">
+            <summary>
+            Exception thrown in case error has occurred in client.
+            </summary>
+        </member>
+        <member name="T:CallfireApiClient.CallfireContractResolver">
+            <summary>
+            Custom ContactResolver is used for:
+              1. Populate properties with private modifiers.
+              2. Serialize properties using camelCase names.
+              3. Skip serialization of empty collections.
+              4. Base class properties go first on serialization.
+            </summary>
+        </member>
+        <member name="T:CallfireApiClient.CallfireJsonConverter">
+            <summary>
+            Default JSON serializer for request bodies
+            Doesn't currently use the SerializeAs attribute, defers to Newtonsoft's attributes
+            </summary>
+        </member>
+        <member name="M:CallfireApiClient.CallfireJsonConverter.#ctor">
+            <summary>
+            Default serializer/deserializer
+            </summary>
+        </member>
+        <member name="M:CallfireApiClient.CallfireJsonConverter.Serialize(System.Object)">
+            <summary>
+            Serialize the object as JSON
+            </summary>
+            <param name="obj">Object to serialize</param>
+            <returns>JSON as String</returns>
+        </member>
+        <member name="P:CallfireApiClient.CallfireJsonConverter.DateFormat">
+            <summary>
+            Unused for JSON Serialization
+            </summary>
+        </member>
+        <member name="P:CallfireApiClient.CallfireJsonConverter.RootElement">
+            <summary>
+            Unused for JSON Serialization
+            </summary>
+        </member>
+        <member name="P:CallfireApiClient.CallfireJsonConverter.Namespace">
+            <summary>
+            Unused for JSON Serialization
+            </summary>
+        </member>
+        <member name="P:CallfireApiClient.CallfireJsonConverter.ContentType">
+            <summary>
+            Content type for serialized content
+            </summary>
+        </member>
+        <member name="T:CallfireApiClient.ClientConstants">
+             <summary>
+             Client constants
+            </summary>
+        </member>
+        <member name="T:CallfireApiClient.ClientUtils">
+            <summary>
+            Utility class
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:CallfireApiClient.ClientUtils.ToPrettyString``1(System.Collections.Generic.ICollection{``0})" -->
+        <member name="M:CallfireApiClient.ClientUtils.ReplaceFirst(System.String,System.String,System.String)">
+            <summary>
+            Replaces the first occurence of given string
+            </summary>
+            <returns>updated string</returns>
+            <param name="text">initial string</param>
+            <param name="search">substring to replace</param>
+            <param name="replace">replacement string</param>
+        </member>
+        <member name="M:CallfireApiClient.ClientUtils.BuildQueryParams(System.String,System.String)">
+            <summary>
+            Add query param to name-value query list if it's value not null
+            </summary>
+            <param name="name">param name</param>
+            <param name="value">param value</param>
+            <returns>NameValueCollection with one item</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:CallfireApiClient.ClientUtils.BuildQueryParams``1(``0)" -->
+        <member name="M:CallfireApiClient.ClientUtils.EnumMemberAttr``1(``0)">
+            <summary>
+            Returns a EnumMember attribute for object
+            </summary>
+            <param name="source">object to select EnumMember attr from</param>
+            <returns>EnumMemberAttribute for input object</returns>
+        </member>
+        <member name="M:CallfireApiClient.ClientUtils.DescriptionAttr``1(``0)">
+            <summary>
+            Returns a EnumMember attribute for object
+            </summary>
+            <param name="source">object to select EnumMember attr from</param>
+            <returns>EnumMemberAttribute for input object</returns>
+        </member>
+        <member name="M:CallfireApiClient.ClientUtils.EnumFromDescription``1(System.String)">
+            <summary>
+            Returns enum by description attribute
+            </summary>
+            <param name="description">enum description attribute value</param>
+            <returns>enum object</returns>
+        </member>
+        <member name="M:CallfireApiClient.ClientUtils.StrToIntDef(System.String,System.Int32)">
+            <summary>
+            Returns int converted from string with default possible value
+            </summary>
+            <param name="s">string to convert</param>
+            <param name="def">default to return if s is null</param>
+            <returns>int value</returns>
+        </member>
+        <member name="T:CallfireApiClient.InternalServerErrorException">
+            <summary>
+            Exception thrown in case if platform returns HTTP code 500 - Internal Server Error
+            </summary>
+        </member>
+        <member name="T:CallfireApiClient.Logger">
+            <summary>
+            Simple logging wrapper around TraceSource
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:CallfireApiClient.RequestFilter" -->
+        <!-- Badly formed XML comment ignored for member "F:CallfireApiClient.RequestFilter.DEFAULT_ORDER" -->
+        <!-- Badly formed XML comment ignored for member "M:CallfireApiClient.RequestFilter.Filter(RestSharp.IRestRequest)" -->
+        <member name="M:CallfireApiClient.RequestFilter.Order">
+            <summary>
+            Filters with greater order number are executed first
+            </summary>
+            <returns>order number</returns>
+        </member>
+        <member name="T:CallfireApiClient.ResourceNotFoundException">
+            <summary>
+            Exception thrown in case if platform returns HTTP code 404 - NOT FOUND, the resource requested does not exist
+            </summary>
+        </member>
+        <member name="T:CallfireApiClient.RestApiClient">
+            <summary>
+            REST client which makes HTTP calls to Callfire service
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:CallfireApiClient.RestApiClient.RestClient" -->
+        <!-- Badly formed XML comment ignored for member "P:CallfireApiClient.RestApiClient.ApiBasePath" -->
+        <member name="P:CallfireApiClient.RestApiClient.Filters">
+            <summary>
+            Returns HTTP request filters associated with API client
+            </summary>
+            <value>active filters.</value>
+        </member>
+        <member name="M:CallfireApiClient.RestApiClient.#cctor">
+            <summary>
+            loads client configuration
+            </summary>
+        </member>
+        <member name="M:CallfireApiClient.RestApiClient.getClientConfig">
+            <summary>
+            Get client configuration
+            </summary>
+            <value>configuration properties collection</value>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:CallfireApiClient.RestApiClient.#ctor(RestSharp.Authenticators.IAuthenticator)" -->
+        <member name="M:CallfireApiClient.RestApiClient.LoadAppSettings">
+            <summary>
+            Loads client's app settings config section
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:CallfireApiClient.RestApiClient.Get``1(System.String,CallfireApiClient.Api.Common.Model.Request.FindRequest)" -->
+        <!-- Badly formed XML comment ignored for member "M:CallfireApiClient.RestApiClient.Get``1(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})" -->
+        <!-- Badly formed XML comment ignored for member "M:CallfireApiClient.RestApiClient.GetFileData(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})" -->
+        <!-- Badly formed XML comment ignored for member "M:CallfireApiClient.RestApiClient.Post``1(System.String,System.Object)" -->
+        <!-- Badly formed XML comment ignored for member "M:CallfireApiClient.RestApiClient.Post``1(System.String,System.Object,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})" -->
+        <!-- Badly formed XML comment ignored for member "M:CallfireApiClient.RestApiClient.PostFile``1(System.String,System.String,System.String,System.String)" -->
+        <!-- Badly formed XML comment ignored for member "M:CallfireApiClient.RestApiClient.Put``1(System.String,System.Object)" -->
+        <!-- Badly formed XML comment ignored for member "M:CallfireApiClient.RestApiClient.Put``1(System.String,System.Object,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})" -->
+        <!-- Badly formed XML comment ignored for member "M:CallfireApiClient.RestApiClient.Delete(System.String)" -->
+        <!-- Badly formed XML comment ignored for member "M:CallfireApiClient.RestApiClient.Delete(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})" -->
+        <member name="T:CallfireApiClient.ModelValidationException">
+            <summary>
+            Exception is used by Callfire model validation methods
+            </summary>
+        </member>
+        <member name="T:CallfireApiClient.UnauthorizedException">
+            <summary>
+            Exception thrown in case if platform returns HTTP code 401 - Unauthorized, API Key missing or invalid
+            </summary>
+        </member>
+        <member name="T:CallfireApiClient.UnixTimeJsonConverter">
+            <summary>
+            Custom DateTime converter to convert incoming Unix UTC time to C# DateTime
+            </summary>
+        </member>
+        <member name="T:CallfireApiClient.Validate">
+            <summary>
+            Class contains validation static methods
+            </summary>
+        </member>
+    </members>
+</doc>
