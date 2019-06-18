@@ -81,14 +81,14 @@ namespace CharRadiology.Core.Services
             // chkUser.env = "QA";
             bool blExpand = false;
             MessageReturn user = new MessageReturn();
-            //Expander exp = new Expander(sessionFactory);
+            Expander exp = new Expander(sessionFactory);
             MailMessenger mm = new MailMessenger(sessionFactory);
             //TextMessenger tm = new TextMessenger(sessionFactory);
             //IVRMessenger im = new IVRMessenger(sessionFactory);
             try
             {
-                user = LogClientResults(bm);
-                //blExpand = exp.ExpandCommunication();
+                //user = LogClientResults(bm);
+                blExpand = exp.ExpandCommunication();
                 user = mm.ProcessMessages(chkUser, bm);
                 //user = tm.ProcessMessages(chkUser, bm);
                 //user = im.ProcessMessages(chkUser, bm);
@@ -672,167 +672,167 @@ namespace CharRadiology.Core.Services
 
             return retuser;
         }
-        protected MessageReturn LogClientResults(BusinessModel bm)
-        {
-            MessageReturn webreturn = new MessageReturn();
-            ProfileData profile = new ProfileData();
-            PinEntryData pindata = new PinEntryData();
-            PinEntryReturn pinreturn = new PinEntryReturn();
-            StringBuilder sb = new StringBuilder();
-            ClientTestingData td = new ClientTestingData();
-            List<SF_Client_Results> resultList = new List<SF_Client_Results>();
-            string strResult = "";
-            try
-            {
-                pindata.env = bm.environ;
-                pindata.guid = CheckGUID;
-                pindata.ip = bm.ipaddress;
-                resultList = ClientResultList();
-                foreach (SF_Client_Results res in resultList)
-                {
-                    // Update the SALESFORCE_TEST_RESULTS_FROM_CLIENT Table
-                    string sql = "update SALESFORCE_TEST_RESULTS_FROM_CLIENT set STATUS = 'I' where STATUS IS NULL AND INDIV_ID = " + res.indiv_id;
-                    ExecuteSQL(sql);
+        //protected MessageReturn LogClientResults(BusinessModel bm)
+        //{
+        //    MessageReturn webreturn = new MessageReturn();
+        //    ProfileData profile = new ProfileData();
+        //    PinEntryData pindata = new PinEntryData();
+        //    PinEntryReturn pinreturn = new PinEntryReturn();
+        //    StringBuilder sb = new StringBuilder();
+        //    ClientTestingData td = new ClientTestingData();
+        //    List<SF_Client_Results> resultList = new List<SF_Client_Results>();
+        //    string strResult = "";
+        //    try
+        //    {
+        //        pindata.env = bm.environ;
+        //        pindata.guid = CheckGUID;
+        //        pindata.ip = bm.ipaddress;
+        //        resultList = ClientResultList();
+        //        foreach (SF_Client_Results res in resultList)
+        //        {
+        //            // Update the SALESFORCE_TEST_RESULTS_FROM_CLIENT Table
+        //            string sql = "update SALESFORCE_TEST_RESULTS_FROM_CLIENT set STATUS = 'I' where STATUS IS NULL AND INDIV_ID = " + res.indiv_id;
+        //            ExecuteSQL(sql);
 
-                    pindata.pin = res.indiv_id.ToString();
-                    pinreturn = GetCustomerInfo(pindata);
-                    string strResponseCode = "SPSF16RESULT";
-                    if (pinreturn.code == PinEntryStatusCodes.Success)
-                    {
-                        profile.FIRST_NAME = pinreturn.pinProfile.first_name;
-                        profile.LAST_NAME = pinreturn.pinProfile.last_name;
-                        profile.ADDRESS1 = pinreturn.pinProfile.address1;
-                        profile.ADDRESS2 = pinreturn.pinProfile.address2;
-                        profile.CITY = pinreturn.pinProfile.city;
-                        profile.STATE = pinreturn.pinProfile.state;
-                        profile.ZIP = pinreturn.pinProfile.zip;
-                        profile.BIRTH_DATE = pinreturn.pinProfile.birth_date.ToString();
-                        profile.EMAIL = pinreturn.pinProfile.email;
-                        profile.PHONE = pinreturn.pinProfile.phone;
+        //            pindata.pin = res.indiv_id.ToString();
+        //            pinreturn = GetCustomerInfo(pindata);
+        //            string strResponseCode = "SPSF16RESULT";
+        //            if (pinreturn.code == PinEntryStatusCodes.Success)
+        //            {
+        //                profile.FIRST_NAME = pinreturn.pinProfile.first_name;
+        //                profile.LAST_NAME = pinreturn.pinProfile.last_name;
+        //                profile.ADDRESS1 = pinreturn.pinProfile.address1;
+        //                profile.ADDRESS2 = pinreturn.pinProfile.address2;
+        //                profile.CITY = pinreturn.pinProfile.city;
+        //                profile.STATE = pinreturn.pinProfile.state;
+        //                profile.ZIP = pinreturn.pinProfile.zip;
+        //                profile.BIRTH_DATE = pinreturn.pinProfile.birth_date.ToString();
+        //                profile.EMAIL = pinreturn.pinProfile.email;
+        //                profile.PHONE = pinreturn.pinProfile.phone;
 
-                    }
+        //            }
 
-                    profile.EMAIL_OPT_CD = "I";
-                    profile.ENV = bm.environ;
-                    profile.USER_ID = "SCMonitorWeb";
-                    profile.USPS_OPT_CD = "I";
-                    profile.RESPONSE_TYPE = "S";
-                    profile.RESPONSE_CODE = strResponseCode;
-                    profile.WEB_USER_ID = strResponseCode;
-                    profile.WEB_SOURCE = "MultiWebSource";
-                    profile.WEB_VERSION = "1.0";
-                    DateTime dateValue;
-                    if (profile.COA_DATE == null || !(DateTime.TryParse(profile.COA_DATE.ToString(), out dateValue)) || Convert.ToDateTime(profile.COA_DATE) < Convert.ToDateTime("01/01/1900"))
-                    {
-                        profile.COA_DATE = "01/01/1900";
-                    }
-                    if (!string.IsNullOrEmpty(pindata.pin))
-                    {
-                        profile.INDIV_ID = pindata.pin;
-                    }
-                    profile.GUID = CheckGUID;
+        //            profile.EMAIL_OPT_CD = "I";
+        //            profile.ENV = bm.environ;
+        //            profile.USER_ID = "SCMonitorWeb";
+        //            profile.USPS_OPT_CD = "I";
+        //            profile.RESPONSE_TYPE = "S";
+        //            profile.RESPONSE_CODE = strResponseCode;
+        //            profile.WEB_USER_ID = strResponseCode;
+        //            profile.WEB_SOURCE = "MultiWebSource";
+        //            profile.WEB_VERSION = "1.0";
+        //            DateTime dateValue;
+        //            if (profile.COA_DATE == null || !(DateTime.TryParse(profile.COA_DATE.ToString(), out dateValue)) || Convert.ToDateTime(profile.COA_DATE) < Convert.ToDateTime("01/01/1900"))
+        //            {
+        //                profile.COA_DATE = "01/01/1900";
+        //            }
+        //            if (!string.IsNullOrEmpty(pindata.pin))
+        //            {
+        //                profile.INDIV_ID = pindata.pin;
+        //            }
+        //            profile.GUID = CheckGUID;
 
-                    DateTime dtToday = DateTime.Today;
-                    DateTime dtTest = Convert.ToDateTime("01/01/1900");
-                    //test1 result
-                    if (!(string.IsNullOrEmpty(res.test1_result)))
-                    {
-                        SurveyReturn svyreturn = new SurveyReturn();
-                        List<Question> questions = new List<Question>();
-                        QAData qa = new QAData();
-                        List<Answer> answers = new List<Answer>();
-                        Answer tans = new Answer();
-                        Question ques = new Question();
-                        strResult = res.test1_result.Trim().ToUpper();
-                        tans.answer_desc = strResult == "NEGATIVE" ? "NEG" : "POS";
+        //            DateTime dtToday = DateTime.Today;
+        //            DateTime dtTest = Convert.ToDateTime("01/01/1900");
+        //            //test1 result
+        //            if (!(string.IsNullOrEmpty(res.test1_result)))
+        //            {
+        //                SurveyReturn svyreturn = new SurveyReturn();
+        //                List<Question> questions = new List<Question>();
+        //                QAData qa = new QAData();
+        //                List<Answer> answers = new List<Answer>();
+        //                Answer tans = new Answer();
+        //                Question ques = new Question();
+        //                strResult = res.test1_result.Trim().ToUpper();
+        //                tans.answer_desc = strResult == "NEGATIVE" ? "NEG" : "POS";
 
-                        answers.Add(tans);
+        //                answers.Add(tans);
 
-                        ques.question_code = 1;
+        //                ques.question_code = 1;
 
-                        ques.answers = answers;
-                        //questions[0] = ques;
-                        questions.Add(ques);
-                        qa.q_and_a = questions;
-                        svyreturn = SaveCustResponse(profile);
-                        if (svyreturn.code == SurveyStatusCodes.Success)
-                        {
-                            if (svyreturn.code == SurveyStatusCodes.Success)
-                            {
-                                qa.EXTERNAL_REF_NUMBER = svyreturn.TankRecNum.ToString();
-                                qa.ENV = bm.environ;
-                                qa.GUID = CheckGUID;
-                                qa.INDIV_ID = pindata.pin;
-                                qa.RESPONSE_CODE = strResponseCode;
-                                qa.RESPONSE_DATE = res.test1_date.ToString();
-                                if (qa.RESPONSE_DATE == null || !(DateTime.TryParse(qa.RESPONSE_DATE.ToString(), out dateValue)) || Convert.ToDateTime(qa.RESPONSE_DATE) <= Convert.ToDateTime("01/01/1900"))
-                                {
-                                    qa.RESPONSE_DATE = DateTime.Today.ToString(); ;
-                                }
-                                svyreturn = SaveCustQA(qa);
-                            }
-                        }
-                        td.env = bm.environ;
-                        td.indiv_id = pindata.pin;
-                        td.test_number = 1;
-                        webreturn = UpdateClientTestingRecords(td);
-                    }
-                    //test2 results
-                    if (!(string.IsNullOrEmpty(res.test2_result)))
-                    {
-                        SurveyReturn svyreturn = new SurveyReturn();
-                        List<Question> questions = new List<Question>();
-                        QAData qa = new QAData();
-                        List<Answer> answers = new List<Answer>();
-                        Answer tans = new Answer();
-                        Question ques = new Question();
-                        strResult = res.test2_result.Trim().ToUpper();
-                        tans.answer_desc = strResult == "NEGATIVE" ? "NEG" : "POS";
-                        answers.Add(tans);
+        //                ques.answers = answers;
+        //                //questions[0] = ques;
+        //                questions.Add(ques);
+        //                qa.q_and_a = questions;
+        //                svyreturn = SaveCustResponse(profile);
+        //                if (svyreturn.code == SurveyStatusCodes.Success)
+        //                {
+        //                    if (svyreturn.code == SurveyStatusCodes.Success)
+        //                    {
+        //                        qa.EXTERNAL_REF_NUMBER = svyreturn.TankRecNum.ToString();
+        //                        qa.ENV = bm.environ;
+        //                        qa.GUID = CheckGUID;
+        //                        qa.INDIV_ID = pindata.pin;
+        //                        qa.RESPONSE_CODE = strResponseCode;
+        //                        qa.RESPONSE_DATE = res.test1_date.ToString();
+        //                        if (qa.RESPONSE_DATE == null || !(DateTime.TryParse(qa.RESPONSE_DATE.ToString(), out dateValue)) || Convert.ToDateTime(qa.RESPONSE_DATE) <= Convert.ToDateTime("01/01/1900"))
+        //                        {
+        //                            qa.RESPONSE_DATE = DateTime.Today.ToString(); ;
+        //                        }
+        //                        svyreturn = SaveCustQA(qa);
+        //                    }
+        //                }
+        //                td.env = bm.environ;
+        //                td.indiv_id = pindata.pin;
+        //                td.test_number = 1;
+        //                webreturn = UpdateClientTestingRecords(td);
+        //            }
+        //            //test2 results
+        //            if (!(string.IsNullOrEmpty(res.test2_result)))
+        //            {
+        //                SurveyReturn svyreturn = new SurveyReturn();
+        //                List<Question> questions = new List<Question>();
+        //                QAData qa = new QAData();
+        //                List<Answer> answers = new List<Answer>();
+        //                Answer tans = new Answer();
+        //                Question ques = new Question();
+        //                strResult = res.test2_result.Trim().ToUpper();
+        //                tans.answer_desc = strResult == "NEGATIVE" ? "NEG" : "POS";
+        //                answers.Add(tans);
 
-                        ques.question_code = 2;
+        //                ques.question_code = 2;
 
-                        ques.answers = answers;
-                        //questions[0] = ques;
-                        questions.Add(ques);
-                        qa.q_and_a = questions;
-                        svyreturn = SaveCustResponse(profile);
-                        if (svyreturn.code == SurveyStatusCodes.Success)
-                        {
-                            if (svyreturn.code == SurveyStatusCodes.Success)
-                            {
-                                qa.EXTERNAL_REF_NUMBER = svyreturn.TankRecNum.ToString();
-                                qa.ENV = bm.environ;
-                                qa.GUID = CheckGUID;
-                                qa.INDIV_ID = pindata.pin;
-                                qa.RESPONSE_CODE = strResponseCode;
-                                qa.RESPONSE_DATE = res.test2_date.ToString();
-                                if (qa.RESPONSE_DATE == null || !(DateTime.TryParse(qa.RESPONSE_DATE.ToString(), out dateValue)) || Convert.ToDateTime(qa.RESPONSE_DATE) <= Convert.ToDateTime("01/01/1900"))
-                                {
-                                    qa.RESPONSE_DATE = DateTime.Today.ToString(); ;
-                                }
-                                svyreturn = SaveCustQA(qa);
-                            }
-                        }
-                        td.env = bm.environ;
-                        td.indiv_id = pindata.pin;
-                        td.test_number = 2;
-                        webreturn = UpdateClientTestingRecords(td);
-                    }
-                    // Update the SALESFORCE_TEST_RESULTS_FROM_CLIENT Table
-                    sql = "update SALESFORCE_TEST_RESULTS_FROM_CLIENT set STATUS = 'P' where STATUS = 'I' AND INDIV_ID = " + res.indiv_id;
-                    ExecuteSQL(sql);
+        //                ques.answers = answers;
+        //                //questions[0] = ques;
+        //                questions.Add(ques);
+        //                qa.q_and_a = questions;
+        //                svyreturn = SaveCustResponse(profile);
+        //                if (svyreturn.code == SurveyStatusCodes.Success)
+        //                {
+        //                    if (svyreturn.code == SurveyStatusCodes.Success)
+        //                    {
+        //                        qa.EXTERNAL_REF_NUMBER = svyreturn.TankRecNum.ToString();
+        //                        qa.ENV = bm.environ;
+        //                        qa.GUID = CheckGUID;
+        //                        qa.INDIV_ID = pindata.pin;
+        //                        qa.RESPONSE_CODE = strResponseCode;
+        //                        qa.RESPONSE_DATE = res.test2_date.ToString();
+        //                        if (qa.RESPONSE_DATE == null || !(DateTime.TryParse(qa.RESPONSE_DATE.ToString(), out dateValue)) || Convert.ToDateTime(qa.RESPONSE_DATE) <= Convert.ToDateTime("01/01/1900"))
+        //                        {
+        //                            qa.RESPONSE_DATE = DateTime.Today.ToString(); ;
+        //                        }
+        //                        svyreturn = SaveCustQA(qa);
+        //                    }
+        //                }
+        //                td.env = bm.environ;
+        //                td.indiv_id = pindata.pin;
+        //                td.test_number = 2;
+        //                webreturn = UpdateClientTestingRecords(td);
+        //            }
+        //            // Update the SALESFORCE_TEST_RESULTS_FROM_CLIENT Table
+        //            sql = "update SALESFORCE_TEST_RESULTS_FROM_CLIENT set STATUS = 'P' where STATUS = 'I' AND INDIV_ID = " + res.indiv_id;
+        //            ExecuteSQL(sql);
 
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("LogClientResults: " + ex.ToString());
-            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception("LogClientResults: " + ex.ToString());
+        //    }
 
-            return webreturn;
+        //    return webreturn;
 
-        }
+        //}
         protected  List<SF_Client_Results> ClientResultList()
         {
             var currentSession = sessionFactory.GetCurrentSession();
