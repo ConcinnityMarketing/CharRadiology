@@ -60,7 +60,7 @@ namespace CharRadiology.Core
                 //dtToday = dtToday.AddDays(-1);
                 foreach (Communication com in comList)
                 {
-                        sql = "update CUSTOMER_COMMUNICATION set COMM_STATUS = 'I' where CC_ID = " + com.cc_id;
+                        sql = "update CUSTOMER_COMMUNICATIONS set COMM_STATUS = 'I' where CC_ID = " + com.cc_id;
                         ExecuteSQL(sql);
                     mfList = MessageFlowList(com.mfid);
 
@@ -77,7 +77,7 @@ namespace CharRadiology.Core
                                 smd = SaveMessageDetail(mdetail);
                         }
                 }
-                sql = "update CUSTOMER_COMMUNICATION set COMM_STATUS = 'P' where COMM_STATUS = 'I'";
+                sql = "update CUSTOMER_COMMUNICATIONS set COMM_STATUS = 'P' where COMM_STATUS = 'I'";
                 ExecuteSQL(sql);
 
                 retbool = true;
@@ -120,7 +120,7 @@ namespace CharRadiology.Core
         {
             var currentSession = sessionFactory.GetCurrentSession();
             IEnumerable results = currentSession.Connection.Query(@"SELECT CC_ID, INDIV_ID, EMAIL, TEXT_MESSAGE, ACTIVATE_DT, COMM_STATUS, MFID
-                                                                     FROM CUSTOMER_COMMUNICATION
+                                                                     FROM CUSTOMER_COMMUNICATIONS
                                                                     WHERE (COMM_STATUS IS NULL OR COMM_STATUS = 'I')");
             List<Communication> comList = new List<Communication>();
             foreach (dynamic row in results)
