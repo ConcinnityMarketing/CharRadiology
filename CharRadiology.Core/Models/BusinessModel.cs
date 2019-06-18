@@ -24,6 +24,7 @@ namespace CharRadiology.Core.Models
         public int retries { get; set; }
         public string ipaddress { get; set; }
         public string environ { get; set; }
+        public string client { get; set; }
         public BusinessModel()
         {
 
@@ -156,13 +157,29 @@ namespace CharRadiology.Core.Models
         [DataMember]
         public string status { get; set; }
         [DataMember]
-        public GenericStatusCodes code { get; set; }
+        public MailStatusCodes code { get; set; }
         [DataMember]
         public string desc { get; set; }
         [DataMember]
         public int Message_Count { get; set; }
         [DataMember]
         public int Anniversary_Count { get; set; }
+    }
+    [DataContract]
+    public class RegisterReturn
+    {
+        [DataMember]
+        public string status { get; set; }
+        [DataMember]
+        public RegistrationStatusCodes code { get; set; }
+        [DataMember]
+        public string desc { get; set; }
+        [DataMember]
+        public int indiv_id { get; set; }
+        [DataMember]
+        public int TankRecNum { get; set; }
+        [DataMember]
+        public string sessionid { get; set; }
     }
     [DataContract]
     public class MessageReturn
@@ -430,7 +447,6 @@ namespace CharRadiology.Core.Models
     {
         public int mf_recnum { get; set; }
         public Int16 message_seq { get; set; }
-        public Int16 test_number { get; set; }
         public string mfid { get; set; }
         public Int16 days_out { get; set; }
         public string channel { get; set; }
@@ -438,40 +454,39 @@ namespace CharRadiology.Core.Models
         {
 
         }
-        public MessageFlow(int emf_recnum, Int16 emessage_seq, Int16 etest_number, string emfid, Int16 edays_out, string echannel)
+        public MessageFlow(int emf_recnum, Int16 emessage_seq, string emfid, Int16 edays_out, string echannel)
         {
             this.mf_recnum = emf_recnum;
             this.message_seq = emessage_seq;
             this.mfid = emfid;
             this.days_out = edays_out;
             this.channel = echannel;
-            this.test_number = etest_number;
         }
     }
     public class Communication
     {
+        public int cc_id { get; set; }
         public int indiv_id { get; set; }
+        public string mfid { get; set; }
         public string email { get; set; }
         public string phone { get; set; }
         public DateTime activate_dt { get; set; }
         public string status { get; set; }
-        public DateTime procedure_date { get; set; }
-        public DateTime test1_date { get; set; }
-        public DateTime test2_date { get; set; }
+        public string offer_code { get; set; }
+        public string offer_description { get; set; }
         public Communication()
         {
 
         }
-        public Communication(int eindiv_id, string eemail, string ephone, DateTime eactivate_dt, string estatus, DateTime eprocedure_date, DateTime etest1_date, DateTime etest2_date)
+        public Communication(int ecc_id, int eindiv_id, string emfid, string eemail, string ephone, DateTime eactivate_dt, string estatus)
         {
+            this.cc_id = ecc_id;
             this.indiv_id = eindiv_id;
+            this.mfid = emfid;
             this.email = eemail;
             this.phone = ephone;
             this.activate_dt = eactivate_dt;
             this.status = estatus;
-            this.procedure_date = eprocedure_date;
-            this.test1_date = etest1_date;
-            this.test2_date = etest2_date;
         }
 
     }
@@ -632,25 +647,35 @@ namespace CharRadiology.Core.Models
 }
     public class DBMessage
     {
-        public int TEST_NUMBER { get; set; }
         public int MESSAGE_ID { get; set; }
         public int MESSAGE_SEQ { get; set; }
+        public string CHANNEL { get; set; }
+        public string MFID { get; set; }
         public string MESSAGE_TEXT { get; set; }
+
         public DBMessage()
         {
 
         }
-        public DBMessage(int eTEST_NUMBER, int eMESSAGE_ID, int eMESSAGE_SEQ, string eMESSAGE_TEXT)
+        public DBMessage(int eMESSAGE_ID, int eMESSAGE_SEQ)
         {
-            this.TEST_NUMBER = eTEST_NUMBER;
             this.MESSAGE_ID = eMESSAGE_ID;
             this.MESSAGE_SEQ = eMESSAGE_SEQ;
+        }
+        public DBMessage(string eMFID, int eMESSAGE_SEQ, int eMESSAGE_ID, string eCHANNEL, string eMESSAGE_TEXT)
+        {
+            this.MESSAGE_SEQ = eMESSAGE_SEQ;
+            this.MESSAGE_ID = eMESSAGE_ID;
+            this.CHANNEL = eCHANNEL;
+            this.MFID = eMFID;
             this.MESSAGE_TEXT = eMESSAGE_TEXT;
         }
+
     }
     public class MessageModel
     {
         public int INDIV_ID { get; set; }
+        public string MFID { get; set; }
         public string EMAIL { get; set; }
         public string FIRST_NAME { get; set; }
         public string LAST_NAME { get; set; }
@@ -662,21 +687,20 @@ namespace CharRadiology.Core.Models
         public DateTime? MESSAGE_DT { get; set; }
         public string STATUS { get; set; }
         public DateTime? UPDATE_DT { get; set; }
-        public int TEST_NUMBER { get; set; }
         public int MESSAGE_SEQ { get; set; }
         public int MD_RECNUM { get; set; }
-        public DateTime? PROCEDURE_DATE { get; set; }
-        public DateTime TEST1_DATE { get; set; }
-        public DateTime TEST2_DATE { get; set; }
         public string PHONE { get; set; }
+        public string OFFER_CODE { get; set; }
+        public string CHILD_NAME { get; set; }
         public MessageModel()
         {
 
         }
-        public MessageModel(int eINDIV_ID, string eEMAIL, string eFIRST_NAME, string eLAST_NAME, string eADDRESS1, string eCITY, string eSTATE, string eZIP,
-                                string eCHANNEL, DateTime? eMESSAGE_DT, string eSTATUS, DateTime? eUPDATE_DT, int eTEST_NUMBER, int eMESSAGE_SEQ, int eMD_RECNUM, DateTime? ePROCEDURE_DATE, DateTime eTEST1_DATE, DateTime eTEST2_DATE, string ePHONE)
+        public MessageModel(int eINDIV_ID, string eMFID, string eEMAIL, string eFIRST_NAME, string eLAST_NAME, string eADDRESS1, string eCITY, string eSTATE, string eZIP,
+                                string eCHANNEL, DateTime? eMESSAGE_DT, string eSTATUS, DateTime? eUPDATE_DT, int eMESSAGE_SEQ, int eMD_RECNUM, string ePHONE, string eOFFER_CODE, string eCHILD_NAME)
         {
             this.INDIV_ID = eINDIV_ID;
+            this.MFID = eMFID;
             this.EMAIL = eEMAIL;
             this.FIRST_NAME = eFIRST_NAME;
             this.LAST_NAME = eLAST_NAME;
@@ -688,26 +712,22 @@ namespace CharRadiology.Core.Models
             this.MESSAGE_DT = eMESSAGE_DT;
             this.CHANNEL = eCHANNEL;
             this.UPDATE_DT = eUPDATE_DT;
-            this.TEST_NUMBER = eTEST_NUMBER;
             this.MESSAGE_SEQ = eMESSAGE_SEQ;
             this.MD_RECNUM = eMD_RECNUM;
-            this.PROCEDURE_DATE = ePROCEDURE_DATE;
-            this.TEST1_DATE = eTEST1_DATE;
-            this.TEST2_DATE = eTEST2_DATE;
             this.PHONE = ePHONE;
+            this.OFFER_CODE = eOFFER_CODE;
+            this.CHILD_NAME = eCHILD_NAME;
         }
     }
     public class MessageDetail
     {
         public int INDIV_ID { get; set; }
         public Int16 MESSAGE_SEQ { get; set; }
-        public Int16 TEST_NUMBER { get; set; }
         public string MFID { get; set; }
         public string EMAIL { get; set; }
         public string PHONE { get; set; }
         public string CHANNEL { get; set; }
         public DateTime MESSAGE_DT { get; set; }
-        public DateTime PROCEDURE_DATE { get; set; }
 
     }
     public class ContactTest
@@ -873,7 +893,7 @@ namespace CharRadiology.Core.Models
         {
             #region "Private Fields"
  
-            private string _contactId;
+            private int _contactId;
             private string _email;
             private string _prefix;
             private string _firstName;
@@ -894,10 +914,10 @@ namespace CharRadiology.Core.Models
 
         #region "Public Properties"
 
-        public string contactId
-           {
-            get { return (_contactId == null ? string.Empty : _contactId); }
-            set { _contactId = (value != null ? value.Trim() : value); }
+        public int contactId
+        {
+            get { return _contactId; }
+            set { _contactId = value; }
         }
         public string email
             {

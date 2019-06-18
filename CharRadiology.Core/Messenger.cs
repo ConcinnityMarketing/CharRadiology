@@ -111,16 +111,16 @@ namespace CharRadiology.Core
         {
             var currentSession = sessionFactory.GetCurrentSession();
             string sql = "";
-            IEnumerable results = currentSession.Connection.Query(@"SELECT e.INDIV_ID, e.EMAIL, e.MESSAGE_DT, e.CHANNEL, e.STATUS, e.UPDATE_DT, p.FIRST_NAME, p.LAST_NAME, p.ADDRESS1, p.CITY, p.STATE, p.ZIP, e.TEST_NUMBER, e.MESSAGE_SEQ, e.MD_RECNUM, isnull(c.PROCEDURE_DATE,'1/1/1900') PROCEDURE_DATE, isnull( TEST1_DATE,'1/1/1900') TEST1_DATE, isnull(TEST2_DATE,'1/1/1900') TEST2_DATE, e.PHONE
+            IEnumerable results = currentSession.Connection.Query(@"SELECT e.INDIV_ID, e.EMAIL, e.MESSAGE_DT, e.CHANNEL, e.STATUS, e.UPDATE_DT, p.FIRST_NAME, p.LAST_NAME, p.ADDRESS1, p.CITY, p.STATE, p.ZIP, e.MESSAGE_SEQ, e.MD_RECNUM, e.PHONE, e.MFID, c.OFFER_CODE, c.CHILD_NAME
                                                                     FROM CUSTOMER_MESSAGE_DETAIL e inner join CUSTOMER_PROFILE p on p.INDIV_ID = e.INDIV_ID
-                                                                    inner join CUSTOMER_COMMUNICATION c on c.INDIV_ID = e.INDIV_ID
+                                                                    inner join CUSTOMER_COMMUNICATION c on c.INDIV_ID = e.INDIV_ID and c.MFID = e.MFID
                                                                     WHERE (e.STATUS IS NULL) AND CHANNEL = @type", new { @type = RecurType });
             List<MessageModel> emailList = new List<MessageModel>();
 
             foreach (dynamic row in results)
             {
-                emailList.Add(new MessageModel(row.INDIV_ID, row.EMAIL, row.FIRST_NAME, row.LAST_NAME, row.ADDRESS1, row.CITY,
-                                                   row.STATE, row.ZIP, row.CHANNEL, row.MESSAGE_DT, row.STATUS, row.UPDATE_DT, row.TEST_NUMBER, row.MESSAGE_SEQ, row.MD_RECNUM,row.PROCEDURE_DATE, row.TEST1_DATE, row.TEST2_DATE, row.PHONE));
+                emailList.Add(new MessageModel(row.INDIV_ID, row.MFID, row.EMAIL, row.FIRST_NAME, row.LAST_NAME, row.ADDRESS1, row.CITY,
+                                                   row.STATE, row.ZIP, row.CHANNEL, row.MESSAGE_DT, row.STATUS, row.UPDATE_DT, row.MESSAGE_SEQ, row.MD_RECNUM, row.PHONE, row.OFFER_CODE, row.CHILD_NAME));
                 // Update Contact On Database to Interim status
 
                 //sql = "update RECUR_EMAIL set RECUR_STATUS = 'I' where indiv_id = " + row.INDIV_ID + " AND RECUR_TYPE = '" + row.RECUR_TYPE + "'";
@@ -133,18 +133,17 @@ namespace CharRadiology.Core
         protected static List<DBMessage> MessageList(string Environment, string RecurType)
         {
             var currentSession = sessionFactory.GetCurrentSession();
-            IEnumerable results = currentSession.Connection.Query(@"SELECT TEST_NUMBER, MESSAGE_ID, MESSAGE_SEQ, MESSAGE_TEXT FROM REF_MESSAGES
+            IEnumerable results = currentSession.Connection.Query(@"SELECT MFID, MESSAGE_ID, MESSAGE_SEQ, MESSAGE_TEXT, CHANNEL FROM REF_MESSAGES
                                                                     WHERE ENVIRONMENT = @env AND CHANNEL = @type", new { @env = Environment, @type = RecurType });
 
             List<DBMessage> msgList = new List<DBMessage>();
             foreach (dynamic row in results)
             {
-                msgList.Add(new DBMessage(row.TEST_NUMBER, row.MESSAGE_ID, row.MESSAGE_SEQ, row.MESSAGE_TEXT));
+                msgList.Add(new DBMessage(row.MFID, row.MESSAGE_SEQ, row.MESSAGE_ID, row.CHANNEL,  row.MESSAGE_TEXT));
             }
 
             return msgList;
         }
-
         public void Dispose()
         {
             GC.Collect();
@@ -202,7 +201,7 @@ namespace CharRadiology.Core
                 CustomerObject.ConnectionString = currentSession.Connection.ConnectionString;
                 processGroupId = CreateProcessGroup("RE", "R", "Starting Messenger Process", 0, 0);
                 CreateProcessGroupHistoryEntry(processGroupId, "Start Messenger Process", 0, 1000);
-                ds = CustomerObject.GetProcessEmailElements(bm.WebID);
+                ds = CustomerObject.GetProcessEmailElements(bm.client);
                 dt = ds.Tables[0];
                 if (!IsEmpty(ds))
                 {
@@ -250,10 +249,16 @@ namespace CharRadiology.Core
                 //ds.Tables[0].TableName = "accounts";
                 foreach (DataRow ReturnRow in ds.Tables[2].Rows)
                 {
-                    clientFolderID = ReturnRow["clientFolderId"].ToString();
+                    string strClientFolder = ReturnRow["clientFolderId"].ToString();
+                    if (strClientFolder == acc.client_folder_id)
+                        clientFolderID = strClientFolder;
                 }
                 //Leave previous section commented unless starting new client
-                clientFolderID = "16087";
+                //clientFolderID = "16096";
+                if (string.IsNullOrEmpty(clientFolderID))
+                {
+                    throw new Exception("ProcessMessages Exception: clientfolderid not found: id = " + acc.client_folder_id);
+                }
                 requestURI += clientFolderID + "/";
 
 
@@ -268,7 +273,7 @@ namespace CharRadiology.Core
                 //user.Anniversary_Count = AnniversaryTotal;
                 user.Message_Count = MessageTotal;
                 user.status = "success";
-                user.code = GenericStatusCodes.Success;
+                user.code = MailStatusCodes.Success;
                 user.desc = retValue;
             }
             catch (Exception ex)
@@ -308,113 +313,115 @@ namespace CharRadiology.Core
                 TimeSpan ts;
                 foreach (DBMessage mg in msgList)
                 {
-                //    if (mg.SEQ == sgw)
-                //    {
-                //        MessageID = mg.MESSAGE_ID.ToString();
-                //        break;
-                //    }
+                    //    if (mg.SEQ == sgw)
+                    //    {
+                    //        MessageID = mg.MESSAGE_ID.ToString();
+                    //        break;
+                    //    }
 
-                emailList = CustMessageList(Channel);
-                foreach (MessageModel em in emailList)
-                {
-                    c = new Contact();
-                    c.email = em.EMAIL;
-                    c.status = "normal";
-                    c.firstName = em.FIRST_NAME;
-                    c.lastName = em.LAST_NAME;
-                    c.prefix = "";
-                    c.state = em.STATE;
-                    c.street = em.ADDRESS1;
-                    c.postalCode = em.ZIP;
-                    c.phone = "";
-                    c.city = em.CITY;
-                    c.indiv_id = em.INDIV_ID.ToString();
-                        dateOrNull  = em.PROCEDURE_DATE;
-                        if (dateOrNull != null)
-                        {
-                            newSelectedDate = dateOrNull.Value;
-                        }
-                        ts = dtToday - newSelectedDate;
-                        //c.late = ts.TotalDays.ToString();
-                        c.test1_date = em.TEST1_DATE.ToString("MMMM dd, yyyy");
-                        c.test2_date = em.TEST2_DATE.ToString("MMMM dd, yyyy");
+                    emailList = CustMessageList(Channel);
+                    foreach (MessageModel em in emailList)
+                    {
+                        c = new Contact();
+                        c.email = em.EMAIL;
+                        c.status = "normal";
+                        c.firstName = em.FIRST_NAME;
+                        c.lastName = em.LAST_NAME;
+                        c.prefix = "";
+                        c.state = em.STATE;
+                        c.street = em.ADDRESS1;
+                        c.postalCode = em.ZIP;
+                        c.phone = "";
+                        c.city = em.CITY;
+                        c.indiv_id = em.INDIV_ID.ToString();
+                        //c.offer_code = em.OFFER_CODE;
+                       // c.child_name = em.CHILD_NAME;
+                        //dateOrNull = em.PROCEDURE_DATE;
+                        //if (dateOrNull != null)
+                        //{
+                        //    newSelectedDate = dateOrNull.Value;
+                        //}
+                        //ts = dtToday - newSelectedDate;
+                        ////c.late = ts.TotalDays.ToString();
+                        //c.test1_date = em.TEST1_DATE.ToString("MMMM dd, yyyy");
+                        //c.test2_date = em.TEST2_DATE.ToString("MMMM dd, yyyy");
                         var checkDate = new DateTime(MessageDT.Year, em.MESSAGE_DT.Value.Month, em.MESSAGE_DT.Value.Day);
                         //Changed 5/9/2016 added check for not null email
-                    if (checkDate == MessageDT && em.TEST_NUMBER == mg.TEST_NUMBER && em.MESSAGE_SEQ == mg.MESSAGE_SEQ && !(string.IsNullOrEmpty(em.EMAIL)))
-                    {
-                        string sql = "update CUSTOMER_MESSAGE_DETAIL set STATUS = 'I' where MD_RECNUM = " + em.MD_RECNUM;
-                        ExecuteSQL(sql);
-                        client.EndPoint = requestURI;
-                        retSub = Subscribe(client, acc, c, bm.BNewListID);
-                        MessageTotal++;
-                        blContacts = true;
-                        contactList.Add(c);
+                        if (checkDate == MessageDT && em.MFID == mg.MFID && em.MESSAGE_SEQ == mg.MESSAGE_SEQ && !(string.IsNullOrEmpty(em.EMAIL)))
+                        {
+                            string sql = "update CUSTOMER_MESSAGE_DETAIL set STATUS = 'I' where MD_RECNUM = " + em.MD_RECNUM;
+                            ExecuteSQL(sql);
+                            client.EndPoint = requestURI;
+                            retSub = Subscribe(client, acc, c);
+                            MessageTotal++;
+                            blContacts = true;
+                            contactList.Add(c);
+                        }
                     }
-                }
-                CreateProcessGroupHistoryEntry(processGroupId, "Get MailMessages List", MessageTotal, 1010);
-                if (blContacts)
-                {
+                    CreateProcessGroupHistoryEntry(processGroupId, "Get MailMessages List", MessageTotal, 1010);
+                    if (blContacts)
+                    {
 
-                    // Send Message to List
-                    //int sgw = GetSGW();
-                    string MessageID = mg.MESSAGE_ID.ToString();
-                    client.EndPoint = requestURI;
-                    // Create a timer with a 60 second interval.
-                    bTimer = new System.Timers.Timer(60000);
-                    CreateProcessGroupHistoryEntry(processGroupId, "Emailing To List", MessageTotal, 1020);
-                    string retSend = EmailToList(client, acc, bm.BNewListID, MessageID);
-                    // Get SendID to check if sent
-                    var jsonSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-                    var dict = jsonSerializer.Deserialize<Dictionary<string, dynamic>>(retSend);
-                    sendId = dict["sends"][0]["sendId"];
-                    sendStatus = dict["sends"][0]["status"];
-                    moveAcc = acc;
-                    client.EndPoint = requestURI;
-                    moveRest = client;
-                    moveRest.EndPoint = client.EndPoint + "sends/" + sendId;
-                    // don't move on until the status is released
-                    bTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
-                    bTimer.Interval = 30000;
-                    bTimer.Enabled = true;
-                    Console.Write("Checking Send Status ");
-                    while (!(sendStatus == "released"))
-                    {
-                        if (CheckStatus >= bm.retries)
-                            throw new Exception("MailMessages Process Exception: Exceeded Check Email Status Retry Count of: " + bm.retries.ToString());
-                    }
-                    bTimer.Stop();
-                    // move contacts to list of old email sends
-                    client.EndPoint = requestURI;
-                    List<MessageModel> relist = new List<MessageModel>();
-                    MessageModel re;
-                    foreach (Contact item in contactList)
-                    {
-                        re = new MessageModel();
-                        re.EMAIL = item.email;
-                        relist.Add(re);
-                    }
-                    CreateProcessGroupHistoryEntry(processGroupId, "Copying List To Completed", 0, 1030);
-                    string retList = MoveToList(client, acc, bm.BNewListID, bm.BOldListID, relist);
+                        // Send Message to List
+                        //int sgw = GetSGW();
+                        string MessageID = mg.MESSAGE_ID.ToString();
+                        client.EndPoint = requestURI;
+                        // Create a timer with a 60 second interval.
+                        bTimer = new System.Timers.Timer(60000);
+                        CreateProcessGroupHistoryEntry(processGroupId, "Emailing To List", MessageTotal, 1020);
+                        string retSend = EmailToList(client, acc, MessageID);
+                        // Get SendID to check if sent
+                        var jsonSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+                        var dict = jsonSerializer.Deserialize<Dictionary<string, dynamic>>(retSend);
+                        sendId = dict["sends"][0]["sendId"];
+                        sendStatus = dict["sends"][0]["status"];
+                        moveAcc = acc;
+                        client.EndPoint = requestURI;
+                        moveRest = client;
+                        moveRest.EndPoint = client.EndPoint + "sends/" + sendId;
+                        // don't move on until the status is released
+                        bTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+                        bTimer.Interval = 30000;
+                        bTimer.Enabled = true;
+                        Console.Write("Checking Send Status ");
+                        while (!(sendStatus == "released"))
+                        {
+                            if (CheckStatus >= bm.retries)
+                                throw new Exception("MailMessages Process Exception: Exceeded Check Email Status Retry Count of: " + bm.retries.ToString());
+                        }
+                        bTimer.Stop();
+                        // move contacts to list of old email sends
+                        client.EndPoint = requestURI;
+                        List<MessageModel> relist = new List<MessageModel>();
+                        MessageModel re;
+                        foreach (Contact item in contactList)
+                        {
+                            re = new MessageModel();
+                            re.EMAIL = item.email;
+                            relist.Add(re);
+                        }
+                        CreateProcessGroupHistoryEntry(processGroupId, "Copying List To Completed", 0, 1030);
+                        string retList = MoveToList(client, acc, relist);
                         // Cleanup Contacts On Database that were sent the email and set to processed
                         foreach (MessageModel em in emailList)
                         {
                             var checkDate = new DateTime(MessageDT.Year, em.MESSAGE_DT.Value.Month, em.MESSAGE_DT.Value.Day);
                             //Changed 5/9/2016 added check for not null email
-                            if (checkDate == MessageDT && em.TEST_NUMBER == mg.TEST_NUMBER && em.MESSAGE_SEQ == mg.MESSAGE_SEQ && !(string.IsNullOrEmpty(em.EMAIL)))
+                            if (checkDate == MessageDT && em.MFID == mg.MFID && em.MESSAGE_SEQ == mg.MESSAGE_SEQ && !(string.IsNullOrEmpty(em.EMAIL)))
                             {
                                 string sql = "update CUSTOMER_MESSAGE_DETAIL set STATUS = 'P', ACTUAL_DT = GETDATE() where MD_RECNUM = " + em.MD_RECNUM;
                                 ExecuteSQL(sql);
                             }
 
                         }
-                    //        foreach (Contact co in contactList)
-                    //{
-                    //    string sql = "update CUSTOMER_MESSAGE_DETAIL set STATUS = 'P' where CHANNEL = '" + Channel + "' and STATUS = 'I' and email = '" + co.email + "'";
-                    //}
-                }
+                        //        foreach (Contact co in contactList)
+                        //{
+                        //    string sql = "update CUSTOMER_MESSAGE_DETAIL set STATUS = 'P' where CHANNEL = '" + Channel + "' and STATUS = 'I' and email = '" + co.email + "'";
+                        //}
+                    }
                     blContacts = false;
-              }
-              retdata.code = GenericStatusCodes.Success;
+                }
+                retdata.code = GenericStatusCodes.Success;
             }
             catch (Exception ex)
             {
@@ -455,7 +462,7 @@ namespace CharRadiology.Core
                 throw new Exception("OnTimedEvent Exception: " + ex.ToString());
             }
         }
-        protected static bool Subscribe(RestClient client, Account acc, Contact contact, string List)
+        protected static bool Subscribe(RestClient client, Account acc, Contact contact)
         {
             bool success = false;
             try
@@ -490,12 +497,13 @@ namespace CharRadiology.Core
                     contactId = GetContactId(client, contact.email, acc);
                 }
                 // Update contact
-                //client.EndPoint = InputEndPoint;
-                //bool updatesuccess = UpdateContact(client, contactId, acc, contact);
+                client.EndPoint = InputEndPoint;
+                int intContactId = Convert.ToInt32(contactId);
+                bool updatesuccess = UpdateContact(client, intContactId, acc, contact);
                 // Subscribe to List
                 Subscription sub = new Subscription();
                 sub.contactId = contactId;
-                sub.listId = List;
+                sub.listId = acc.new_list_id;
                 sub.status = "normal";
 
                 uri = new Uri(InputEndPoint + "subscriptions/");
@@ -519,7 +527,7 @@ namespace CharRadiology.Core
             return success;
 
         }
-        protected static string EmailToList(RestClient client, Account acc, string List, string Message)
+        protected static string EmailToList(RestClient client, Account acc, string Message)
         {
             // Anneiversary Message - 2107614
             // Birthday Message - 2107613
@@ -558,7 +566,7 @@ namespace CharRadiology.Core
                 // Send to List
                 Send sub = new Send();
                 sub.messageId = retmsg.messageId;
-                sub.includeListIds = List;
+                sub.includeListIds = acc.new_list_id;
 
                 uri = new Uri(InputEndPoint + "sends/");
                 client.EndPoint = uri.ToString();
@@ -580,7 +588,7 @@ namespace CharRadiology.Core
             return sResponse;
 
         }
-        protected static string MoveToList(RestClient client, Account acc, string NewList, string OldList, List<MessageModel> emailList)
+        protected static string MoveToList(RestClient client, Account acc, List<MessageModel> emailList)
         {
             bool success = false;
             string sResponse = "";
@@ -594,7 +602,7 @@ namespace CharRadiology.Core
                 string InputEndPoint = client.EndPoint;
                 // Move to List
                 NewList sub = new NewList();
-                sub.listId = OldList;
+                sub.listId = acc.old_list_id;
                 sub.status = "normal";
                 foreach (MessageModel em in emailList)
                 {
@@ -603,11 +611,11 @@ namespace CharRadiology.Core
                     if (!(string.IsNullOrEmpty(contactId)))
                     {
                         client.EndPoint = InputEndPoint;
-                        NewSubID = NewList + "_" + contactId;
+                        NewSubID = acc.new_list_id + "_" + contactId;
                         bool IsSubscribed = GetSubscription(client, NewSubID, acc);
                         if (IsSubscribed)
                         {
-                            SubscriptionID = NewList + "_" + contactId;
+                            SubscriptionID = acc.new_list_id + "_" + contactId;
                             client.EndPoint = InputEndPoint;
                             bool retSub = TryMove(client, sub, acc, SubscriptionID);
                         }
@@ -777,7 +785,7 @@ namespace CharRadiology.Core
             }
             return msg;
         }
-        protected static bool UpdateContact(RestClient client, string contactid, Account acc, Contact con)
+        protected static bool UpdateContact(RestClient client, int contactid, Account acc, Contact con)
         {
             bool retBool = false;
             try
@@ -789,7 +797,7 @@ namespace CharRadiology.Core
                 // Contact getcon = new Contact();
                 //getcon = GetContact(client, contactid, acc);
                 // Update Contact
-                ContactTest c = new ContactTest();
+                ContactWithId c = new ContactWithId();
                 //sub.contactId = Convert.ToInt32(contactid);
                 //sub.late = Convert.ToInt32(con.late);
                 //sub.indiv_id = con.indiv_id;
@@ -806,6 +814,8 @@ namespace CharRadiology.Core
                 c.phone = "";
                 c.city = con.city;
                 c.indiv_id = con.indiv_id;
+                //c.offer_code = con.offer_code;
+                //c.child_name = con.child_name;
                 //string json = jsonSerializer.Serialize(c);
                 var s = new JavaScriptSerializer();
                 string jsonClient = s.Serialize(c);
@@ -820,6 +830,7 @@ namespace CharRadiology.Core
                 client.PostData = "";
                 string sResponse = null;
                 Uri uri = new Uri(client.EndPoint + "contacts/" + contactid + "");
+                //Uri uri = new Uri(client.EndPoint + contactid + "");
                 client.Method = HttpVerb.POST;
                 client.ContentType = "application/json";
                 client.EndPoint = uri.ToString();
@@ -839,6 +850,7 @@ namespace CharRadiology.Core
         //public HttpResponseMessage ReturnPureJson(object responseModel)
         //{
         //    HttpResponseMessage response = new HttpResponseMessage();
+        //    string Json = Newtonsoft.Json.JsonConvert.SerializeObject(c);
 
         //    string jsonClient = Json.Encode(responseModel);
         //    byte[] resultBytes = Encoding.UTF8.GetBytes(jsonClient);
@@ -864,426 +876,426 @@ namespace CharRadiology.Core
         }
 
     }
-    public class TextMessenger : Messenger
-    {
-        protected static List<Account> accList = new List<Account>();
-        protected static List<MessageModel> emailList = new List<MessageModel>();
-        protected static List<DBMessage> msgList = new List<DBMessage>();
+    //public class TextMessenger : Messenger
+    //{
+    //    protected static List<Account> accList = new List<Account>();
+    //    protected static List<MessageModel> emailList = new List<MessageModel>();
+    //    protected static List<DBMessage> msgList = new List<DBMessage>();
 
-        public TextMessenger()
-        {
+    //    public TextMessenger()
+    //    {
 
-        }
-        public TextMessenger(ISessionFactory sessionFactory)
-        {
-            Messenger.sessionFactory = sessionFactory;
-        }
-        public override MessageReturn GetMessages(MessageData chkUser, BusinessModel bm)
-        {
-            MessageReturn retdata = new MessageReturn();
-            return retdata;
-        }
-        public override MessageReturn ProcessMessages(MessageData chkUser, BusinessModel bm)
-        {
-            MessageReturn retdata = new MessageReturn();
-            //CallfireClient Client = new CallfireClient("a59672830bd6", "7959b638d85859f5");
-            var client = new RestSharp.RestClient("https://www.callfire.com/api/1.1/rest/");
-            client.Authenticator = new HttpBasicAuthenticator("a59672830bd6", "7959b638d85859f5");
-            var request = new RestRequest("text", Method.POST);
-            EmailReturn user = new EmailReturn();
-            DataSet ds = new DataSet();
-            DataTable dt;
-            string EmailFrom = "";
-            string EmailSubject = "";
-            string EmailMessage = "";
-            string EmailBody = "";
-            string retValue = "";
-            try
-            {
-                var currentSession = sessionFactory.GetCurrentSession();
-                ConsumerClass CustomerObject = new ConsumerClass();
-                CustomerObject.ConnectionString = currentSession.Connection.ConnectionString;
-                processGroupId = CreateProcessGroup("RE", "R", "Starting Text Messenger Process", 0, 0);
-                CreateProcessGroupHistoryEntry(processGroupId, "Start Messenger Process", 0, 1000);
-                ds = CustomerObject.GetProcessEmailElements(bm.WebID);
-                dt = ds.Tables[0];
-                if (!IsEmpty(ds))
-                {
-                    foreach (DataRow row in dt.Rows)
-                    {
-                        EmailFrom = row["ProcessEmailFrom"].ToString();
-                        EmailSubject = row["ProcessEmailSubject"].ToString();
-                        EmailMessage = row["ProcessEmailMessage"].ToString();
-                        //if (string.IsNullOrEmpty(chkUser.message))
-                        //{
-                        //    EmailBody = chkUser.rec_name + "," + "\r\n" + "\r\n" + EmailMessage + "\r\n";
-                        //}
-                        //else
-                        //{
-                        //    EmailBody = chkUser.rec_name + "," + "\r\n" + "\r\n" + chkUser.message + "\r\n";
-                        //}
+    //    }
+    //    public TextMessenger(ISessionFactory sessionFactory)
+    //    {
+    //        Messenger.sessionFactory = sessionFactory;
+    //    }
+    //    public override MessageReturn GetMessages(MessageData chkUser, BusinessModel bm)
+    //    {
+    //        MessageReturn retdata = new MessageReturn();
+    //        return retdata;
+    //    }
+    //    public override MessageReturn ProcessMessages(MessageData chkUser, BusinessModel bm)
+    //    {
+    //        MessageReturn retdata = new MessageReturn();
+    //        //CallfireClient Client = new CallfireClient("a59672830bd6", "7959b638d85859f5");
+    //        var client = new RestSharp.RestClient("https://www.callfire.com/api/1.1/rest/");
+    //        client.Authenticator = new HttpBasicAuthenticator("a59672830bd6", "7959b638d85859f5");
+    //        var request = new RestRequest("text", Method.POST);
+    //        EmailReturn user = new EmailReturn();
+    //        DataSet ds = new DataSet();
+    //        DataTable dt;
+    //        string EmailFrom = "";
+    //        string EmailSubject = "";
+    //        string EmailMessage = "";
+    //        string EmailBody = "";
+    //        string retValue = "";
+    //        try
+    //        {
+    //            var currentSession = sessionFactory.GetCurrentSession();
+    //            ConsumerClass CustomerObject = new ConsumerClass();
+    //            CustomerObject.ConnectionString = currentSession.Connection.ConnectionString;
+    //            processGroupId = CreateProcessGroup("RE", "R", "Starting Text Messenger Process", 0, 0);
+    //            CreateProcessGroupHistoryEntry(processGroupId, "Start Messenger Process", 0, 1000);
+    //            ds = CustomerObject.GetProcessEmailElements(bm.WebID);
+    //            dt = ds.Tables[0];
+    //            if (!IsEmpty(ds))
+    //            {
+    //                foreach (DataRow row in dt.Rows)
+    //                {
+    //                    EmailFrom = row["ProcessEmailFrom"].ToString();
+    //                    EmailSubject = row["ProcessEmailSubject"].ToString();
+    //                    EmailMessage = row["ProcessEmailMessage"].ToString();
+    //                    //if (string.IsNullOrEmpty(chkUser.message))
+    //                    //{
+    //                    //    EmailBody = chkUser.rec_name + "," + "\r\n" + "\r\n" + EmailMessage + "\r\n";
+    //                    //}
+    //                    //else
+    //                    //{
+    //                    //    EmailBody = chkUser.rec_name + "," + "\r\n" + "\r\n" + chkUser.message + "\r\n";
+    //                    //}
 
-                    }
-                    //if (rtnBirthday)
-                    //{
-                    //    client.EndPoint = requestURI;
-                    //    rtnAnniversary = AnniversaryProcess(chkUser, bm, client, acc);
-                    //}
-                    //user.Anniversary_Count = AnniversaryTotal;
-                    user.Message_Count = MessageTotal;
-                    user.status = "success";
-                    user.code = GenericStatusCodes.Success;
-                    user.desc = retValue;
-                }
-                CheckStatus = 0;
-                //Console.WriteLine("Start MailMessages Process at {0}", dt.ToString());
-                DateTime MessageDT = DateTime.Today;
-                string Channel = "SMS";
-                Contact c;
-                TextRecipient tr;
-                var recipients = new List<TextRecipient>();
-                //string requestURI = client.EndPoint;
-                bool retSub = false;
-                bool blContacts = false;
+    //                }
+    //                //if (rtnBirthday)
+    //                //{
+    //                //    client.EndPoint = requestURI;
+    //                //    rtnAnniversary = AnniversaryProcess(chkUser, bm, client, acc);
+    //                //}
+    //                //user.Anniversary_Count = AnniversaryTotal;
+    //                user.Message_Count = MessageTotal;
+    //                user.status = "success";
+    //                user.code = GenericStatusCodes.Success;
+    //                user.desc = retValue;
+    //            }
+    //            CheckStatus = 0;
+    //            //Console.WriteLine("Start MailMessages Process at {0}", dt.ToString());
+    //            DateTime MessageDT = DateTime.Today;
+    //            string Channel = "SMS";
+    //            Contact c;
+    //            TextRecipient tr;
+    //            var recipients = new List<TextRecipient>();
+    //            //string requestURI = client.EndPoint;
+    //            bool retSub = false;
+    //            bool blContacts = false;
 
-                List<Contact> contactList = new List<Contact>();
+    //            List<Contact> contactList = new List<Contact>();
 
-                DBMessage msg = new DBMessage();
-                msgList = MessageList(chkUser.env, Channel);
-                DateTime dtToday = DateTime.Today;
-                DateTime? dateOrNull;
-                DateTime newSelectedDate = DateTime.Today;
-                TimeSpan ts;
-                foreach (DBMessage mg in msgList)
-                {
-                    //    if (mg.SEQ == sgw)
-                    //    {
-                    //        MessageID = mg.MESSAGE_ID.ToString();
-                    //        break;
-                    //    }
-                    recipients = new List<TextRecipient>();
-                    emailList = CustMessageList(Channel);
-                    int msgCount = 0;
-                    string strRecipients = "";
-                    StringBuilder sb = new StringBuilder();
-                    foreach (MessageModel em in emailList)
-                    {
-                        c = new Contact();
-                        c.email = em.EMAIL;
-                        c.status = "normal";
-                        c.firstName = em.FIRST_NAME;
-                        c.lastName = em.LAST_NAME;
-                        c.prefix = "";
-                        c.state = em.STATE;
-                        c.street = em.ADDRESS1;
-                        c.postalCode = em.ZIP;
-                        c.phone = "";
-                        c.city = em.CITY;
-                        c.indiv_id = em.INDIV_ID.ToString();
-                        dateOrNull = em.PROCEDURE_DATE;
-                        if (dateOrNull != null)
-                        {
-                            newSelectedDate = dateOrNull.Value;
-                        }
-                        ts = dtToday - newSelectedDate;
-                        //c.late = ts.TotalDays.ToString();
-                        c.test1_date = em.TEST1_DATE.ToString("MMMM dd, yyyy");
-                        c.test2_date = em.TEST2_DATE.ToString("MMMM dd, yyyy");
-                        var checkDate = new DateTime(MessageDT.Year, em.MESSAGE_DT.Value.Month, em.MESSAGE_DT.Value.Day);
-                        if (checkDate == MessageDT && em.TEST_NUMBER == mg.TEST_NUMBER && em.MESSAGE_SEQ == mg.MESSAGE_SEQ)
-                        {
-                            string sql = "update CUSTOMER_MESSAGE_DETAIL set STATUS = 'I' where MD_RECNUM = " + em.MD_RECNUM;
-                            ExecuteSQL(sql);
-                            //client.EndPoint = requestURI;
-                            //retSub = Subscribe(client, acc, c, bm.BNewListID);
-                            //tr = new TextRecipient { Message = mg.MESSAGE_TEXT, PhoneNumber = em.PHONE };
-                            //recipients.Add(tr);
-                            msgCount++;
-                            if (msgCount == 1)
-                            {
-                                sb.Append(em.PHONE);
-                            }
-                            else
-                            {
-                                sb.Append(", ");
-                                sb.Append(em.PHONE);
-                            }
-                            MessageTotal++;
-                            blContacts = true;
-                            contactList.Add(c);
-                        }
-                    }
-                    // send texts
-                    if (msgCount > 0)
-                    {
-                        //IList<Text> texts = Client.TextsApi.Send(recipients);
-                        request.AddParameter("Type", "TEXT");
-                        request.AddParameter("To", sb.ToString());
-                        request.AddParameter("Message", mg.MESSAGE_TEXT);
-                        var response = client.Execute(request);
-                        string content = response.Content;
-                    }
-                    CreateProcessGroupHistoryEntry(processGroupId, "Get TextMessages List", MessageTotal, 1010);
-                        List<MessageModel> relist = new List<MessageModel>();
-                        MessageModel re;
-                        foreach (Contact item in contactList)
-                        {
-                            re = new MessageModel();
-                            re.EMAIL = item.email;
-                            relist.Add(re);
-                        }
-                        CreateProcessGroupHistoryEntry(processGroupId, "Copying List To Completed", 0, 1030);
-                        //string retList = MoveToList(client, acc, bm.BNewListID, bm.BOldListID, relist);
-                        // Cleanup Contacts On Database that were sent the email and set to processed
-                        foreach (MessageModel em in emailList)
-                        {
-                            var checkDate = new DateTime(MessageDT.Year, em.MESSAGE_DT.Value.Month, em.MESSAGE_DT.Value.Day);
-                            if (checkDate == MessageDT && em.TEST_NUMBER == mg.TEST_NUMBER && em.MESSAGE_SEQ == mg.MESSAGE_SEQ)
-                            {
-                                string sql = "update CUSTOMER_MESSAGE_DETAIL set STATUS = 'P', ACTUAL_DT = GETDATE() where MD_RECNUM = " + em.MD_RECNUM;
-                                ExecuteSQL(sql);
-                            }
+    //            DBMessage msg = new DBMessage();
+    //            msgList = MessageList(chkUser.env, Channel);
+    //            DateTime dtToday = DateTime.Today;
+    //            DateTime? dateOrNull;
+    //            DateTime newSelectedDate = DateTime.Today;
+    //            TimeSpan ts;
+    //            foreach (DBMessage mg in msgList)
+    //            {
+    //                //    if (mg.SEQ == sgw)
+    //                //    {
+    //                //        MessageID = mg.MESSAGE_ID.ToString();
+    //                //        break;
+    //                //    }
+    //                recipients = new List<TextRecipient>();
+    //                emailList = CustMessageList(Channel);
+    //                int msgCount = 0;
+    //                string strRecipients = "";
+    //                StringBuilder sb = new StringBuilder();
+    //                foreach (MessageModel em in emailList)
+    //                {
+    //                    c = new Contact();
+    //                    c.email = em.EMAIL;
+    //                    c.status = "normal";
+    //                    c.firstName = em.FIRST_NAME;
+    //                    c.lastName = em.LAST_NAME;
+    //                    c.prefix = "";
+    //                    c.state = em.STATE;
+    //                    c.street = em.ADDRESS1;
+    //                    c.postalCode = em.ZIP;
+    //                    c.phone = "";
+    //                    c.city = em.CITY;
+    //                    c.indiv_id = em.INDIV_ID.ToString();
+    //                    dateOrNull = em.PROCEDURE_DATE;
+    //                    if (dateOrNull != null)
+    //                    {
+    //                        newSelectedDate = dateOrNull.Value;
+    //                    }
+    //                    ts = dtToday - newSelectedDate;
+    //                    //c.late = ts.TotalDays.ToString();
+    //                    c.test1_date = em.TEST1_DATE.ToString("MMMM dd, yyyy");
+    //                    c.test2_date = em.TEST2_DATE.ToString("MMMM dd, yyyy");
+    //                    var checkDate = new DateTime(MessageDT.Year, em.MESSAGE_DT.Value.Month, em.MESSAGE_DT.Value.Day);
+    //                    if (checkDate == MessageDT && em.TEST_NUMBER == mg.TEST_NUMBER && em.MESSAGE_SEQ == mg.MESSAGE_SEQ)
+    //                    {
+    //                        string sql = "update CUSTOMER_MESSAGE_DETAIL set STATUS = 'I' where MD_RECNUM = " + em.MD_RECNUM;
+    //                        ExecuteSQL(sql);
+    //                        //client.EndPoint = requestURI;
+    //                        //retSub = Subscribe(client, acc, c, bm.BNewListID);
+    //                        //tr = new TextRecipient { Message = mg.MESSAGE_TEXT, PhoneNumber = em.PHONE };
+    //                        //recipients.Add(tr);
+    //                        msgCount++;
+    //                        if (msgCount == 1)
+    //                        {
+    //                            sb.Append(em.PHONE);
+    //                        }
+    //                        else
+    //                        {
+    //                            sb.Append(", ");
+    //                            sb.Append(em.PHONE);
+    //                        }
+    //                        MessageTotal++;
+    //                        blContacts = true;
+    //                        contactList.Add(c);
+    //                    }
+    //                }
+    //                // send texts
+    //                if (msgCount > 0)
+    //                {
+    //                    //IList<Text> texts = Client.TextsApi.Send(recipients);
+    //                    request.AddParameter("Type", "TEXT");
+    //                    request.AddParameter("To", sb.ToString());
+    //                    request.AddParameter("Message", mg.MESSAGE_TEXT);
+    //                    var response = client.Execute(request);
+    //                    string content = response.Content;
+    //                }
+    //                CreateProcessGroupHistoryEntry(processGroupId, "Get TextMessages List", MessageTotal, 1010);
+    //                    List<MessageModel> relist = new List<MessageModel>();
+    //                    MessageModel re;
+    //                    foreach (Contact item in contactList)
+    //                    {
+    //                        re = new MessageModel();
+    //                        re.EMAIL = item.email;
+    //                        relist.Add(re);
+    //                    }
+    //                    CreateProcessGroupHistoryEntry(processGroupId, "Copying List To Completed", 0, 1030);
+    //                    //string retList = MoveToList(client, acc, bm.BNewListID, bm.BOldListID, relist);
+    //                    // Cleanup Contacts On Database that were sent the email and set to processed
+    //                    foreach (MessageModel em in emailList)
+    //                    {
+    //                        var checkDate = new DateTime(MessageDT.Year, em.MESSAGE_DT.Value.Month, em.MESSAGE_DT.Value.Day);
+    //                        if (checkDate == MessageDT && em.TEST_NUMBER == mg.TEST_NUMBER && em.MESSAGE_SEQ == mg.MESSAGE_SEQ)
+    //                        {
+    //                            string sql = "update CUSTOMER_MESSAGE_DETAIL set STATUS = 'P', ACTUAL_DT = GETDATE() where MD_RECNUM = " + em.MD_RECNUM;
+    //                            ExecuteSQL(sql);
+    //                        }
 
-                        }
-                        //        foreach (Contact co in contactList)
-                        //{
-                        //    string sql = "update CUSTOMER_MESSAGE_DETAIL set STATUS = 'P' where CHANNEL = '" + Channel + "' and STATUS = 'I' and email = '" + co.email + "'";
-                        //}
-                    }
-                    blContacts = false;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("ProcessMessages Exception: " + ex.ToString());
-            }
-            EndProcessGroup(processGroupId, "Messenger Process Successful", "C");
-            CreateProcessGroupHistoryEntry(processGroupId, "Messenger Process Completed", 0, 1100);
-            return retdata;
-            return retdata;
-        }
-        protected static MessageReturn ProcessTextMessages(MessageData chkUser, BusinessModel bm, RestClient client, Account acc)
-        {
-            MessageReturn retdata = new MessageReturn();
-            return retdata;
-        }
-    }
-    public class IVRMessenger : Messenger
-    {
-        protected static List<Account> accList = new List<Account>();
-        protected static List<MessageModel> emailList = new List<MessageModel>();
-        protected static List<DBMessage> msgList = new List<DBMessage>();
+    //                    }
+    //                    //        foreach (Contact co in contactList)
+    //                    //{
+    //                    //    string sql = "update CUSTOMER_MESSAGE_DETAIL set STATUS = 'P' where CHANNEL = '" + Channel + "' and STATUS = 'I' and email = '" + co.email + "'";
+    //                    //}
+    //                }
+    //                blContacts = false;
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            throw new Exception("ProcessMessages Exception: " + ex.ToString());
+    //        }
+    //        EndProcessGroup(processGroupId, "Messenger Process Successful", "C");
+    //        CreateProcessGroupHistoryEntry(processGroupId, "Messenger Process Completed", 0, 1100);
+    //        return retdata;
+    //        return retdata;
+    //    }
+    //    protected static MessageReturn ProcessTextMessages(MessageData chkUser, BusinessModel bm, RestClient client, Account acc)
+    //    {
+    //        MessageReturn retdata = new MessageReturn();
+    //        return retdata;
+    //    }
+    //}
+    //public class IVRMessenger : Messenger
+    //{
+    //    protected static List<Account> accList = new List<Account>();
+    //    protected static List<MessageModel> emailList = new List<MessageModel>();
+    //    protected static List<DBMessage> msgList = new List<DBMessage>();
 
-        public IVRMessenger()
-        {
+    //    public IVRMessenger()
+    //    {
 
-        }
-        public IVRMessenger(ISessionFactory sessionFactory)
-        {
-            Messenger.sessionFactory = sessionFactory;
-        }
-        public override MessageReturn GetMessages(MessageData chkUser, BusinessModel bm)
-        {
-            MessageReturn retdata = new MessageReturn();
-            return retdata;
-        }
-        public override MessageReturn ProcessMessages(MessageData chkUser, BusinessModel bm)
-        {
-            MessageReturn retdata = new MessageReturn();
-            //CallfireClient Client = new CallfireClient("a59672830bd6", "7959b638d85859f5");
-            //var client = new RestSharp.RestClient("https://www.callfire.com/api/1.1/rest/");
-            //client.Authenticator = new HttpBasicAuthenticator("a59672830bd6", "7959b638d85859f5");
-            //var request = new RestRequest("text", Method.POST);
-            EmailReturn user = new EmailReturn();
-            var client = new CallFire_csharp_sdk.API.CallfireClient("a59672830bd6", "7959b638d85859f5", CallfireClients.Rest);
-            var callClient = client.Call;
-            var cfBroadcastConfig = new CfIvrBroadcastConfig();
-            cfBroadcastConfig.FromNumber = "13367939605";
+    //    }
+    //    public IVRMessenger(ISessionFactory sessionFactory)
+    //    {
+    //        Messenger.sessionFactory = sessionFactory;
+    //    }
+    //    public override MessageReturn GetMessages(MessageData chkUser, BusinessModel bm)
+    //    {
+    //        MessageReturn retdata = new MessageReturn();
+    //        return retdata;
+    //    }
+    //    public override MessageReturn ProcessMessages(MessageData chkUser, BusinessModel bm)
+    //    {
+    //        MessageReturn retdata = new MessageReturn();
+    //        //CallfireClient Client = new CallfireClient("a59672830bd6", "7959b638d85859f5");
+    //        //var client = new RestSharp.RestClient("https://www.callfire.com/api/1.1/rest/");
+    //        //client.Authenticator = new HttpBasicAuthenticator("a59672830bd6", "7959b638d85859f5");
+    //        //var request = new RestRequest("text", Method.POST);
+    //        EmailReturn user = new EmailReturn();
+    //        var client = new CallFire_csharp_sdk.API.CallfireClient("a59672830bd6", "7959b638d85859f5", CallfireClients.Rest);
+    //        var callClient = client.Call;
+    //        var cfBroadcastConfig = new CfIvrBroadcastConfig();
+    //        cfBroadcastConfig.FromNumber = "13367939605";
 
-            DataSet ds = new DataSet();
-            DataTable dt;
-            string EmailFrom = "";
-            string EmailSubject = "";
-            string EmailMessage = "";
-            string EmailBody = "";
-            string retValue = "";
-            try
-            {
-                var currentSession = sessionFactory.GetCurrentSession();
-                ConsumerClass CustomerObject = new ConsumerClass();
-                CustomerObject.ConnectionString = currentSession.Connection.ConnectionString;
-                processGroupId = CreateProcessGroup("RE", "R", "Starting IVR Messenger Process", 0, 0);
-                CreateProcessGroupHistoryEntry(processGroupId, "Start Messenger Process", 0, 1000);
-                ds = CustomerObject.GetProcessEmailElements(bm.WebID);
-                dt = ds.Tables[0];
-                if (!IsEmpty(ds))
-                {
-                    foreach (DataRow row in dt.Rows)
-                    {
-                        EmailFrom = row["ProcessEmailFrom"].ToString();
-                        EmailSubject = row["ProcessEmailSubject"].ToString();
-                        EmailMessage = row["ProcessEmailMessage"].ToString();
-                        //if (string.IsNullOrEmpty(chkUser.message))
-                        //{
-                        //    EmailBody = chkUser.rec_name + "," + "\r\n" + "\r\n" + EmailMessage + "\r\n";
-                        //}
-                        //else
-                        //{
-                        //    EmailBody = chkUser.rec_name + "," + "\r\n" + "\r\n" + chkUser.message + "\r\n";
-                        //}
+    //        DataSet ds = new DataSet();
+    //        DataTable dt;
+    //        string EmailFrom = "";
+    //        string EmailSubject = "";
+    //        string EmailMessage = "";
+    //        string EmailBody = "";
+    //        string retValue = "";
+    //        try
+    //        {
+    //            var currentSession = sessionFactory.GetCurrentSession();
+    //            ConsumerClass CustomerObject = new ConsumerClass();
+    //            CustomerObject.ConnectionString = currentSession.Connection.ConnectionString;
+    //            processGroupId = CreateProcessGroup("RE", "R", "Starting IVR Messenger Process", 0, 0);
+    //            CreateProcessGroupHistoryEntry(processGroupId, "Start Messenger Process", 0, 1000);
+    //            ds = CustomerObject.GetProcessEmailElements(bm.WebID);
+    //            dt = ds.Tables[0];
+    //            if (!IsEmpty(ds))
+    //            {
+    //                foreach (DataRow row in dt.Rows)
+    //                {
+    //                    EmailFrom = row["ProcessEmailFrom"].ToString();
+    //                    EmailSubject = row["ProcessEmailSubject"].ToString();
+    //                    EmailMessage = row["ProcessEmailMessage"].ToString();
+    //                    //if (string.IsNullOrEmpty(chkUser.message))
+    //                    //{
+    //                    //    EmailBody = chkUser.rec_name + "," + "\r\n" + "\r\n" + EmailMessage + "\r\n";
+    //                    //}
+    //                    //else
+    //                    //{
+    //                    //    EmailBody = chkUser.rec_name + "," + "\r\n" + "\r\n" + chkUser.message + "\r\n";
+    //                    //}
 
-                    }
-                    //if (rtnBirthday)
-                    //{
-                    //    client.EndPoint = requestURI;
-                    //    rtnAnniversary = AnniversaryProcess(chkUser, bm, client, acc);
-                    //}
-                    //user.Anniversary_Count = AnniversaryTotal;
-                    user.Message_Count = MessageTotal;
-                    user.status = "success";
-                    user.code = GenericStatusCodes.Success;
-                    user.desc = retValue;
-                }
-                CheckStatus = 0;
-                //Console.WriteLine("Start MailMessages Process at {0}", dt.ToString());
-                DateTime MessageDT = DateTime.Today;
-                string Channel = "IVR";
-                Contact c;
-                TextRecipient tr;
-                var recipients = new List<TextRecipient>();
-                //string requestURI = client.EndPoint;
-                bool retSub = false;
-                bool blContacts = false;
+    //                }
+    //                //if (rtnBirthday)
+    //                //{
+    //                //    client.EndPoint = requestURI;
+    //                //    rtnAnniversary = AnniversaryProcess(chkUser, bm, client, acc);
+    //                //}
+    //                //user.Anniversary_Count = AnniversaryTotal;
+    //                user.Message_Count = MessageTotal;
+    //                user.status = "success";
+    //                user.code = GenericStatusCodes.Success;
+    //                user.desc = retValue;
+    //            }
+    //            CheckStatus = 0;
+    //            //Console.WriteLine("Start MailMessages Process at {0}", dt.ToString());
+    //            DateTime MessageDT = DateTime.Today;
+    //            string Channel = "IVR";
+    //            Contact c;
+    //            TextRecipient tr;
+    //            var recipients = new List<TextRecipient>();
+    //            //string requestURI = client.EndPoint;
+    //            bool retSub = false;
+    //            bool blContacts = false;
 
-                List<Contact> contactList = new List<Contact>();
+    //            List<Contact> contactList = new List<Contact>();
 
-                DBMessage msg = new DBMessage();
-                msgList = MessageList(chkUser.env, Channel);
-                DateTime dtToday = DateTime.Today;
-                DateTime? dateOrNull;
-                DateTime newSelectedDate = DateTime.Today;
-                TimeSpan ts;
-                foreach (DBMessage mg in msgList)
-                {
-                    //    if (mg.SEQ == sgw)
-                    //    {
-                    //        MessageID = mg.MESSAGE_ID.ToString();
-                    //        break;
-                    //    }
-                    recipients = new List<TextRecipient>();
-                    emailList = CustMessageList(Channel);
-                    int msgCount = 0;
-                    string strRecipients = "";
-                    StringBuilder sb = new StringBuilder();
-                    foreach (MessageModel em in emailList)
-                    {
-                        c = new Contact();
-                        c.email = em.EMAIL;
-                        c.status = "normal";
-                        c.firstName = em.FIRST_NAME;
-                        c.lastName = em.LAST_NAME;
-                        c.prefix = "";
-                        c.state = em.STATE;
-                        c.street = em.ADDRESS1;
-                        c.postalCode = em.ZIP;
-                        c.phone = "";
-                        c.city = em.CITY;
-                        c.indiv_id = em.INDIV_ID.ToString();
-                        dateOrNull = em.PROCEDURE_DATE;
-                        if (dateOrNull != null)
-                        {
-                            newSelectedDate = dateOrNull.Value;
-                        }
-                        ts = dtToday - newSelectedDate;
-                        //c.late = ts.TotalDays.ToString();
-                        c.test1_date = em.TEST1_DATE.ToString("MMMM dd, yyyy");
-                        c.test2_date = em.TEST2_DATE.ToString("MMMM dd, yyyy");
-                        var checkDate = new DateTime(MessageDT.Year, em.MESSAGE_DT.Value.Month, em.MESSAGE_DT.Value.Day);
-                        if (checkDate == MessageDT && em.TEST_NUMBER == mg.TEST_NUMBER && em.MESSAGE_SEQ == mg.MESSAGE_SEQ)
-                        {
-                            string sql = "update CUSTOMER_MESSAGE_DETAIL set STATUS = 'I' where MD_RECNUM = " + em.MD_RECNUM;
-                            ExecuteSQL(sql);
-                            //client.EndPoint = requestURI;
-                            //retSub = Subscribe(client, acc, c, bm.BNewListID);
-                            //tr = new TextRecipient { Message = mg.MESSAGE_TEXT, PhoneNumber = em.PHONE };
-                            //recipients.Add(tr);
-                            msgCount++;
-                            if (msgCount == 1)
-                            {
-                                sb.Append(em.PHONE);
-                            }
-                            else
-                            {
-                                sb.Append(", ");
-                                sb.Append(em.PHONE);
-                            }
-                            MessageTotal++;
-                            blContacts = true;
-                            contactList.Add(c);
-                        }
-                    }
-                    // send texts
-                    if (msgCount > 0)
-                    {
-                        //IList<Text> texts = Client.TextsApi.Send(recipients);
+    //            DBMessage msg = new DBMessage();
+    //            msgList = MessageList(chkUser.env, Channel);
+    //            DateTime dtToday = DateTime.Today;
+    //            DateTime? dateOrNull;
+    //            DateTime newSelectedDate = DateTime.Today;
+    //            TimeSpan ts;
+    //            foreach (DBMessage mg in msgList)
+    //            {
+    //                //    if (mg.SEQ == sgw)
+    //                //    {
+    //                //        MessageID = mg.MESSAGE_ID.ToString();
+    //                //        break;
+    //                //    }
+    //                recipients = new List<TextRecipient>();
+    //                emailList = CustMessageList(Channel);
+    //                int msgCount = 0;
+    //                string strRecipients = "";
+    //                StringBuilder sb = new StringBuilder();
+    //                foreach (MessageModel em in emailList)
+    //                {
+    //                    c = new Contact();
+    //                    c.email = em.EMAIL;
+    //                    c.status = "normal";
+    //                    c.firstName = em.FIRST_NAME;
+    //                    c.lastName = em.LAST_NAME;
+    //                    c.prefix = "";
+    //                    c.state = em.STATE;
+    //                    c.street = em.ADDRESS1;
+    //                    c.postalCode = em.ZIP;
+    //                    c.phone = "";
+    //                    c.city = em.CITY;
+    //                    c.indiv_id = em.INDIV_ID.ToString();
+    //                    dateOrNull = em.PROCEDURE_DATE;
+    //                    if (dateOrNull != null)
+    //                    {
+    //                        newSelectedDate = dateOrNull.Value;
+    //                    }
+    //                    ts = dtToday - newSelectedDate;
+    //                    //c.late = ts.TotalDays.ToString();
+    //                    c.test1_date = em.TEST1_DATE.ToString("MMMM dd, yyyy");
+    //                    c.test2_date = em.TEST2_DATE.ToString("MMMM dd, yyyy");
+    //                    var checkDate = new DateTime(MessageDT.Year, em.MESSAGE_DT.Value.Month, em.MESSAGE_DT.Value.Day);
+    //                    if (checkDate == MessageDT && em.TEST_NUMBER == mg.TEST_NUMBER && em.MESSAGE_SEQ == mg.MESSAGE_SEQ)
+    //                    {
+    //                        string sql = "update CUSTOMER_MESSAGE_DETAIL set STATUS = 'I' where MD_RECNUM = " + em.MD_RECNUM;
+    //                        ExecuteSQL(sql);
+    //                        //client.EndPoint = requestURI;
+    //                        //retSub = Subscribe(client, acc, c, bm.BNewListID);
+    //                        //tr = new TextRecipient { Message = mg.MESSAGE_TEXT, PhoneNumber = em.PHONE };
+    //                        //recipients.Add(tr);
+    //                        msgCount++;
+    //                        if (msgCount == 1)
+    //                        {
+    //                            sb.Append(em.PHONE);
+    //                        }
+    //                        else
+    //                        {
+    //                            sb.Append(", ");
+    //                            sb.Append(em.PHONE);
+    //                        }
+    //                        MessageTotal++;
+    //                        blContacts = true;
+    //                        contactList.Add(c);
+    //                    }
+    //                }
+    //                // send texts
+    //                if (msgCount > 0)
+    //                {
+    //                    //IList<Text> texts = Client.TextsApi.Send(recipients);
 
-                        //request.AddParameter("Type", "TEXT");
-                        //request.AddParameter("To", sb.ToString());
-                        //request.AddParameter("Message", mg.MESSAGE_TEXT);
-                        //var response = client.Execute(request);
-                        //string content = response.Content;
+    //                    //request.AddParameter("Type", "TEXT");
+    //                    //request.AddParameter("To", sb.ToString());
+    //                    //request.AddParameter("Message", mg.MESSAGE_TEXT);
+    //                    //var response = client.Execute(request);
+    //                    //string content = response.Content;
 
-                        cfBroadcastConfig.DialplanXml = mg.MESSAGE_TEXT;
-                        var toNumber = new CfToNumber();
-                        toNumber.Value = sb.ToString();
-                        var sendCall = new CfSendCall();
-                        sendCall.Type = CfBroadcastType.Ivr;
-                        sendCall.ToNumber = new[] { toNumber };
-                        sendCall.Item = cfBroadcastConfig;
-                        var id = callClient.SendCall(sendCall);
+    //                    cfBroadcastConfig.DialplanXml = mg.MESSAGE_TEXT;
+    //                    var toNumber = new CfToNumber();
+    //                    toNumber.Value = sb.ToString();
+    //                    var sendCall = new CfSendCall();
+    //                    sendCall.Type = CfBroadcastType.Ivr;
+    //                    sendCall.ToNumber = new[] { toNumber };
+    //                    sendCall.Item = cfBroadcastConfig;
+    //                    var id = callClient.SendCall(sendCall);
 
-                    }
-                    CreateProcessGroupHistoryEntry(processGroupId, "Get IVRMessages List", MessageTotal, 1010);
-                    List<MessageModel> relist = new List<MessageModel>();
-                    MessageModel re;
-                    foreach (Contact item in contactList)
-                    {
-                        re = new MessageModel();
-                        re.EMAIL = item.email;
-                        relist.Add(re);
-                    }
-                    CreateProcessGroupHistoryEntry(processGroupId, "Copying List To Completed", 0, 1030);
-                    //string retList = MoveToList(client, acc, bm.BNewListID, bm.BOldListID, relist);
-                    // Cleanup Contacts On Database that were sent the email and set to processed
-                    foreach (MessageModel em in emailList)
-                    {
-                        var checkDate = new DateTime(MessageDT.Year, em.MESSAGE_DT.Value.Month, em.MESSAGE_DT.Value.Day);
-                        if (checkDate == MessageDT && em.TEST_NUMBER == mg.TEST_NUMBER && em.MESSAGE_SEQ == mg.MESSAGE_SEQ)
-                        {
-                            string sql = "update CUSTOMER_MESSAGE_DETAIL set STATUS = 'P', ACTUAL_DT = GETDATE() where MD_RECNUM = " + em.MD_RECNUM;
-                            ExecuteSQL(sql);
-                        }
+    //                }
+    //                CreateProcessGroupHistoryEntry(processGroupId, "Get IVRMessages List", MessageTotal, 1010);
+    //                List<MessageModel> relist = new List<MessageModel>();
+    //                MessageModel re;
+    //                foreach (Contact item in contactList)
+    //                {
+    //                    re = new MessageModel();
+    //                    re.EMAIL = item.email;
+    //                    relist.Add(re);
+    //                }
+    //                CreateProcessGroupHistoryEntry(processGroupId, "Copying List To Completed", 0, 1030);
+    //                //string retList = MoveToList(client, acc, bm.BNewListID, bm.BOldListID, relist);
+    //                // Cleanup Contacts On Database that were sent the email and set to processed
+    //                foreach (MessageModel em in emailList)
+    //                {
+    //                    var checkDate = new DateTime(MessageDT.Year, em.MESSAGE_DT.Value.Month, em.MESSAGE_DT.Value.Day);
+    //                    if (checkDate == MessageDT && em.TEST_NUMBER == mg.TEST_NUMBER && em.MESSAGE_SEQ == mg.MESSAGE_SEQ)
+    //                    {
+    //                        string sql = "update CUSTOMER_MESSAGE_DETAIL set STATUS = 'P', ACTUAL_DT = GETDATE() where MD_RECNUM = " + em.MD_RECNUM;
+    //                        ExecuteSQL(sql);
+    //                    }
 
-                    }
-                    //        foreach (Contact co in contactList)
-                    //{
-                    //    string sql = "update CUSTOMER_MESSAGE_DETAIL set STATUS = 'P' where CHANNEL = '" + Channel + "' and STATUS = 'I' and email = '" + co.email + "'";
-                    //}
-                }
-                blContacts = false;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("ProcessMessages Exception: " + ex.ToString());
-            }
-            EndProcessGroup(processGroupId, "Messenger Process Successful", "C");
-            CreateProcessGroupHistoryEntry(processGroupId, "Messenger Process Completed", 0, 1100);
-            return retdata;
-            return retdata;
-        }
-        protected static MessageReturn ProcessTextMessages(MessageData chkUser, BusinessModel bm, RestClient client, Account acc)
-        {
-            MessageReturn retdata = new MessageReturn();
-            return retdata;
-        }
-    }
+    //                }
+    //                //        foreach (Contact co in contactList)
+    //                //{
+    //                //    string sql = "update CUSTOMER_MESSAGE_DETAIL set STATUS = 'P' where CHANNEL = '" + Channel + "' and STATUS = 'I' and email = '" + co.email + "'";
+    //                //}
+    //            }
+    //            blContacts = false;
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            throw new Exception("ProcessMessages Exception: " + ex.ToString());
+    //        }
+    //        EndProcessGroup(processGroupId, "Messenger Process Successful", "C");
+    //        CreateProcessGroupHistoryEntry(processGroupId, "Messenger Process Completed", 0, 1100);
+    //        return retdata;
+    //        return retdata;
+    //    }
+    //    protected static MessageReturn ProcessTextMessages(MessageData chkUser, BusinessModel bm, RestClient client, Account acc)
+    //    {
+    //        MessageReturn retdata = new MessageReturn();
+    //        return retdata;
+    //    }
+    //}
 }

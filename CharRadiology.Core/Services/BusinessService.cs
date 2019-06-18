@@ -81,17 +81,17 @@ namespace CharRadiology.Core.Services
             // chkUser.env = "QA";
             bool blExpand = false;
             MessageReturn user = new MessageReturn();
-            Expander exp = new Expander(sessionFactory);
+            //Expander exp = new Expander(sessionFactory);
             MailMessenger mm = new MailMessenger(sessionFactory);
-            TextMessenger tm = new TextMessenger(sessionFactory);
-            IVRMessenger im = new IVRMessenger(sessionFactory);
+            //TextMessenger tm = new TextMessenger(sessionFactory);
+            //IVRMessenger im = new IVRMessenger(sessionFactory);
             try
             {
                 user = LogClientResults(bm);
-                blExpand = exp.ExpandCommunication();
+                //blExpand = exp.ExpandCommunication();
                 user = mm.ProcessMessages(chkUser, bm);
-                user = tm.ProcessMessages(chkUser, bm);
-                user = im.ProcessMessages(chkUser, bm);
+                //user = tm.ProcessMessages(chkUser, bm);
+                //user = im.ProcessMessages(chkUser, bm);
             }
             catch (Exception ex)
             {

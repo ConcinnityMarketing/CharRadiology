@@ -83,5 +83,12 @@
         SurveyExists = 2,
         Other = 3
     }
+    public enum MailStatusCodes
+    {
+        Success = 1,
+        Bounce = 2,
+        InvalidSecurityCode = 3,
+        Other = 4
+    }
 
 }
