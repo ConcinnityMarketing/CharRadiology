@@ -465,28 +465,37 @@ namespace CharRadiology.Core.Models
     }
     public class Communication
     {
-        public int cc_id { get; set; }
+        public int cc_recnum { get; set; }
         public int indiv_id { get; set; }
+        public string channel { get; set; }
         public string mfid { get; set; }
+        public string flow_id { get; set; }
+        public DateTime rec_create_date { get; set; }
+        public string cc_status { get; set; }
+        public DateTime activate_date { get; set; }
+        public DateTime actual_send_date { get; set; }
+        public string delivery_flag { get; set; }
         public string email { get; set; }
         public string phone { get; set; }
-        public DateTime activate_dt { get; set; }
-        public string status { get; set; }
-        public string offer_code { get; set; }
-        public string offer_description { get; set; }
+    
         public Communication()
         {
 
         }
-        public Communication(int ecc_id, int eindiv_id, string emfid, string eemail, string ephone, DateTime eactivate_dt, string estatus)
+        public Communication(int ecc_recnum, int eindiv_id, string echannel, string emfid, string eflow_id, DateTime erec_create_date, string ecc_status, DateTime eactivate_date, DateTime eactual_send_date, string edelivery_flag, string eemail, string ephone)
         {
-            this.cc_id = ecc_id;
+            this.cc_recnum = ecc_recnum;
             this.indiv_id = eindiv_id;
+            this.channel = echannel;
             this.mfid = emfid;
+            this.flow_id = eflow_id;
+            this.rec_create_date = erec_create_date;
+            this.cc_status = ecc_status;
+            this.activate_date = eactivate_date;
+            this.actual_send_date = eactual_send_date;
+            this.delivery_flag = edelivery_flag;
             this.email = eemail;
             this.phone = ephone;
-            this.activate_dt = eactivate_dt;
-            this.status = estatus;
         }
 
     }

@@ -271,6 +271,8 @@ namespace CharRadiology.Core
                 //    rtnAnniversary = AnniversaryProcess(chkUser, bm, client, acc);
                 //}
                 //user.Anniversary_Count = AnniversaryTotal;
+                string sql = "update CUSTOMER_COMMUNICATIONS set CC_STATUS = 'COMPLETE' where CC_STATUS = 'INPROCESS'";
+                ExecuteSQL(sql);
                 user.Message_Count = MessageTotal;
                 user.status = "success";
                 user.code = MailStatusCodes.Success;
@@ -280,6 +282,7 @@ namespace CharRadiology.Core
             {
                 throw new Exception("ProcessMessages Exception: " + ex.ToString());
             }
+
             EndProcessGroup(processGroupId, "Messenger Process Successful", "C");
             CreateProcessGroupHistoryEntry(processGroupId, "Messenger Process Completed", 0, 1100);
             return retdata;
