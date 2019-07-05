@@ -147,7 +147,8 @@ namespace CharRadiology
             //bm.ConfirmSite = ConfigurationManager.AppSettings["confirmSite"].ToString();
             bm.SMTPHost = ConfigurationManager.AppSettings["SMTPHostName"].ToString();
             bm.retries = Convert.ToInt32(ConfigurationManager.AppSettings["Retries"].ToString());
-            bm.WebID = "CHAR";
+            bm.client = "CRAD";
+            bm.WebID = "CRAD";
             if (chkUser.env == "DEVR")
             {
                 bm.IContactID = ConfigurationManager.AppSettings["IContactSBID"].ToString();

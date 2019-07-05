@@ -482,7 +482,7 @@ namespace CharRadiology.Core.Models
         {
 
         }
-        public Communication(int ecc_recnum, int eindiv_id, string echannel, string emfid, string eflow_id, DateTime erec_create_date, string ecc_status, DateTime eactivate_date, DateTime eactual_send_date, string edelivery_flag, string eemail, string ephone)
+        public Communication(int ecc_recnum, int eindiv_id, string echannel, string emfid, string eflow_id, DateTime erec_create_date, string ecc_status, DateTime eactivate_date, string eemail, string ephone)
         {
             this.cc_recnum = ecc_recnum;
             this.indiv_id = eindiv_id;
@@ -492,8 +492,8 @@ namespace CharRadiology.Core.Models
             this.rec_create_date = erec_create_date;
             this.cc_status = ecc_status;
             this.activate_date = eactivate_date;
-            this.actual_send_date = eactual_send_date;
-            this.delivery_flag = edelivery_flag;
+            //this.actual_send_date = eactual_send_date;
+            //this.delivery_flag = edelivery_flag;
             this.email = eemail;
             this.phone = ephone;
         }

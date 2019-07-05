@@ -60,7 +60,7 @@ namespace CharRadiology.Core
                 //dtToday = dtToday.AddDays(-1);
                 foreach (Communication com in comList)
                 {
-                        sql = "update CUSTOMER_COMMUNICATIONS set CC_STATUS = 'INPROCESS' where CC_ID = " + com.cc_recnum;
+                        sql = "update CUSTOMER_COMMUNICATIONS set CC_STATUS = 'INPROCESS' where CC_RECNUM = " + com.cc_recnum;
                         ExecuteSQL(sql);
                     mfList = MessageFlowList(com.mfid);
 
@@ -120,13 +120,13 @@ namespace CharRadiology.Core
         {
             var currentSession = sessionFactory.GetCurrentSession();
             DateTime dtToday = DateTime.Today;
-            IEnumerable results = currentSession.Connection.Query(@"SELECT  [CC_RECNUM] ,[INDIV_ID] ,[CHANNEL] ,[MFID] ,[FLOW_ID] ,[REC_CREATE_DATE] ,[CC_STATUS] ,[ACTIVATE_DATE],[ACTUAL_SEND_DATE] ,[DELIVERY_FLAG], EMAIL, PHONE
-                                                                     FROM CUSTOMER_COMMUNICATIONS CC INNER JOIN CUSTOMER_PROFILE CP WHERE CP.INDIV_ID = CC.INDIV_ID
+            IEnumerable results = currentSession.Connection.Query(@"SELECT  [CC_RECNUM] ,CC.INDIV_ID ,[CHANNEL] ,[MFID] ,[FLOW_ID] ,[REC_CREATE_DATE] ,[CC_STATUS] ,[ACTIVATE_DATE], EMAIL, PHONE
+                                                                     FROM CUSTOMER_COMMUNICATIONS CC INNER JOIN CUSTOMER_PROFILE CP ON CP.INDIV_ID = CC.INDIV_ID
                                                                     WHERE ( CC_STATUS = 'ACTIVE' AND ACTIVATE_DATE = '" +  dtToday + "')");
             List<Communication> comList = new List<Communication>();
             foreach (dynamic row in results)
             {
-                comList.Add(new Communication(row.CC_RECNUM, row.INDIV_ID, row.CHANNEL, row.MFID, row.FLOW_ID, row.REC_CREATE_DATE, row.CC_STATUS, row.ACTIVATE_DT, row.ACTUAL_SEND_DATE, row.DELIVERY_FLAG, row.EMAIL, row.PHONE));
+                comList.Add(new Communication(row.CC_RECNUM, row.INDIV_ID, row.CHANNEL, row.MFID, row.FLOW_ID, row.REC_CREATE_DATE, row.CC_STATUS, row.ACTIVATE_DATE, row.EMAIL, row.PHONE));
             }
             return comList;
         }
