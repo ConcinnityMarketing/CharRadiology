@@ -28,19 +28,25 @@ namespace CharRadiology
         //[OperationContract]
         //string MessageProcess(string chkUser);
 
-        [WebInvoke(Method = "POST", UriTemplate = "MessageProcessor", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json)]
+        [WebInvoke(Method = "POST", UriTemplate = "MessageProcess", ResponseFormat = WebMessageFormat.Json,
+         BodyStyle = WebMessageBodyStyle.Wrapped, RequestFormat = WebMessageFormat.Json)]
         [OperationContract]
-        MessageReturn MessageProcessor(MessageData chkUser);
+        MessageReturn MessageProcess(MessageData chkUser);
 
-        [WebGet(UriTemplate = "StateList", ResponseFormat = WebMessageFormat.Json)]
+        [WebInvoke(Method = "POST", UriTemplate = "StateList", ResponseFormat = WebMessageFormat.Json,
+        BodyStyle = WebMessageBodyStyle.Wrapped, RequestFormat = WebMessageFormat.Json)]
         [OperationContract]
         List<State> StateList(GenericData Search);
 
-        [WebGet(UriTemplate = "GetUserPinEntry", ResponseFormat = WebMessageFormat.Json)]
+        //[WebGet(UriTemplate = "GetUserPinEntry", ResponseFormat = WebMessageFormat.Json)]
+        [WebInvoke(Method = "POST", UriTemplate = "GetUserPinEntry", ResponseFormat = WebMessageFormat.Json,
+        BodyStyle = WebMessageBodyStyle.Wrapped, RequestFormat = WebMessageFormat.Json)]
         [OperationContract]
         PinEntryReturn GetUserPinEntry(PinEntryData chkUser);
 
-        [WebGet(UriTemplate = "GetCustomerInfo", ResponseFormat = WebMessageFormat.Json)]
+        //[WebGet(UriTemplate = "GetCustomerInfo", ResponseFormat = WebMessageFormat.Json)]
+        [WebInvoke(Method = "POST", UriTemplate = "GetCustomerInfo", ResponseFormat = WebMessageFormat.Json,
+        BodyStyle = WebMessageBodyStyle.Wrapped, RequestFormat = WebMessageFormat.Json)]
         [OperationContract]
         PinEntryReturn GetCustomerInfo(PinEntryData chkUser);
 
@@ -56,13 +62,13 @@ namespace CharRadiology
         [OperationContract]
         MessageReturn UpdateTestingRecords(TestingData chkUser);
 
-        [WebGet(UriTemplate = "GetResponseCode", ResponseFormat = WebMessageFormat.Json)]
-        [OperationContract]
-        ResponseCodeReturn GetResponseCode(PinEntryData chkUser);
+        //[WebGet(UriTemplate = "GetResponseCode", ResponseFormat = WebMessageFormat.Json)]
+        //[OperationContract]
+        //ResponseCodeReturn GetResponseCode(PinEntryData chkUser);
 
-        [WebGet(UriTemplate = "GetCommunication", ResponseFormat = WebMessageFormat.Json)]
-        [OperationContract]
-        CommunicationReturn GetCommunication(TestingData chkUser);
+        //[WebGet(UriTemplate = "GetCommunication", ResponseFormat = WebMessageFormat.Json)]
+        //[OperationContract]
+        //CommunicationReturn GetCommunication(TestingData chkUser);
 
     }
 

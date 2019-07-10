@@ -5,27 +5,68 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
 using System.Net.Mail;
+using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace CharRunner
 {
     class MsgProcess
     {
+        IDataService _dataService;
+        public string Environ = ConfigurationManager.AppSettings["Environment"].ToString();
+        public string Client = ConfigurationManager.AppSettings["Client"].ToString();
+        public string chkGUID = "2932ff6d-0d0f-442d-b039-4aaace4fbaa3";
+
         public void PerformWork()
         {
             try
             {
-                DateTime dt = DateTime.Now;
-                MessageSvc.RestServiceClient client = new MessageSvc.RestServiceClient();
-                MessageSvc.MessageData msgdata = new MessageSvc.MessageData();
-                MessageSvc.MessageReturn msgret = new MessageSvc.MessageReturn();
-                msgdata.env = ConfigurationManager.AppSettings["Environment"];
-               // Console.WriteLine("The Messages Process was started at {0}", dt.ToString());
-                msgret = client.MessageProcessor(msgdata);
+
+                ProcessMessages(Environ);
             }
             catch (Exception ex)
             {
                 string errdesc = ex.ToString();
-                SendErrorEmail(errdesc, "PROD");
+                SendErrorEmail(errdesc, "DEVR");
+            }
+        }
+        protected void ProcessMessages(string env)
+        {
+            try
+            {
+                _dataService = new DataService();
+                Object DataRequest = new Object();
+
+                MessageProcessResultDtoWrapper dataResultDtoWrapper = new MessageProcessResultDtoWrapper();
+                MessageData rd = new MessageData();
+                rd.env = env;
+                DataRequest = rd;
+
+                string sResponse = _dataService.GetData(DataRequest, "MessageProcess");
+
+                if (!string.IsNullOrWhiteSpace(sResponse))
+                {
+                    dataResultDtoWrapper = JsonConvert.DeserializeObject<MessageProcessResultDtoWrapper>(sResponse);
+                    Console.WriteLine("Got DataDTO");
+                }
+                MessageReturn retResp = new MessageReturn();
+                retResp = (MessageReturn)dataResultDtoWrapper?.MessageProcessResult;
+                if (retResp != null)
+                {
+                    switch (retResp.code)
+                    {
+                        case GenericStatusCodes.Success:
+                            break;
+                        case GenericStatusCodes.Other:
+                            break;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
             }
         }
 

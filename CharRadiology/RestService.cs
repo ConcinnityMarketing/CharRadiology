@@ -28,13 +28,13 @@ using System.ComponentModel;
 using System.Web.Util;
 using System.Net.Mail;
 using System.Data.SqlClient;
+using System.ServiceModel.Activation;
 
 namespace CharRadiology
 {
+    [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in code, svc and config file together.
     // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
-   // public MessageReturn MessageProcess(MessageData chkUser)
-
     public class RestService : IRestService
     {
         protected ISessionFactory SessionFactory { get; set; }
@@ -135,7 +135,7 @@ namespace CharRadiology
             return string.Format("You entered: {0}", value);
         }
 
-        public MessageReturn MessageProcessor(MessageData chkUser)
+        public MessageReturn MessageProcess(MessageData chkUser)
         {
             MessageReturn webreturn = new MessageReturn();
             //EmailReturn webreturn = new EmailReturn();
@@ -322,105 +322,105 @@ namespace CharRadiology
 
             return webreturn;
         }
-        public ResponseCodeReturn GetResponseCode(PinEntryData chkUser)
-        {
-            ResponseCodeReturn webreturn = new ResponseCodeReturn();
-            string Client = "CRAD";
-            string Unit = "CONS";
-            string App = "WEB";
-            //string Environ = ConfigurationManager.AppSettings["Environment"].ToString();
+        //public ResponseCodeReturn GetResponseCode(PinEntryData chkUser)
+        //{
+        //    ResponseCodeReturn webreturn = new ResponseCodeReturn();
+        //    string Client = "CRAD";
+        //    string Unit = "CONS";
+        //    string App = "WEB";
+        //    string Environ = ConfigurationManager.AppSettings["Environment"].ToString();
 
-            //IDbConnection cn = new SqlConnection();
-            string errdesc = "";
-            IDbConnection cn = new SqlConnection();
-            try
-            {
-                string strConnection = getConnectionString(chkUser.env.ToUpper(), Client, Unit, App);
-                cn.ConnectionString = strConnection;
-                cn.Open();
-                SessionFactory = Setup(strConnection).BuildSessionFactory();
+        //    IDbConnection cn = new SqlConnection();
+        //    string errdesc = "";
+        //    IDbConnection cn = new SqlConnection();
+        //    try
+        //    {
+        //        string strConnection = getConnectionString(chkUser.env.ToUpper(), Client, Unit, App);
+        //        cn.ConnectionString = strConnection;
+        //        cn.Open();
+        //        SessionFactory = Setup(strConnection).BuildSessionFactory();
 
-                CurrentSessionContext.Bind(SessionFactory.OpenSession(cn));
-                businessService = new BusinessService(SessionFactory);
-                if (businessService.GetGUID() == chkUser.guid)
-                {
-                    webreturn.response_code = businessService.GetResponseCode(chkUser.brand);
-                    webreturn.status = "Success";
-                    webreturn.code = GenericStatusCodes.Success;
-                    webreturn.desc = "";
-                }
-                else
-                {
-                    errdesc = "Incorrect GUID in get customer info";
-                    SendErrorEmail(errdesc, chkUser.env.ToUpper());
-                    webreturn.status = "N";
-                    webreturn.code = GenericStatusCodes.Other;
-                    webreturn.desc = "Error - " + errdesc;
-                }
-            }
-            catch (Exception ex)
-            {
-                webreturn.status = "fail";
-                webreturn.code = GenericStatusCodes.Other;
-                errdesc = ex.ToString();
-                webreturn.desc = errdesc;
-                SendErrorEmail(errdesc, chkUser.env);
-            }
-            finally
-            {
-               SessionFactory.Close();
-            }
+        //        CurrentSessionContext.Bind(SessionFactory.OpenSession(cn));
+        //        businessService = new BusinessService(SessionFactory);
+        //        if (businessService.GetGUID() == chkUser.guid)
+        //        {
+        //            webreturn.response_code = businessService.GetResponseCode(chkUser.brand);
+        //            webreturn.status = "Success";
+        //            webreturn.code = GenericStatusCodes.Success;
+        //            webreturn.desc = "";
+        //        }
+        //        else
+        //        {
+        //            errdesc = "Incorrect GUID in get customer info";
+        //            SendErrorEmail(errdesc, chkUser.env.ToUpper());
+        //            webreturn.status = "N";
+        //            webreturn.code = GenericStatusCodes.Other;
+        //            webreturn.desc = "Error - " + errdesc;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        webreturn.status = "fail";
+        //        webreturn.code = GenericStatusCodes.Other;
+        //        errdesc = ex.ToString();
+        //        webreturn.desc = errdesc;
+        //        SendErrorEmail(errdesc, chkUser.env);
+        //    }
+        //    finally
+        //    {
+        //        SessionFactory.Close();
+        //    }
 
-            return webreturn;
-        }
-        public CommunicationReturn GetCommunication(TestingData chkUser)
-        {
-            CommunicationReturn webreturn = new CommunicationReturn();
-            string Client = "CRAD";
-            string Unit = "CONS";
-            string App = "WEB";
-            //string Environ = ConfigurationManager.AppSettings["Environment"].ToString();
+        //    return webreturn;
+        //}
+        //public CommunicationReturn GetCommunication(TestingData chkUser)
+        //{
+        //    CommunicationReturn webreturn = new CommunicationReturn();
+        //    string Client = "CRAD";
+        //    string Unit = "CONS";
+        //    string App = "WEB";
+        //    //string Environ = ConfigurationManager.AppSettings["Environment"].ToString();
 
-            //IDbConnection cn = new SqlConnection();
-            string errdesc = "";
-            IDbConnection cn = new SqlConnection();
-            try
-            {
-                string strConnection = getConnectionString(chkUser.env.ToUpper(), Client, Unit, App);
-                cn.ConnectionString = strConnection;
-                cn.Open();
-                SessionFactory = Setup(strConnection).BuildSessionFactory();
+        //    //IDbConnection cn = new SqlConnection();
+        //    string errdesc = "";
+        //    IDbConnection cn = new SqlConnection();
+        //    try
+        //    {
+        //        string strConnection = getConnectionString(chkUser.env.ToUpper(), Client, Unit, App);
+        //        cn.ConnectionString = strConnection;
+        //        cn.Open();
+        //        SessionFactory = Setup(strConnection).BuildSessionFactory();
 
-                CurrentSessionContext.Bind(SessionFactory.OpenSession(cn));
-                businessService = new BusinessService(SessionFactory);
-                if (businessService.GetGUID() == chkUser.guid)
-                {
-                    webreturn = businessService.GetCommunication(chkUser);
-                }
-                else
-                {
-                    errdesc = "Incorrect GUID in get Get Communication";
-                    SendErrorEmail(errdesc, chkUser.env.ToUpper());
-                    webreturn.status = "N";
-                    webreturn.code = GenericStatusCodes.Other;
-                    webreturn.desc = "Error - " + errdesc;
-                }
-            }
-            catch (Exception ex)
-            {
-                webreturn.status = "fail";
-                webreturn.code = GenericStatusCodes.Other;
-                errdesc = ex.ToString();
-                webreturn.desc = errdesc;
-                SendErrorEmail(errdesc, chkUser.env);
-            }
-            finally
-            {
-                SessionFactory.Close();
-            }
+        //        CurrentSessionContext.Bind(SessionFactory.OpenSession(cn));
+        //        businessService = new BusinessService(SessionFactory);
+        //        if (businessService.GetGUID() == chkUser.guid)
+        //        {
+        //            webreturn = businessService.GetCommunication(chkUser);
+        //        }
+        //        else
+        //        {
+        //            errdesc = "Incorrect GUID in get Get Communication";
+        //            SendErrorEmail(errdesc, chkUser.env.ToUpper());
+        //            webreturn.status = "N";
+        //            webreturn.code = GenericStatusCodes.Other;
+        //            webreturn.desc = "Error - " + errdesc;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        webreturn.status = "fail";
+        //        webreturn.code = GenericStatusCodes.Other;
+        //        errdesc = ex.ToString();
+        //        webreturn.desc = errdesc;
+        //        SendErrorEmail(errdesc, chkUser.env);
+        //    }
+        //    finally
+        //    {
+        //        SessionFactory.Close();
+        //    }
 
-            return webreturn;
-        }
+        //    return webreturn;
+        //}
         public SurveyReturn SaveCustResponse(ProfileData chkUser)
         {
             SurveyReturn webreturn = new SurveyReturn();
@@ -589,4 +589,5 @@ namespace CharRadiology
             return composite;
         }
     }
+
 }
