@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E0CC11C1-4ED0-4DDD-8961-4650C0AEA0FC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EnvoyService.Core</RootNamespace>
+    <AssemblyName>EnvoyService.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="callfire-api-client, Version=1.1.7.30858, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\callfire-api-client.dll</HintPath>
+    </Reference>
+    <Reference Include="CallFire-csharp-sdk, Version=1.0.4.18648, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\CallFire-csharp-sdk.dll</HintPath>
+    </Reference>
+    <Reference Include="cmextwebsvc.BusinessLayer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\CMRestService\cmextwebsvc.BusinessLayer\bin\Debug\cmextwebsvc.BusinessLayer.dll</HintPath>
+    </Reference>
+    <Reference Include="cmextwebsvc.PRODAVLayer">
+      <HintPath>..\..\CMRestService\cmextwebsvc.PRODAVLayer\bin\Release\cmextwebsvc.PRODAVLayer.dll</HintPath>
+    </Reference>
+    <Reference Include="CMParms, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\CMParms.dll</HintPath>
+    </Reference>
+    <Reference Include="Cobisi.EmailVerify.Design.Net45, Version=5.9.0.0, Culture=neutral, PublicKeyToken=b863a804c9b2bdb0, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\Cobisi.EmailVerify.Design.Net45.dll</HintPath>
+    </Reference>
+    <Reference Include="Cobisi.EmailVerify.Net45, Version=5.9.0.0, Culture=neutral, PublicKeyToken=b863a804c9b2bdb0, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\Cobisi.EmailVerify.Net45.dll</HintPath>
+    </Reference>
+    <Reference Include="CryptSharp, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CryptSharpOfficial.2.1.0.0\lib\CryptSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="MailBee.NET.4, Version=9.0.4.472, Culture=neutral, PublicKeyToken=cd85b70fb26f9fc1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\MailBee.NET.4.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Enums\StatusCodes.cs" />
+    <Compile Include="Expander.cs" />
+    <Compile Include="Messenger.cs" />
+    <Compile Include="Models\BusinessModel.cs" />
+    <Compile Include="Persistence\SqlMapper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="RestClient.cs" />
+    <Compile Include="Services\BusinessService.cs" />
+    <Compile Include="Services\IBusinessService.cs" />
+    <Compile Include="Web References\AddrService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="bin\Debug\callfire-api-client.dll.config" />
+    <None Include="bin\Debug\ConcinnityConnect_CAI.Core.dll.config" />
+    <None Include="bin\Debug\EnvoyService.Core.dll.config" />
+    <None Include="bin\Release\EnvoyService.Core.dll.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\AddrService\AddrStndReturn.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AddrService\CompositeType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AddrService\GeoCodeReturn.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AddrService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\AddrService\RestService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web References\AddrService\RestService.wsdl" />
+    <None Include="Web References\AddrService\RestService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AddrService\RestService0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AddrService\RestService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AddrService\RestService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AddrService\RestService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AddrService\RestService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="http://restservices.concinnitymarketing.biz/AddrStndService/RestService.svc">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\AddrService\</RelPath>
+      <UpdateFromURL>http://restservices.concinnitymarketing.biz/AddrStndService/RestService.svc</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>EnvoyService_Core_AddrService_RestService</CachedSettingsPropName>
+    </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\callfire-api-client.dll" />
+    <Content Include="bin\Debug\callfire-api-client.xml" />
+    <Content Include="bin\Debug\CallFire-csharp-sdk.dll" />
+    <Content Include="bin\Debug\cmextwebsvc.BusinessLayer.dll" />
+    <Content Include="bin\Debug\CMParms.dll" />
+    <Content Include="bin\Debug\Cobisi.EmailVerify.Design.Net45.dll" />
+    <Content Include="bin\Debug\Cobisi.EmailVerify.Net45.dll" />
+    <Content Include="bin\Debug\ConcinnityConnect_CAI.Core.dll" />
+    <Content Include="bin\Debug\ConcinnityConnect_CAI.Core.pdb" />
+    <Content Include="bin\Debug\EntityFramework.dll" />
+    <Content Include="bin\Debug\EnvoyService.Core.dll" />
+    <Content Include="bin\Debug\EnvoyService.Core.pdb" />
+    <Content Include="bin\Debug\Iesi.Collections.dll" />
+    <Content Include="bin\Debug\Iesi.Collections.xml" />
+    <Content Include="bin\Debug\log4net.dll" />
+    <Content Include="bin\Debug\MailBee.NET.4.dll" />
+    <Content Include="bin\Debug\MarketplaceWebService.dll" />
+    <Content Include="bin\Debug\MarketplaceWebService.pdb" />
+    <Content Include="bin\Debug\Newtonsoft.Json.dll" />
+    <Content Include="bin\Debug\Newtonsoft.Json.xml" />
+    <Content Include="bin\Debug\NHibernate.dll" />
+    <Content Include="bin\Debug\RestSharp.dll" />
+    <Content Include="bin\Debug\RestSharp.xml" />
+    <Content Include="bin\Release\cmextwebsvc.BusinessLayer.dll" />
+    <Content Include="bin\Release\CMParms.dll" />
+    <Content Include="bin\Release\EnvoyService.Core.dll" />
+    <Content Include="bin\Release\EnvoyService.Core.pdb" />
+    <Content Include="bin\Release\EnvoyService.Core.XmlSerializers.dll" />
+    <Content Include="bin\Release\Iesi.Collections.dll" />
+    <Content Include="bin\Release\Iesi.Collections.xml" />
+    <Content Include="bin\Release\NHibernate.dll" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

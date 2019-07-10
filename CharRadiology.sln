@@ -3,14 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.489
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CharRadiology", "CharRadiology\CharRadiology.csproj", "{97868BD5-2A71-4516-8459-78022E3329D8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnvoyService", "EnvoyService\EnvoyService.csproj", "{D5988193-3BF3-498A-8ACF-373C98E1D853}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CharRadiology.Core", "CharRadiology.Core\CharRadiology.Core.csproj", "{129A1DED-350D-4B39-89FF-71B169C546E7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnvoyService.Core", "EnvoyService.Core\EnvoyService.Core.csproj", "{E0CC11C1-4ED0-4DDD-8961-4650C0AEA0FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CharRunner", "CharRunner\CharRunner.csproj", "{34A81C7F-D829-4326-80C8-F6CCC1338F75}"
-	ProjectSection(ProjectDependencies) = postProject
-		{97868BD5-2A71-4516-8459-78022E3329D8} = {97868BD5-2A71-4516-8459-78022E3329D8}
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageRunner", "MessageRunner\MessageRunner.csproj", "{A78DD362-CC6D-45B4-90EE-1E5EB0FF391B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,18 +15,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{97868BD5-2A71-4516-8459-78022E3329D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{97868BD5-2A71-4516-8459-78022E3329D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{97868BD5-2A71-4516-8459-78022E3329D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{97868BD5-2A71-4516-8459-78022E3329D8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{129A1DED-350D-4B39-89FF-71B169C546E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{129A1DED-350D-4B39-89FF-71B169C546E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{129A1DED-350D-4B39-89FF-71B169C546E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{129A1DED-350D-4B39-89FF-71B169C546E7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{34A81C7F-D829-4326-80C8-F6CCC1338F75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{34A81C7F-D829-4326-80C8-F6CCC1338F75}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{34A81C7F-D829-4326-80C8-F6CCC1338F75}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{34A81C7F-D829-4326-80C8-F6CCC1338F75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5988193-3BF3-498A-8ACF-373C98E1D853}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5988193-3BF3-498A-8ACF-373C98E1D853}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5988193-3BF3-498A-8ACF-373C98E1D853}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5988193-3BF3-498A-8ACF-373C98E1D853}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0CC11C1-4ED0-4DDD-8961-4650C0AEA0FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0CC11C1-4ED0-4DDD-8961-4650C0AEA0FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0CC11C1-4ED0-4DDD-8961-4650C0AEA0FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0CC11C1-4ED0-4DDD-8961-4650C0AEA0FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A78DD362-CC6D-45B4-90EE-1E5EB0FF391B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A78DD362-CC6D-45B4-90EE-1E5EB0FF391B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A78DD362-CC6D-45B4-90EE-1E5EB0FF391B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A78DD362-CC6D-45B4-90EE-1E5EB0FF391B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
