@@ -1,0 +1,134 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+cmextwebsvc.PRODAVLayer
+</name>
+</assembly>
+<members>
+<member name="T:cmextwebsvc.PRODAVLayer.My.Resources.Resources">
+<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+<member name="P:cmextwebsvc.PRODAVLayer.My.Resources.Resources.ResourceManager">
+<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member>
+<member name="P:cmextwebsvc.PRODAVLayer.My.Resources.Resources.Culture">
+<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member>
+<member name="T:cmextwebsvc.PRODAVLayer.acxiomdata.NameAddressInfobase">
+<remarks/>
+</member>
+<member name="M:cmextwebsvc.PRODAVLayer.acxiomdata.NameAddressInfobase.#ctor">
+<remarks/>
+</member>
+<member name="E:cmextwebsvc.PRODAVLayer.acxiomdata.NameAddressInfobase.getByNameAddressCompleted">
+<remarks/>
+</member>
+<member name="M:cmextwebsvc.PRODAVLayer.acxiomdata.NameAddressInfobase.getByNameAddress(cmextwebsvc.PRODAVLayer.acxiomdata.getByNameAddress)">
+<remarks/>
+</member>
+<member name="M:cmextwebsvc.PRODAVLayer.acxiomdata.NameAddressInfobase.getByNameAddressAsync(cmextwebsvc.PRODAVLayer.acxiomdata.getByNameAddress)">
+<remarks/>
+</member>
+<member name="M:cmextwebsvc.PRODAVLayer.acxiomdata.NameAddressInfobase.getByNameAddressAsync(cmextwebsvc.PRODAVLayer.acxiomdata.getByNameAddress,System.Object)">
+<remarks/>
+</member>
+<member name="M:cmextwebsvc.PRODAVLayer.acxiomdata.NameAddressInfobase.CancelAsync(System.Object)">
+<remarks/>
+</member>
+<member name="T:cmextwebsvc.PRODAVLayer.acxiomdata.getByNameAddress">
+<remarks/>
+</member>
+<member name="P:cmextwebsvc.PRODAVLayer.acxiomdata.getByNameAddress.NameAddressInfobaseInput_1">
+<remarks/>
+</member>
+<member name="T:cmextwebsvc.PRODAVLayer.acxiomdata.NameAddressInfobaseInput">
+<remarks/>
+</member>
+<member name="P:cmextwebsvc.PRODAVLayer.acxiomdata.NameAddressInfobaseInput.customData">
+<remarks/>
+</member>
+<member name="P:cmextwebsvc.PRODAVLayer.acxiomdata.NameAddressInfobaseInput.name">
+<remarks/>
+</member>
+<member name="P:cmextwebsvc.PRODAVLayer.acxiomdata.NameAddressInfobaseInput.orderId">
+<remarks/>
+</member>
+<member name="P:cmextwebsvc.PRODAVLayer.acxiomdata.NameAddressInfobaseInput.unparsedAddress">
+<remarks/>
+</member>
+<member name="T:cmextwebsvc.PRODAVLayer.acxiomdata.CustomData">
+<remarks/>
+</member>
+<member name="P:cmextwebsvc.PRODAVLayer.acxiomdata.CustomData.name">
+<remarks/>
+</member>
+<member name="P:cmextwebsvc.PRODAVLayer.acxiomdata.CustomData.value">
+<remarks/>
+</member>
+<member name="T:cmextwebsvc.PRODAVLayer.acxiomdata.IBEOutput">
+<remarks/>
+</member>
+<member name="P:cmextwebsvc.PRODAVLayer.acxiomdata.IBEOutput.name">
+<remarks/>
+</member>
+<member name="P:cmextwebsvc.PRODAVLayer.acxiomdata.IBEOutput.value">
+<remarks/>
+</member>
+<member name="T:cmextwebsvc.PRODAVLayer.acxiomdata.getByNameAddressResponse">
+<remarks/>
+</member>
+<member name="P:cmextwebsvc.PRODAVLayer.acxiomdata.getByNameAddressResponse.result">
+<remarks/>
+</member>
+<member name="T:cmextwebsvc.PRODAVLayer.acxiomdata.UnparsedAddress">
+<remarks/>
+</member>
+<member name="P:cmextwebsvc.PRODAVLayer.acxiomdata.UnparsedAddress.addressLines">
+<remarks/>
+</member>
+<member name="P:cmextwebsvc.PRODAVLayer.acxiomdata.UnparsedAddress.city">
+<remarks/>
+</member>
+<member name="P:cmextwebsvc.PRODAVLayer.acxiomdata.UnparsedAddress.postalCode">
+<remarks/>
+</member>
+<member name="P:cmextwebsvc.PRODAVLayer.acxiomdata.UnparsedAddress.state">
+<remarks/>
+</member>
+<member name="P:cmextwebsvc.PRODAVLayer.acxiomdata.UnparsedAddress.urbanization">
+<remarks/>
+</member>
+<member name="T:cmextwebsvc.PRODAVLayer.acxiomdata.Name">
+<remarks/>
+</member>
+<member name="P:cmextwebsvc.PRODAVLayer.acxiomdata.Name.firstName">
+<remarks/>
+</member>
+<member name="P:cmextwebsvc.PRODAVLayer.acxiomdata.Name.lastName">
+<remarks/>
+</member>
+<member name="P:cmextwebsvc.PRODAVLayer.acxiomdata.Name.middleInitial">
+<remarks/>
+</member>
+<member name="P:cmextwebsvc.PRODAVLayer.acxiomdata.Name.suffix">
+<remarks/>
+</member>
+<member name="T:cmextwebsvc.PRODAVLayer.acxiomdata.getByNameAddressCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:cmextwebsvc.PRODAVLayer.acxiomdata.getByNameAddressCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:cmextwebsvc.PRODAVLayer.acxiomdata.getByNameAddressCompletedEventArgs.Result">
+<remarks/>
+</member>
+</members>
+</doc>
