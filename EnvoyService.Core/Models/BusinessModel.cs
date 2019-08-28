@@ -700,14 +700,14 @@ namespace EnvoyService.Core.Models
         public int MESSAGE_SEQ { get; set; }
         public int MD_RECNUM { get; set; }
         public string PHONE { get; set; }
-        public string OFFER_CODE { get; set; }
-        public string CHILD_NAME { get; set; }
+        //public string OFFER_CODE { get; set; }
+        //public string CHILD_NAME { get; set; }
         public MessageModel()
         {
 
         }
         public MessageModel(int eINDIV_ID, string eMFID, string eEMAIL, string eFIRST_NAME, string eLAST_NAME, string eADDRESS1, string eCITY, string eSTATE, string eZIP,
-                                string eCHANNEL, DateTime? eMESSAGE_DT, string eSTATUS, DateTime? eUPDATE_DT, int eMESSAGE_SEQ, int eMD_RECNUM, string ePHONE, string eOFFER_CODE, string eCHILD_NAME)
+                                string eCHANNEL, DateTime? eMESSAGE_DT, string eSTATUS, DateTime? eUPDATE_DT, int eMESSAGE_SEQ, int eMD_RECNUM, string ePHONE)
         {
             this.INDIV_ID = eINDIV_ID;
             this.MFID = eMFID;
@@ -725,8 +725,8 @@ namespace EnvoyService.Core.Models
             this.MESSAGE_SEQ = eMESSAGE_SEQ;
             this.MD_RECNUM = eMD_RECNUM;
             this.PHONE = ePHONE;
-            this.OFFER_CODE = eOFFER_CODE;
-            this.CHILD_NAME = eCHILD_NAME;
+            //this.OFFER_CODE = eOFFER_CODE;
+            //this.CHILD_NAME = eCHILD_NAME;
         }
     }
     public class MessageDetail

@@ -111,20 +111,29 @@ namespace EnvoyService.Core
         {
             var currentSession = sessionFactory.GetCurrentSession();
             string sql = "";
-            IEnumerable results = currentSession.Connection.Query(@"SELECT e.INDIV_ID, e.EMAIL, e.MESSAGE_DT, e.CHANNEL, e.STATUS, e.UPDATE_DT, p.FIRST_NAME, p.LAST_NAME, p.ADDRESS1, p.CITY, p.STATE, p.ZIP, e.MESSAGE_SEQ, e.MD_RECNUM, e.PHONE, e.MFID, c.OFFER_CODE, c.CHILD_NAME
-                                                                    FROM CUSTOMER_MESSAGE_DETAIL e inner join CUSTOMER_PROFILE p on p.INDIV_ID = e.INDIV_ID
-                                                                    inner join CUSTOMER_COMMUNICATION c on c.INDIV_ID = e.INDIV_ID and c.MFID = e.MFID
-                                                                    WHERE (e.STATUS IS NULL) AND CHANNEL = @type", new { @type = RecurType });
             List<MessageModel> emailList = new List<MessageModel>();
-
-            foreach (dynamic row in results)
+            try
             {
-                emailList.Add(new MessageModel(row.INDIV_ID, row.MFID, row.EMAIL, row.FIRST_NAME, row.LAST_NAME, row.ADDRESS1, row.CITY,
-                                                   row.STATE, row.ZIP, row.CHANNEL, row.MESSAGE_DT, row.STATUS, row.UPDATE_DT, row.MESSAGE_SEQ, row.MD_RECNUM, row.PHONE, row.OFFER_CODE, row.CHILD_NAME));
-                // Update Contact On Database to Interim status
+                IEnumerable results = currentSession.Connection.Query(@"SELECT e.INDIV_ID, e.EMAIL, e.MESSAGE_DT, e.CHANNEL, e.STATUS, e.UPDATE_DT, p.FIRST_NAME, p.LAST_NAME, p.ADDRESS1, p.CITY, p.STATE, p.ZIP, e.MESSAGE_SEQ, e.MD_RECNUM, e.PHONE, e.MFID
+                                                                    FROM CUSTOMER_MESSAGE_DETAIL e inner join CUSTOMER_PROFILE p on p.INDIV_ID = e.INDIV_ID
+                                                                    inner join CUSTOMER_COMMUNICATIONS c on c.INDIV_ID = e.INDIV_ID and c.MFID = e.MFID
+                                                                    WHERE (e.STATUS IS NULL) AND e.CHANNEL = @type", new { @type = RecurType });
 
-                //sql = "update RECUR_EMAIL set RECUR_STATUS = 'I' where indiv_id = " + row.INDIV_ID + " AND RECUR_TYPE = '" + row.RECUR_TYPE + "'";
-                // ExecuteSQL(sql);
+                foreach (dynamic row in results)
+                {
+                    emailList.Add(new MessageModel(row.INDIV_ID, row.MFID, row.EMAIL, row.FIRST_NAME, row.LAST_NAME, row.ADDRESS1, row.CITY,
+                                                       row.STATE, row.ZIP, row.CHANNEL, row.MESSAGE_DT, row.STATUS, row.UPDATE_DT, row.MESSAGE_SEQ, row.MD_RECNUM, row.PHONE));
+                    // Update Contact On Database to Interim status
+
+                    //sql = "update RECUR_EMAIL set RECUR_STATUS = 'I' where indiv_id = " + row.INDIV_ID + " AND RECUR_TYPE = '" + row.RECUR_TYPE + "'";
+                    // ExecuteSQL(sql);
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("CustMessageList Exception: " + ex.ToString());
             }
 
             return emailList;
@@ -271,8 +280,8 @@ namespace EnvoyService.Core
                 //    rtnAnniversary = AnniversaryProcess(chkUser, bm, client, acc);
                 //}
                 //user.Anniversary_Count = AnniversaryTotal;
-                string sql = "update CUSTOMER_COMMUNICATIONS set CC_STATUS = 'COMPLETE' where CC_STATUS = 'INPROCESS'";
-                ExecuteSQL(sql);
+                //string sql = "update CUSTOMER_COMMUNICATIONS set CC_STATUS = 'COMPLETE' where CC_STATUS = 'INPROCESS'";
+                //ExecuteSQL(sql);
                 user.Message_Count = MessageTotal;
                 user.status = "success";
                 user.code = MailStatusCodes.Success;

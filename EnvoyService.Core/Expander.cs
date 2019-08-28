@@ -147,8 +147,8 @@ namespace EnvoyService.Core
                         smd = SaveMessageDetail(mdetail);
                     }
                 }
-                //sql = "update CUSTOMER_COMMUNICATIONS set CC_STATUS = 'COMPLETE' where COMM_STATUS = 'INPROCESS'";
-                //ExecuteSQL(sql);
+                sql = "update CUSTOMER_COMMUNICATIONS set CC_STATUS = 'COMPLETE' where CC_STATUS = 'INPROCESS'";
+                ExecuteSQL(sql);
 
                 retbool = true;
             }

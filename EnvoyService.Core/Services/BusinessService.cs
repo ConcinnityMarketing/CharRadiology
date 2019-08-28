@@ -92,7 +92,7 @@ namespace EnvoyService.Core.Services
             try
             {
                 //user = LogClientResults(bm);
-                //blExpand = exp.ExpandCommunication(); //uncomment after testing
+                blExpand = exp.ExpandCommunication(); //uncomment after testing
                 user = mm.ProcessMessages(chkUser, bm);
                 //user = tm.ProcessMessages(chkUser, bm);
                 //user = im.ProcessMessages(chkUser, bm);

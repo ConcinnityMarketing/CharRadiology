@@ -31,7 +31,7 @@ namespace MessageRunner
             catch (Exception ex)
             {
                 string errdesc = ex.ToString();
-                SendErrorEmail(errdesc, "DEVR");
+                SendErrorEmail(errdesc, Environ);
             }
         }
         protected void ProcessMessages(MessageData md)
@@ -78,11 +78,17 @@ namespace MessageRunner
 
         protected void SendErrorEmail(string Text, string Environ)
         {
+            string[] namesArray = ConfigurationManager.AppSettings["EmailAddressRecipients"].ToString().Split(',');
+            List<string> namesList = new List<string>(namesArray.Length);
+            namesList.AddRange(namesArray);
             MailMessage message = new MailMessage();
             message.From = new MailAddress(ConfigurationManager.AppSettings["EmailAddressSender"].ToString());
-            message.To.Add(new MailAddress(ConfigurationManager.AppSettings["EmailAddressRecipients"].ToString()));
-            message.Subject = "Concinnity REST Envoy Messages Webservice Error - " + Environ;
-            message.Body = "An error has occured in a CRAD Messages Webservice Process - Error: " + Text;
+            foreach (var item in namesList)
+            {
+                message.To.Add(item);
+            }
+            message.Subject = "Concinnity REST CRAD Message Sender Error - " + Environ;
+            message.Body = "An error has occured in a Sender Process - Error: " + Text;
             SmtpClient client = new SmtpClient();
             client.Host = ConfigurationManager.AppSettings["SMTPHostName"].ToString();
             client.Send(message);
