@@ -885,6 +885,167 @@ namespace EnvoyService.Core
             return accList;
 
         }
+        public List<CustomerSearch> GetCustomerDetails(string strIndivID)
+        {
+            var currentSession = sessionFactory.GetCurrentSession();
+            IEnumerable results = currentSession.Connection.Query(@" exec usp_get_customer_info @IndivID", new { @IndivID = strIndivID });
+
+            List<CustomerSearch> customerSearchList = new List<CustomerSearch>();
+
+            foreach (dynamic row in results)
+            {
+                customerSearchList.Add(new CustomerSearch(row.INDIV_ID, row.MRN, row.NAME_PREFIX, row.FIRST_NAME, row.MID_NAME, row.LAST_NAME, row.NAME_SUFX, row.GENDER, row.BIRTH_DATE,
+                                                          row.ADDRESS1,  row.ADDRESS2,  row.CITY, row.STATE, row.ZIP, row.ZIP4, row.STATUS, row.USPS_STATUS, row.USPS_OPT_CD, row.SMS_NUMBER,
+                                                          row.PHONE, row.EMAIL,  row.SMS_STATUS, row.EMAIL_STATUS, row.PHONE_STATUS, row.INSURANCE_PROVIDER, row.PHONE_OPT_CD, row.EMAIL_OPT_CD,
+                                                          row.TEXT_MESSAGE_OPT_CD, row.EXAM_SCHEDULE, row.FIRST_RESPONSE_DATE, row.MAM_PATIENT_TYPE, row.CALLBACK_STATUS, row.RETURN_DATE, row.FULL_NAME,
+                                                          row.CITY_STATE_ZIP, row.RECORD_CREATE_DATE, row.RETURN_EXAM_TYPE, row.LAST_TRANS_DATE, row.LAST_UPDATE_DATE, row.EXTERNAL_REF_NUMBER,
+                                                          row.LOAD_PG_ID, row.CM_CREATE_DATE, row.YOB, row.EFirst_Name, row.ELast_Name, row.EAddress1, row.EBirth_Date, row.MOB));
+            }
+            return customerSearchList;
+        }
+
+        protected CampaignHistoryCustomerReturn GetCustomerCampaignInfo(PinEntryData chkUser)
+        {
+            CampaignHistoryCustomerReturn user = new CampaignHistoryCustomerReturn();
+            Profile pro = new Profile();
+            try
+            {
+                var currentSession = sessionFactory.GetCurrentSession();
+                List<CustomerSearch> searchlist = new List<CustomerSearch>();
+                searchlist = GetCustomerDetails(chkUser.pin);
+                user.CustomerSearchList = searchlist;
+                //foreach (CustomerSearch row in searchlist)
+                //{
+                //    pro.first_name = row.FIRST;
+                //    pro.last_name = row.LAST;
+                //    pro.address1 = row.ADDRESS1;
+                //    pro.address2 = row.ADDRESS2;
+                //    pro.city = row.CITY;
+                //    pro.state = row.STATE;
+                //    pro.zip = row.ZIP;
+                //    pro.phone = row.PHONE;
+                //    pro.birth_date = Convert.ToDateTime(row.BIRTH_DATE);
+                //    pro.email = row.EMAIL;
+                //    pro.indiv_id = row.INDIV_ID;
+                //    pro.code = GenericStatusCodes.Success;
+                //    pro.status = "Success";
+                //    pro.desc = "";
+                //}
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("GetUserInfo Exception: " + ex.ToString());
+            }
+            return user;
+        }
+
+        protected SurveyReturn SaveCampaignHistory(CampaignHistoryData chkUser)
+        {
+            SurveyReturn retuser = new SurveyReturn();
+            //ConsumerClass CustomerObject = new ConsumerClass();
+            //AddrStndReturn retaddr = new AddrStndReturn();
+            //AgeVerifData avfdata = new AgeVerifData();
+            //PinEntryData pindata = new PinEntryData();
+            //CampaignHistoryCustomerReturn pinreturn = new CampaignHistoryCustomerReturn();
+            ProfileData profile = new ProfileData();
+
+            try
+            {
+                var GUID = "963b4e28-15a2-46aa-bbc7-3dcbc44c62b4";
+
+                var currentSession = sessionFactory.GetCurrentSession();
+                //CustomerObject.ConnectionString = currentSession.Connection.ConnectionString;
+                //pindata.pin = chkUser.INDIV_ID.ToString();
+                //pinreturn = GetCustomerInfo(pindata);
+                //string strResponseCode = "SPWEB16RES";
+                string strChannel = "TXT";
+               // string strResponseCode = GetResponseCode(strChannel);
+                //if (pinreturn.code == PinEntryStatusCodes.Success)
+                //{
+                //    chkUser.FIRST_NAME = pinreturn.pinProfile.first_name;
+                //    chkUser.LAST_NAME = pinreturn.pinProfile.last_name;
+                //    chkUser.ADDRESS1 = pinreturn.pinProfile.address1;
+                //    chkUser.ADDRESS2 = pinreturn.pinProfile.address2;
+                //    chkUser.CITY = pinreturn.pinProfile.city;
+                //    chkUser.STATE = pinreturn.pinProfile.state;
+                //    chkUser.ZIP = pinreturn.pinProfile.zip;
+                //    chkUser.BIRTH_DATE = pinreturn.pinProfile.birth_date;
+                //    chkUser.EMAIL = pinreturn.pinProfile.email;
+                //    chkUser.PHONE = pinreturn.pinProfile.phone;
+
+                //}
+
+
+                //chkUser.INDIV_ID = CustomerObject.GetNextIndivId(GUID);
+                //avfdata.ADDRESS1 = chkUser.ADDRESS1;
+                //avfdata.ADDRESS2 = chkUser.ADDRESS2;
+                //avfdata.CITY = chkUser.CITY;
+                //avfdata.STATE = chkUser.STATE;
+                //avfdata.ZIP = chkUser.ZIP;
+                //retaddr = AddressStandardize(avfdata);
+
+                var parameters = new DynamicParameters();
+                parameters.Add("@MFID", chkUser.MFID);
+                parameters.Add("@SEED", chkUser.SEED);
+                parameters.Add("@CLIENT", chkUser.CLIENT);
+                parameters.Add("@PG_ID", chkUser.PG_ID);
+                parameters.Add("@EXTRACT_DATE", chkUser.EXTRACT_DATE);
+                parameters.Add("@CHECK_DIGIT", chkUser.CHECK_DIGIT);
+                parameters.Add("@PIN", chkUser.PIN);
+                parameters.Add("@EXTERNAL_REF_NUM", chkUser.EXTERNAL_REF_NUM);
+                parameters.Add("@NAME_PREFIX", chkUser.NAME_PREFIX);
+                parameters.Add("@FIRST_NAME", chkUser.FIRST_NAME);
+                parameters.Add("@LAST_NAME", chkUser.LAST_NAME);
+                parameters.Add("@MID_NAME", chkUser.MID_NAME);
+                parameters.Add("@NAME_SUFX", chkUser.NAME_SUFX);
+                parameters.Add("@FULLNAME", chkUser.FULLNAME);
+                parameters.Add("@GENDER", chkUser.GENDER);
+                parameters.Add("@BIRTH_DATE ", chkUser.BIRTH_DATE);
+                parameters.Add("@ADDRESS1 ", chkUser.ADDRESS1);
+                parameters.Add("@ADDRESS2 ", chkUser.ADDRESS2);
+                parameters.Add("@CITY", chkUser.CITY);
+                parameters.Add("@STATE", chkUser.STATE);
+                parameters.Add("@ZIP", chkUser.ZIP);
+                parameters.Add("@ZIP4", chkUser.ZIP4);
+                parameters.Add("@CITYSTATEZIP", chkUser.CITYSTATEZIP);
+                parameters.Add("@EMAIL_OPT_CODE", chkUser.EMAIL_OPT_CD);
+                parameters.Add("@USPS_OPT_CODE", chkUser.USPS_OPT_CD);
+                parameters.Add("@TEXT_MSG_OPT_CD", chkUser.TEXT_MESSAGE_OPT_CD);
+                parameters.Add("@PHONE", chkUser.PHONE);
+                parameters.Add("@EMAIL", chkUser.EMAIL);
+                parameters.Add("@SIGNATURE", chkUser.SIGNATURE);
+                parameters.Add("@HHKEY", chkUser.HHKEY);
+                parameters.Add("@STATUS", chkUser.STATUS);
+                parameters.Add("@EMAIL_STATUS", chkUser.EMAIL_STATUS);
+                parameters.Add("@USPS_STATUS", chkUser.USPS_STATUS);
+                parameters.Add("@UNDELIV_FLG", chkUser.UNDELIV_FLG);
+                parameters.Add("@SIGNATURE", chkUser.SIGNATURE);
+                parameters.Add("@UNDELIV_REASON_CD", chkUser.UNDELIV_REASON_CD);
+                parameters.Add("@CHANNEL", chkUser.CHANNEL);
+                parameters.Add("@EMAIL_CPGN_ID", chkUser.EMAIL_CPGN_ID);
+                parameters.Add("@BLAST_DATE", chkUser.BLAST_DATE);
+                parameters.Add("@EMAIL_OPEN", chkUser.EMAIL_OPEN);
+                parameters.Add("@EMAIL_BOUNCE", chkUser.EMAIL_BOUNCE);
+                parameters.Add("@EMAIL_CLICK", chkUser.EMAIL_CLICK);
+                parameters.Add("@EMAIL_UNSUB", chkUser.EMAIL_UNSUB);
+                parameters.Add("@EMAIL_COMP", chkUser.EMAIL_COMP);
+                parameters.Add("@EMAIL_LAST_TRANS", chkUser.EMAIL_LAST_TRANS);
+                parameters.Add("@INDIV_ID", Convert.ToInt32(chkUser.INDIV_ID));
+                currentSession.Connection.Execute("usp_save_campaign_history", parameters, commandType: CommandType.StoredProcedure);
+                retuser.indiv_id = chkUser.INDIV_ID;
+                retuser.code = SurveyStatusCodes.Success;
+                retuser.status = "Success";
+                retuser.desc = "";
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("SaveCampaignHistoryException: " + ex.ToString());
+            }
+
+            return retuser;
+
+        }
 
     }
     //public class TextMessenger : Messenger

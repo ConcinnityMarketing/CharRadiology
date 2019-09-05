@@ -631,6 +631,224 @@ namespace EnvoyService.Core.Models
         [DataMember]
         public DateTime BIRTH_DATE { get; set; }
     }
+    public class CustomerSearch
+    {
+        public int INDIV_ID { get; set; }
+        public string MRN { get; set; }
+        public string NAME_PREFIX { get; set; }
+        public string FIRST_NAME { get; set; }
+        public string MID_NAME { get; set; }
+        public string LAST_NAME { get; set; }
+        public string NAME_SUFX { get; set; }
+        public string GENDER { get; set; }
+        public DateTime BIRTH_DATE { get; set; }
+        public string ADDRESS1 { get; set; }
+        public string ADDRESS2 { get; set; }
+        public string CITY { get; set; }
+        public string STATE { get; set; }
+        public string ZIP { get; set; }
+        public string ZIP4 { get; set; }
+        public string STATUS { get; set; }
+        public string USPS_STATUS { get; set; }
+        public string USPS_OPT_CD { get; set; }
+        public string SMS_NUMBER { get; set; }
+        public string PHONE { get; set; }
+        public string EMAIL { get; set; }
+        public string EMAIL_STATUS { get; set; }
+        public string PHONE_STATUS { get; set; }
+        public string SMS_STATUS { get; set; }
+        public string PHONE_OPT_CD { get; set; }
+        public string EMAIL_OPT_CD { get; set; }
+        public string SMS_OPT_CD { get; set; }
+        public string INSURANCE_PROVIDER { get; set; }
+        public string EXAM_SCHEDULE { get; set; }
+        public string MAM_PATIENT_TYPE { get; set; }
+        public string CALLBACK_STATUS { get; set; }
+        public DateTime RETURN_DATE { get; set; }
+        public string FULL_NAME { get; set; }
+        public string CITY_STATE_ZIP { get; set; }
+        public string RETURN_EXAM_TYPE { get; set; }
+        public DateTime RECORD_CREATE_DATE { get; set; }
+        public DateTime LAST_TRANS_DATE { get; set; }
+        public DateTime LAST_UPDATE_DATE { get; set; }
+        public string EXTERNAL_REF_NUMBER { get; set; }
+        public string LOAD_PG_ID { get; set; }
+        public DateTime CM_CREATE_DATE { get; set; }
+        public string YOB { get; set; }
+        public string EFirst_Name { get; set; }
+        public string ELast_Name { get; set; }
+        public string EAddress1 { get; set; }
+        public DateTime EBirth_Date { get; set; }
+        public string MOB { get; set; }
+        public CustomerSearch()
+        {
+        }
+        public CustomerSearch
+            (
+            int eINDIV_ID,
+            string eMRN,
+            string eNAME_PREFIX,
+            string eFIRST_NAME,
+            string eMID_NAME,
+            string eLAST_NAME,
+            string eNAME_SUFX,
+            string eGENDER,
+            DateTime eBIRTH_DATE,
+            string eADDRESS1,
+            string eADDRESS2,
+            string eCITY,
+            string eSTATE,
+            string eZIP,
+            string eZIP4,
+            string eSTATUS,
+            string eUSPS_STATUS,
+            string eUSPS_OPT_CD,
+            string eSMS_NUMBER,
+            string ePHONE,
+            string eEMAIL,
+            string eSMS_STATUS,
+            string eEMAIL_STATUS,
+            string ePHONE_STATUS,
+            string eINSURANCE_PROVIDER,
+            string ePHONE_OPT_CD,
+            string eEMAIL_OPT_CD,
+            string eTEXT_MESSAGE_OPT_CD,
+            string eEXAM_SCHEDULE,
+            DateTime eFIRST_RESPONSE_DATE,
+            string eMAM_PATIENT_TYPE,
+            string eCALLBACK_STATUS,
+            DateTime eRETURN_DATE,
+            string eFULL_NAME,
+            string eCITY_STATE_ZIP,
+            DateTime eRECORD_CREATE_DATE,
+            string eRETURN_EXAM_TYPE,
+            DateTime eLAST_TRANS_DATE,
+            DateTime eLAST_UPDATE_DATE,
+            string eEXTERNAL_REF_NUMBER,
+            string eLOAD_PG_ID,
+            DateTime eCM_CREATE_DATE,
+            string eYOB,
+            string eEFirst_Name,
+            string eELast_Name,
+            string eEAddress1,
+            DateTime eEBirth_Date,
+            string eMOB
+            )
+        {
+            this.INDIV_ID = eINDIV_ID;
+            this.MRN = eMRN;
+            this.NAME_PREFIX = eNAME_PREFIX;
+            this.FIRST_NAME = eFIRST_NAME;
+            this.MID_NAME = eMID_NAME;
+            this.LAST_NAME = eLAST_NAME;
+            this.NAME_SUFX = eNAME_SUFX;
+            this.GENDER = eGENDER;
+            this.BIRTH_DATE = eBIRTH_DATE;
+            this.ADDRESS1 = eADDRESS1;
+            this.ADDRESS2 = eADDRESS2;
+            this.CITY = eCITY;
+            this.STATE = eSTATE;
+            this.ZIP = eZIP;
+            this.ZIP4 = eZIP4;
+            this.INSURANCE_PROVIDER = eINSURANCE_PROVIDER;
+            this.STATUS = eSTATUS;
+            this.USPS_STATUS = eUSPS_STATUS;
+            this.USPS_OPT_CD = eUSPS_OPT_CD;
+            this.EXAM_SCHEDULE = eEXAM_SCHEDULE;
+            this.PHONE = ePHONE;
+            this.EMAIL = eEMAIL;
+            this.SMS_NUMBER = eSMS_NUMBER;
+            this.EMAIL_STATUS = eEMAIL_STATUS;
+            this.PHONE_STATUS = ePHONE_STATUS;
+            this.SMS_STATUS = eSMS_STATUS;
+            this.PHONE_OPT_CD = ePHONE_OPT_CD;
+            this.EMAIL_OPT_CD = eEMAIL_OPT_CD;
+            this.SMS_OPT_CD = eTEXT_MESSAGE_OPT_CD;
+            this.MAM_PATIENT_TYPE = eMAM_PATIENT_TYPE;
+            this.CALLBACK_STATUS = eCALLBACK_STATUS;
+            this.RETURN_DATE = eRETURN_DATE;
+            this.RETURN_EXAM_TYPE = eRETURN_EXAM_TYPE;
+            this.RECORD_CREATE_DATE = eRECORD_CREATE_DATE;
+            this.FULL_NAME = eFULL_NAME;
+            this.CITY_STATE_ZIP = eCITY_STATE_ZIP;
+            this.LAST_TRANS_DATE = eLAST_TRANS_DATE;
+            this.LAST_UPDATE_DATE = eLAST_UPDATE_DATE;
+            this.EXTERNAL_REF_NUMBER = eEXTERNAL_REF_NUMBER;
+            this.LOAD_PG_ID = eLOAD_PG_ID;
+            this.CM_CREATE_DATE = eCM_CREATE_DATE;
+            this.YOB = eYOB;
+            this.EFirst_Name = eEFirst_Name;
+            this.ELast_Name = eELast_Name;
+            this.EAddress1 = eEAddress1;
+            this.EBirth_Date = eEBirth_Date;
+            this.MOB = eMOB;
+        }
+    }
+    [DataContract]
+    public class CampaignHistoryCustomerReturn
+    {
+        [DataMember]
+        public string status { get; set; }
+        [DataMember]
+        public GenericStatusCodes code { get; set; }
+        [DataMember]
+        public string desc { get; set; }
+        [DataMember]
+        public List<CustomerSearch> CustomerSearchList { get; set; }
+    }
+
+    public class CampaignHistoryData
+    {
+        public string MFID { get; set; }
+        public int INDIV_ID { get; set; }
+        public string SEED { get; set; }
+        public string CLIENT { get; set; }
+        public Int16 PG_ID { get; set; }
+        public string CHECK_DIGIT { get; set; }
+        public string PIN { get; set; }
+        public DateTime EXTRACT_DATE { get; set; }
+        public string EXTERNAL_REF_NUM { get; set; }
+        public string NAME_PREFIX { get; set; }
+        public string FIRST_NAME { get; set; }
+        public string MID_NAME { get; set; }
+        public string LAST_NAME { get; set; }
+        public string NAME_SUFX { get; set; }
+        public string FULLNAME { get; set; }
+        public string GENDER { get; set; }
+        public DateTime BIRTH_DATE { get; set; }
+        public string ADDRESS1 { get; set; }
+        public string ADDRESS2 { get; set; }
+        public string CITY { get; set; }
+        public string STATE { get; set; }
+        public string ZIP { get; set; }
+        public string ZIP4 { get; set; }
+        public string CITYSTATEZIP { get; set; }
+        public string STATUS { get; set; }
+        public string USPS_STATUS { get; set; }
+        public string USPS_OPT_CD { get; set; }
+        public string PHONE { get; set; }
+        public string EMAIL { get; set; }
+        public string TEXT_MESSAGE { get; set; }
+        public string EMAIL_STATUS { get; set; }
+        public string PHONE_STATUS { get; set; }
+        public string TEXT_MESSAGE_STATUS { get; set; }
+        public string PHONE_OPT_CD { get; set; }
+        public string EMAIL_OPT_CD { get; set; }
+        public string TEXT_MESSAGE_OPT_CD { get; set; }
+        public string SIGNATURE { get; set; }
+        public string HHKEY { get; set; }
+        public string UNDELIV_FLG { get; set; }
+        public string UNDELIV_REASON_CD { get; set; }
+        public string CHANNEL { get; set; }
+        public int EMAIL_CPGN_ID { get; set; }
+        public DateTime BLAST_DATE { get; set; }
+        public string EMAIL_OPEN { get; set; }
+        public string EMAIL_BOUNCE { get; set; }
+        public string EMAIL_CLICK { get; set; }
+        public string EMAIL_COMP { get; set; }
+        public string EMAIL_UNSUB { get; set; }
+        public string EMAIL_LAST_TRANS { get; set; }
+    }
 
     public class Account
     {

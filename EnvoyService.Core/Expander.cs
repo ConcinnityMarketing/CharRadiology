@@ -86,7 +86,7 @@ namespace EnvoyService.Core
             DateTime dtToday = DateTime.Today;
             IEnumerable results = currentSession.Connection.Query(@"SELECT  [CC_RECNUM] ,CC.INDIV_ID ,[CHANNEL] ,[MFID] ,[FLOW_ID] ,[REC_CREATE_DATE] ,[CC_STATUS] ,[ACTIVATE_DATE], EMAIL, PHONE
                                                                      FROM CUSTOMER_COMMUNICATIONS CC INNER JOIN CUSTOMER_PROFILE CP ON CP.INDIV_ID = CC.INDIV_ID
-                                                                    WHERE ( CC_STATUS = 'ACTIVE' AND ACTIVATE_DATE = '" + dtToday + "')");
+                                                                    WHERE ( CC_STATUS = 'NEW' AND ACTIVATE_DATE = '" + dtToday + "')");
             List<Communication> comList = new List<Communication>();
             foreach (dynamic row in results)
             {
