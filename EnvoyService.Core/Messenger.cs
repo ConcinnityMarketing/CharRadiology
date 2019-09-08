@@ -122,7 +122,7 @@ namespace EnvoyService.Core
                 foreach (dynamic row in results)
                 {
                     emailList.Add(new MessageModel(row.INDIV_ID, row.MFID, row.EMAIL, row.FIRST_NAME, row.LAST_NAME, row.ADDRESS1, row.CITY,
-                                                       row.STATE, row.ZIP, row.CHANNEL, row.MESSAGE_DT, row.STATUS, row.UPDATE_DT, row.MESSAGE_SEQ, row.MD_RECNUM, row.PHONE));
+                                                       row.STATE, row.ZIP, row.CHANNEL, row.MESSAGE_DT, row.STATUS, row.UPDATE_DT, row.MESSAGE_SEQ, row.MD_RECNUM, row.PHONE, 0));
                     // Update Contact On Database to Interim status
 
                     //sql = "update RECUR_EMAIL set RECUR_STATUS = 'I' where indiv_id = " + row.INDIV_ID + " AND RECUR_TYPE = '" + row.RECUR_TYPE + "'";
@@ -413,6 +413,7 @@ namespace EnvoyService.Core
                         }
                         CreateProcessGroupHistoryEntry(processGroupId, "Copying List To Completed", 0, 1030);
                         string retList = MoveToList(client, acc, relist);
+                        CampaignReturn cr = new CampaignReturn();
                         // Cleanup Contacts On Database that were sent the email and set to processed
                         foreach (MessageModel em in emailList)
                         {
@@ -422,6 +423,9 @@ namespace EnvoyService.Core
                             {
                                 string sql = "update CUSTOMER_MESSAGE_DETAIL set STATUS = 'P', ACTUAL_DT = GETDATE() where MD_RECNUM = " + em.MD_RECNUM;
                                 ExecuteSQL(sql);
+                                // Store Campaign History Record
+                                em.PG_ID = processGroupId;
+                                cr = CampaignHistoryProcess(em);
                             }
 
                         }
@@ -885,63 +889,107 @@ namespace EnvoyService.Core
             return accList;
 
         }
-        public List<CustomerSearch> GetCustomerDetails(string strIndivID)
+        public static List<CustomerSearch> GetCustomerDetails(string strIndivID)
         {
             var currentSession = sessionFactory.GetCurrentSession();
-            IEnumerable results = currentSession.Connection.Query(@" exec usp_get_customer_info @IndivID", new { @IndivID = strIndivID });
-
             List<CustomerSearch> customerSearchList = new List<CustomerSearch>();
-
-            foreach (dynamic row in results)
+            try
             {
-                customerSearchList.Add(new CustomerSearch(row.INDIV_ID, row.MRN, row.NAME_PREFIX, row.FIRST_NAME, row.MID_NAME, row.LAST_NAME, row.NAME_SUFX, row.GENDER, row.BIRTH_DATE,
-                                                          row.ADDRESS1,  row.ADDRESS2,  row.CITY, row.STATE, row.ZIP, row.ZIP4, row.STATUS, row.USPS_STATUS, row.USPS_OPT_CD, row.SMS_NUMBER,
-                                                          row.PHONE, row.EMAIL,  row.SMS_STATUS, row.EMAIL_STATUS, row.PHONE_STATUS, row.INSURANCE_PROVIDER, row.PHONE_OPT_CD, row.EMAIL_OPT_CD,
-                                                          row.TEXT_MESSAGE_OPT_CD, row.EXAM_SCHEDULE, row.FIRST_RESPONSE_DATE, row.MAM_PATIENT_TYPE, row.CALLBACK_STATUS, row.RETURN_DATE, row.FULL_NAME,
-                                                          row.CITY_STATE_ZIP, row.RECORD_CREATE_DATE, row.RETURN_EXAM_TYPE, row.LAST_TRANS_DATE, row.LAST_UPDATE_DATE, row.EXTERNAL_REF_NUMBER,
-                                                          row.LOAD_PG_ID, row.CM_CREATE_DATE, row.YOB, row.EFirst_Name, row.ELast_Name, row.EAddress1, row.EBirth_Date, row.MOB));
+                IEnumerable results = currentSession.Connection.Query(@" exec usp_get_customer_info @IndivID", new { @IndivID = strIndivID });
+                foreach (dynamic row in results)
+                {
+                    customerSearchList.Add(new CustomerSearch(row.INDIV_ID, row.MRN, row.NAME_PREFIX, row.FIRST_NAME, row.MID_NAME, row.LAST_NAME, row.NAME_SUFX, row.GENDER, row.BIRTH_DATE,
+                                                              row.ADDRESS1, row.ADDRESS2, row.CITY, row.STATE, row.ZIP, row.ZIP4, row.STATUS, row.USPS_STATUS, row.USPS_OPT_CD, row.SMS_NUMBER,
+                                                              row.PHONE, row.EMAIL, row.SMS_STATUS, row.EMAIL_STATUS, row.PHONE_STATUS, row.INSURANCE_PROVIDER, row.PHONE_OPT_CD, row.EMAIL_OPT_CD,
+                                                              row.TEXT_MESSAGE_OPT_CD, row.EXAM_SCHEDULE, row.FIRST_RESPONSE_DATE, row.MAM_PATIENT_TYPE, row.CALLBACK_STATUS, row.RETURN_DATE, row.FULL_NAME,
+                                                              row.CITY_STATE_ZIP, row.RECORD_CREATE_DATE, row.RETURN_EXAM_TYPE, row.LAST_TRANS_DATE, row.LAST_UPDATE_DATE, row.EXTERNAL_REF_NUMBER,
+                                                              row.LOAD_PG_ID, row.CM_CREATE_DATE, row.YOB, row.EFirst_Name, row.ELast_Name, row.EAddress1, row.EBirth_Date, row.MOB));
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("GetCustomerDetails Exception: " + ex.ToString());
             }
             return customerSearchList;
         }
-
-        protected CampaignHistoryCustomerReturn GetCustomerCampaignInfo(PinEntryData chkUser)
+        protected static CampaignReturn CampaignHistoryProcess(MessageModel mm)
+        {
+            CampaignReturn retUser = new CampaignReturn();
+            CampaignHistoryCustomerReturn chr = new CampaignHistoryCustomerReturn();
+            
+            try
+            {
+                chr = GetCustomerCampaignInfo(mm);
+                retUser = SaveCampaignHistory(chr.campaignHistoryData);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("CampaignHistoryProcess Exception: " + ex.ToString());
+            }
+            return retUser;
+        }
+        protected static CampaignHistoryCustomerReturn GetCustomerCampaignInfo(MessageModel chkUser)
         {
             CampaignHistoryCustomerReturn user = new CampaignHistoryCustomerReturn();
+            CampaignHistoryData cd = new CampaignHistoryData();
             Profile pro = new Profile();
             try
             {
                 var currentSession = sessionFactory.GetCurrentSession();
                 List<CustomerSearch> searchlist = new List<CustomerSearch>();
-                searchlist = GetCustomerDetails(chkUser.pin);
-                user.CustomerSearchList = searchlist;
-                //foreach (CustomerSearch row in searchlist)
-                //{
-                //    pro.first_name = row.FIRST;
-                //    pro.last_name = row.LAST;
-                //    pro.address1 = row.ADDRESS1;
-                //    pro.address2 = row.ADDRESS2;
-                //    pro.city = row.CITY;
-                //    pro.state = row.STATE;
-                //    pro.zip = row.ZIP;
-                //    pro.phone = row.PHONE;
-                //    pro.birth_date = Convert.ToDateTime(row.BIRTH_DATE);
-                //    pro.email = row.EMAIL;
-                //    pro.indiv_id = row.INDIV_ID;
-                //    pro.code = GenericStatusCodes.Success;
-                //    pro.status = "Success";
-                //    pro.desc = "";
-                //}
+                searchlist = GetCustomerDetails(chkUser.INDIV_ID.ToString());
+                //user.CustomerSearchList = searchlist;
+                foreach (CustomerSearch row in searchlist)
+                {
+                    cd.FIRST_NAME = row.FIRST_NAME;
+                    cd.INDIV_ID = row.INDIV_ID;
+                    cd.MFID = chkUser.MFID;
+                    cd.CLIENT = "CRAD";
+                    cd.NAME_PREFIX = row.NAME_PREFIX;
+                    cd.FIRST_NAME = row.FIRST_NAME;
+                    cd.MID_NAME = row.MID_NAME;
+                    cd.LAST_NAME = row.LAST_NAME;
+                    cd.NAME_SUFX = row.NAME_SUFX;
+                    cd.GENDER = row.GENDER;
+                    cd.BIRTH_DATE = row.BIRTH_DATE;
+                    cd.ADDRESS1 = row.ADDRESS1;
+                    cd.ADDRESS2 = row.ADDRESS2;
+                    cd.CITY = row.CITY;
+                    cd.STATE = row.STATE;
+                    cd.ZIP = row.ZIP;
+                    cd.ZIP4 = row.ZIP4;
+                    cd.CITYSTATEZIP = row.CITY_STATE_ZIP;
+                    cd.FULLNAME = row.FULL_NAME;
+                    cd.STATUS = row.STATUS;
+                    cd.USPS_STATUS = row.USPS_STATUS;
+                    cd.USPS_OPT_CD = row.USPS_OPT_CD;
+                    cd.PHONE = row.PHONE;
+                    cd.EMAIL = row.EMAIL;
+                    cd.TEXT_MESSAGE = row.SMS_NUMBER;
+                    cd.EMAIL_STATUS = row.EMAIL_STATUS;
+                    cd.PHONE_STATUS = row.PHONE_STATUS;
+                    cd.TEXT_MESSAGE_STATUS = row.SMS_STATUS;
+                    cd.PHONE_OPT_CD = row.PHONE_OPT_CD;
+                    cd.EMAIL_OPT_CD = row.EMAIL_OPT_CD;
+                    cd.TEXT_MESSAGE_OPT_CD = row.SMS_OPT_CD;
+                    cd.CHANNEL = chkUser.CHANNEL;
+                    cd.BLAST_DATE = DateTime.Today;
+                    cd.EXTRACT_DATE = DateTime.Today;
+                    cd.EXTERNAL_REF_NUM = row.EXTERNAL_REF_NUMBER;
+                    cd.PG_ID = chkUser.PG_ID;
+                }
+                user.campaignHistoryData = cd;
             }
             catch (Exception ex)
             {
-                throw new Exception("GetUserInfo Exception: " + ex.ToString());
+                throw new Exception("GetCustomerCampaignInfo Exception: " + ex.ToString());
             }
             return user;
         }
 
-        protected SurveyReturn SaveCampaignHistory(CampaignHistoryData chkUser)
+        protected static CampaignReturn SaveCampaignHistory(CampaignHistoryData chkUser)
         {
-            SurveyReturn retuser = new SurveyReturn();
+            CampaignReturn retuser = new CampaignReturn();
             //ConsumerClass CustomerObject = new ConsumerClass();
             //AddrStndReturn retaddr = new AddrStndReturn();
             //AgeVerifData avfdata = new AgeVerifData();
@@ -1032,8 +1080,8 @@ namespace EnvoyService.Core
                 parameters.Add("@EMAIL_LAST_TRANS", chkUser.EMAIL_LAST_TRANS);
                 parameters.Add("@INDIV_ID", Convert.ToInt32(chkUser.INDIV_ID));
                 currentSession.Connection.Execute("usp_save_campaign_history", parameters, commandType: CommandType.StoredProcedure);
-                retuser.indiv_id = chkUser.INDIV_ID;
-                retuser.code = SurveyStatusCodes.Success;
+                //retuser.indiv_id = chkUser.INDIV_ID;
+                retuser.code = GenericStatusCodes.Success;
                 retuser.status = "Success";
                 retuser.desc = "";
 

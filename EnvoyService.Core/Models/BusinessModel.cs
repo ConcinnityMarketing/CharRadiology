@@ -193,6 +193,16 @@ namespace EnvoyService.Core.Models
         public string desc { get; set; }
     }
     [DataContract]
+    public class CampaignReturn
+    {
+        [DataMember]
+        public string status { get; set; }
+        [DataMember]
+        public GenericStatusCodes code { get; set; }
+        [DataMember]
+        public string desc { get; set; }
+    }
+    [DataContract]
     public class ResponseCodeReturn
     {
         [DataMember]
@@ -794,7 +804,7 @@ namespace EnvoyService.Core.Models
         [DataMember]
         public string desc { get; set; }
         [DataMember]
-        public List<CustomerSearch> CustomerSearchList { get; set; }
+        public CampaignHistoryData campaignHistoryData { get; set; }
     }
 
     public class CampaignHistoryData
@@ -803,7 +813,7 @@ namespace EnvoyService.Core.Models
         public int INDIV_ID { get; set; }
         public string SEED { get; set; }
         public string CLIENT { get; set; }
-        public Int16 PG_ID { get; set; }
+        public int PG_ID { get; set; }
         public string CHECK_DIGIT { get; set; }
         public string PIN { get; set; }
         public DateTime EXTRACT_DATE { get; set; }
@@ -918,6 +928,8 @@ namespace EnvoyService.Core.Models
         public int MESSAGE_SEQ { get; set; }
         public int MD_RECNUM { get; set; }
         public string PHONE { get; set; }
+        public int PG_ID { get; set; }
+
         //public string OFFER_CODE { get; set; }
         //public string CHILD_NAME { get; set; }
         public MessageModel()
@@ -925,7 +937,7 @@ namespace EnvoyService.Core.Models
 
         }
         public MessageModel(int eINDIV_ID, string eMFID, string eEMAIL, string eFIRST_NAME, string eLAST_NAME, string eADDRESS1, string eCITY, string eSTATE, string eZIP,
-                                string eCHANNEL, DateTime? eMESSAGE_DT, string eSTATUS, DateTime? eUPDATE_DT, int eMESSAGE_SEQ, int eMD_RECNUM, string ePHONE)
+                                string eCHANNEL, DateTime? eMESSAGE_DT, string eSTATUS, DateTime? eUPDATE_DT, int eMESSAGE_SEQ, int eMD_RECNUM, string ePHONE, Int16 ePG_ID)
         {
             this.INDIV_ID = eINDIV_ID;
             this.MFID = eMFID;
@@ -943,6 +955,7 @@ namespace EnvoyService.Core.Models
             this.MESSAGE_SEQ = eMESSAGE_SEQ;
             this.MD_RECNUM = eMD_RECNUM;
             this.PHONE = ePHONE;
+            this.PG_ID = ePG_ID;
             //this.OFFER_CODE = eOFFER_CODE;
             //this.CHILD_NAME = eCHILD_NAME;
         }
