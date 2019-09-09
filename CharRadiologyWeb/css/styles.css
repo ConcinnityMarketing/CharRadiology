@@ -1,0 +1,262 @@
+@font-face {
+    font-family: 'bebasregular';
+    src: url('../fonts/bebas-regular-webfont.woff2') format('woff2'),
+         url('../fonts/bebas-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'bebasneue-book';
+    src: url('../fonts/bebasneue-book-webfont.woff2') format('woff2'),
+         url('../fonts/bebasneue-book-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+.banner {
+ display: table;
+ width: 100%;
+}
+.hero {
+ display: table-cell;
+ vertical-align: middle;
+ height: 100%;
+ margin: 0 auto;
+}
+
+html {
+    line-height: 1.15;
+    -webkit-text-size-adjust: 100%;
+    font-size: 16px;
+    color: #ffffff;
+}
+
+body {
+    font-family: "HelveticaNeue", Helvetica, Arial, sans-serif;
+    font-weight: 300;
+    /* color: #ffffff; */
+}
+#ntp {
+    width: 100%;
+max-width: 310px;
+height: auto;
+}
+.jumbotron {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    margin-bottom: 0px;
+    color: inherit;
+    background-color: #eee;
+}
+label {
+    color:#c7c7c7;
+}
+#header {
+    background-image: url(../images/main-image.jpg);
+    
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    /* height: 65vh; */
+    min-height: 600px;
+    padding-bottom: 25px;
+}
+    #header:after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        top: 0;
+        left: 0;
+        height: 100%;
+        z-index: 0;
+        background: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,0.35)), color-stop(50%, rgba(0,0,0,0)), to(rgba(0,0,0,0.35)));
+        background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.35) 100%);
+    }
+
+    #header .text-center {
+        z-index: 2;
+    }
+/* h1 {
+    font-size: 4rem !important;
+    font-weight: 300 !important;
+    color: #fff !important;
+    letter-spacing: -1px !important;
+} */
+h1 {
+    font-family: 'bebasneue-book';
+    font-size: 5.4rem !important;
+    font-weight: 300 !important;
+    color: #fff !important;
+    margin: 0 !important;
+    letter-spacing: -1px !important;
+    text-transform: uppercase !important;
+}
+h2 {
+    font-family: 'bebasneue-book'!important;
+    font-size: 2.25rem !important;
+    font-weight: 300 !important;
+    color: #fff !important;
+    margin-top: 10px !important;
+    letter-spacing: -1px !important;
+    text-transform: uppercase !important;
+}
+#mobile {
+    display: none;
+}
+/* Small Devices, Tablets */
+@media only screen and (max-width : 768px) {
+    #mobile {
+        display: block;
+        font-size: 2.5rem !important;
+        padding-top: 50%;
+    }
+    .formobile {
+        display: none;
+    }
+}
+.btn-submit {
+    color: #fff;
+    background-color: #fbae17;
+    border-color: #eea236;
+}
+#info {
+    background-color: #191942;
+    padding: 40px 0;
+}
+#links {
+    background-color: #313283;
+    height: 10px;
+}
+#footer {
+    background-color: #1a1a1a;
+    color: rgba(255,255,255,0.6);
+    font-weight: 300;
+    padding: 25px 0 40px 0;
+}
+
+#footer p {
+    line-height: 1.5rem;
+    margin: 0;
+    padding-top: 10px;
+    text-align: center;
+
+}
+#footer img.logo-footer {
+    width: 100%;
+    max-width: 100px;
+}
+
+@media only screen and (max-width: 1199px) {
+    html {
+        font-size: 15px;
+    }
+}
+
+@media only screen and (max-width: 991px) {
+    #header h1, #header h2 span {
+        display: none;
+    }
+
+    #info .main-links {
+        padding: 0;
+        margin-top: -70px;
+    }
+
+    #top {
+        position: relative;
+        background-color: #fff;
+        padding: 0;
+    }
+
+        #top .logo {
+            width: 30%;
+            padding: 10px 20px 10px 0;
+        }
+
+    .logo-description {
+        width: 70%;
+        height: 100%;
+        color: #313283;
+        font-size: 1.2rem;
+        line-height: 1.5rem;
+        letter-spacing: 1px;
+        padding-left: 60px;
+        font-weight: 500;
+        text-transform: uppercase;
+    }
+
+    #header {
+        height: auto;
+        min-height: 350px;
+        padding-bottom: 60px;
+        padding-bottom: 60px;
+        background-position: top right;
+    }
+
+        #header h1 strong {
+            display: block;
+        }
+
+        #header h2 {
+            margin: 0;
+            font-size: 3rem;
+        }
+}
+
+@media only screen and (min-width: 992px) and (max-height: 768px) {
+    #header {
+        min-height: auto;
+        height: 88vh;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    h1 {
+        font-size: 3rem;
+    }
+
+    .logo-description {
+        font-size: 1rem;
+        line-height: 1.2rem;
+        padding-left: 30px;
+    }
+
+    .main-links a {
+        margin-bottom: 15px;
+    }
+
+    #header h2 {
+        padding: 0 60px;
+    }
+
+    .content p {
+        text-align: center;
+    }
+}
+
+@media only screen and (max-width: 575px) {
+    html {
+        font-size: 14px;
+    }
+
+    h1 {
+        font-size: 10vw;
+    }
+
+    .logo-description {
+        font-size: 0.84rem;
+        padding-left: 0px;
+    }
+
+    #footer small {
+        padding-top: 20px;
+    }
+
+    #footer img.logo-footer {
+        padding-bottom: 20px;
+    }
+
+    #header h2 {
+        padding: 0 30px;
+        font-size: 2.5rem;
+    }
+}
