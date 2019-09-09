@@ -129,6 +129,211 @@ namespace EnvoyService.Core.Services
 
 
         }
+        protected MatchKey CreateMatchKey(ProfileData chkUser)
+        {
+            MatchKey retKey = new MatchKey();
+            //ConsumerClass CustomerObject = new ConsumerClass();
+            Profile user = new Profile();
+            try
+            {
+                //user = GetCustomerInfo(Convert.ToInt32(chkUser.INDIV_ID));
+                //user.indiv_id = Convert.ToInt32(chkUser.INDIV_ID);
+                string zip4 = "";
+                retKey.namekey = string.Empty;
+                retKey.hhkey = string.Empty;
+                chkUser.LAST_NAME = string.IsNullOrEmpty(chkUser.LAST_NAME) ? "|" : chkUser.LAST_NAME;
+                if (chkUser.LAST_NAME.Length < 3)
+                {
+                    for (int i = 1; i <= 3 - chkUser.LAST_NAME.Length; i++)
+                    {
+                        chkUser.LAST_NAME += "|";
+                    }
+                }
+                chkUser.FIRST_NAME = string.IsNullOrEmpty(chkUser.FIRST_NAME) ? "|" : chkUser.FIRST_NAME;
+                if (chkUser.FIRST_NAME.Length < 3)
+                {
+                    for (int i = 1; i <= 3 - chkUser.FIRST_NAME.Length; i++)
+                    {
+                        chkUser.FIRST_NAME += "|";
+                    }
+                }
+                retKey.namekey = chkUser.ZIP + Convert.ToDateTime(chkUser.BIRTH_DATE).ToString("yyyyMMdd") + chkUser.LAST_NAME.Substring(0, 3).ToUpper() + chkUser.FIRST_NAME.Substring(0, 2).ToUpper();
+                string strAddress1 = string.IsNullOrEmpty(chkUser.ADDRESS1) ? "|" : chkUser.ADDRESS1;
+                string strAddress2 = string.IsNullOrEmpty(chkUser.ADDRESS2) ? "|" : chkUser.ADDRESS2;
+                string strZip4 = string.IsNullOrEmpty(chkUser.ZIP4) ? "0000" : zip4;
+                string strTempHouseNum = strAddress1.IndexOf(" ") <= 0 ? "|" : strAddress1.Substring(0, strAddress1.IndexOf(" "));
+                string strHouseNum = string.IsNullOrEmpty(strTempHouseNum) ? "|" : strTempHouseNum;
+                string strHHKey = user.zip + "-" + strZip4 + "-" + strHouseNum + "-" + strAddress2;
+
+                retKey.hhkey = strHHKey.Length > 60 ? strHHKey.Substring(0, 60) : strHHKey;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("CreateMatchKey Exception: " + ex.ToString());
+            }
+            return retKey;
+        }
+        protected int CheckDupCustomer(ProfileData chkUser)
+        {
+            int MatchID = 0;
+            var currentSession = sessionFactory.GetCurrentSession();
+            try
+            {
+                MatchKey matchkey = new MatchKey();
+                matchkey = CreateMatchKey(chkUser);
+                string fixVal = matchkey.namekey;
+                fixVal = fixVal.Replace("'", "''");
+                var sb = new StringBuilder();
+                //if (String.IsNullOrEmpty(chkUser.INDIV_ID))
+                //    chkUser.INDIV_ID = "0";
+                sb.AppendFormat("SELECT TOP (1) INDIV_ID FROM MATCH_CUSTOMER WHERE MATCHKEY = '");
+                //if (!String.IsNullOrEmpty(chkUser.INDIV_ID))
+                if (string.IsNullOrEmpty(chkUser.INDIV_ID))
+                    sb.Append(fixVal + "' AND INDIV_ID <> " + chkUser.INDIV_ID);
+                else
+                    sb.Append(fixVal + "'");
+                MatchID = currentSession.Connection.Query<int>(sb.ToString()).FirstOrDefault();
+                if (MatchID == 0)
+                {
+                    sb = new StringBuilder();
+                    sb.AppendFormat("SELECT TOP (1) INDIV_ID FROM CUSTOMER_PROFILE WHERE EMAIL = '");
+                    sb.Append(chkUser.EMAIL.Trim() + "' AND INDIV_ID <> " + chkUser.INDIV_ID + " ORDER BY LAST_UPDATE_DATE DESC");
+                    MatchID = currentSession.Connection.Query<int>(sb.ToString()).FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("CheckDupCustomer Exception: " + ex.ToString());
+            }
+            return MatchID;
+        }
+
+        public RegisterReturn Register(ProfileData chkUser)
+        {
+            RegisterReturn retuser = new RegisterReturn();
+            ConsumerClass CustomerObject = new ConsumerClass();
+            AddrStndReturn retaddr = new AddrStndReturn();
+            AgeVerifData avfdata = new AgeVerifData();
+            try
+            {
+                var GUID = "963b4e28-15a2-46aa-bbc7-3dcbc44c62b4";
+
+                var currentSession = sessionFactory.GetCurrentSession();
+                //CustomerObject.ConnectionString = currentSession.Connection.ConnectionString;
+                //chkUser.INDIV_ID = CustomerObject.GetNextIndivId(GUID);
+
+                avfdata.ADDRESS1 = chkUser.ADDRESS1;
+                avfdata.ADDRESS2 = chkUser.ADDRESS2;
+                avfdata.CITY = chkUser.CITY;
+                avfdata.STATE = chkUser.STATE;
+                avfdata.ZIP = chkUser.ZIP;
+                retaddr = AddressStandardize(avfdata);
+
+                chkUser.ADDRESS1 = retaddr.ADDRESS1;
+                chkUser.ADDRESS2 = retaddr.ADDRESS2;
+                chkUser.CITY = retaddr.CITY;
+                chkUser.STATE = retaddr.STATE;
+                chkUser.ZIP = retaddr.ZIP;
+                chkUser.ZIP4 = retaddr.ZIP4;
+
+                DateTime dateCheck;
+                string strDOB;
+
+                chkUser.BIRTH_DATE = string.IsNullOrEmpty(chkUser.BIRTH_DATE) || !(DateTime.TryParse(chkUser.BIRTH_DATE, out dateCheck)) ? DateTime.Today.ToString() : chkUser.BIRTH_DATE;
+
+                //int intIndivID = CheckDupCustomer(chkUser);
+                //if (intIndivID == 0)
+                //{
+                //  retuser = SaveCustProfile(chkUser);
+                retuser = SaveTankCustProfile(chkUser);
+                chkUser.INDIV_ID = retuser.indiv_id.ToString();
+                //}
+                //else
+                //{
+                //    chkUser.INDIV_ID = intIndivID;
+                //    retuser = UpdateCustProfile(chkUser);
+                //}
+                //retuser = SaveCustResponse(chkUser);
+
+                retuser.code = RegistrationStatusCodes.Success;
+                retuser.status = "Success";
+                retuser.desc = "";
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("RegisterException: " + ex.ToString());
+            }
+
+            return retuser;
+
+        }
+        protected RegisterReturn SaveTankCustProfile(ProfileData chkUser)
+        {
+            RegisterReturn retuser = new RegisterReturn();
+            try
+            {
+                var GUID = "963b4e28-15a2-46aa-bbc7-3dcbc44c62b4";
+
+                var currentSession = sessionFactory.GetCurrentSession();
+                var strEmpty = string.Empty;
+                //CustomerObject.ConnectionString = currentSession.Connection.ConnectionString;
+                //chkUser.INDIV_ID = CustomerObject.GetNextIndivId(GUID);
+                //avfdata.ADDRESS1 = chkUser.ADDRESS1;
+                //avfdata.ADDRESS2 = chkUser.ADDRESS2;
+                //avfdata.CITY = chkUser.CITY;
+                //avfdata.STATE = chkUser.STATE;
+                //avfdata.ZIP = chkUser.ZIP;
+                //retaddr = AddressStandardize(avfdata);
+
+                var parameters = new DynamicParameters();
+                parameters.Add("@WebUserId", chkUser.RESPONSE_CODE);
+                parameters.Add("@WebSource", "MultiWebSource");
+                parameters.Add("@WebVersion", "1.0");
+                parameters.Add("@IndivID", Convert.ToInt32(chkUser.INDIV_ID));
+                parameters.Add("@ResponseCode", chkUser.RESPONSE_CODE);
+                parameters.Add("@FirstName", chkUser.FIRST_NAME);
+                parameters.Add("@LastName", chkUser.LAST_NAME);
+                parameters.Add("@MidName", chkUser.MID_NAME);
+                parameters.Add("@Gender", chkUser.GENDER);
+                parameters.Add("@BirthDate ", Convert.ToDateTime(chkUser.BIRTH_DATE));
+                parameters.Add("@Address1 ", chkUser.ADDRESS1);
+                parameters.Add("@Address2 ", chkUser.ADDRESS2);
+                parameters.Add("@City", chkUser.CITY);
+                parameters.Add("@State", chkUser.STATE);
+                parameters.Add("@Zip", chkUser.ZIP);
+                parameters.Add("@EMail", chkUser.EMAIL);
+                parameters.Add("@Phone", chkUser.PHONE);
+                parameters.Add("@Status", "0");
+                parameters.Add("@EmailStatus", "");
+                parameters.Add("@MailStatus", "");
+                parameters.Add("@EmailOptCd", chkUser.EMAIL_OPT_CD);
+                parameters.Add("@MailOptCd", chkUser.USPS_OPT_CD);
+                parameters.Add("@TextOptCd", chkUser.TEXT_MESSAGE_OPT_CD);
+                parameters.Add("@MGMId", 0);
+                parameters.Add("@CustPwd", "");
+                parameters.Add("@Signature", "");
+                parameters.Add("@AVCode", "");
+                parameters.Add("@TheLat", string.IsNullOrEmpty(chkUser.LAT) ? 0 : Convert.ToDecimal(chkUser.LAT));
+                parameters.Add("@TheLong", string.IsNullOrEmpty(chkUser.LONG) ? 0 : Convert.ToDecimal(chkUser.LONG));
+                parameters.Add("@WebRecnumProf", dbType: DbType.Int32, direction: ParameterDirection.Output);
+                currentSession.Connection.Execute("usp_save_tank_cust_profile", parameters, commandType: CommandType.StoredProcedure);
+                retuser.TankRecNum = parameters.Get<int>("@WebRecnumProf");
+                retuser.indiv_id = Convert.ToInt32(chkUser.INDIV_ID);
+                retuser.code = RegistrationStatusCodes.Success;
+                retuser.status = "Success";
+                retuser.desc = "";
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("SaveTankCustProfile Exception: " + ex.ToString());
+            }
+
+            return retuser;
+
+        }
+
         public PinEntryReturn GetUserPinEntryInfo(PinEntryData chkUser)
         {
             PinEntryReturn user = new PinEntryReturn();

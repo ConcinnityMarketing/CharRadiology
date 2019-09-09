@@ -53,6 +53,11 @@ namespace EnvoyService
         [OperationContract]
         PinEntryReturn GetCustomerInfo(PinEntryData chkUser);
 
+        [WebInvoke(Method = "POST", UriTemplate = "Register", ResponseFormat = WebMessageFormat.Json,
+        BodyStyle = WebMessageBodyStyle.Wrapped, RequestFormat = WebMessageFormat.Json)]
+        [OperationContract]
+        RegisterReturn Register(ProfileData chkUser);
+
         [WebInvoke(Method = "POST", UriTemplate = "SaveCustQA", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json)]
         [OperationContract]
         SurveyReturn SaveCustQA(QAData chkUser);

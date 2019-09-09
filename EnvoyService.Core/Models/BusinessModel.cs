@@ -226,6 +226,12 @@ namespace EnvoyService.Core.Models
         [DataMember]
         public List<Admin> adminList { get; set; }
     }
+    public class MatchKey
+    {
+        public string namekey { get; set; }
+        public string hhkey { get; set; }
+    }
+
     [DataContract]
     public class ProfileData
     {

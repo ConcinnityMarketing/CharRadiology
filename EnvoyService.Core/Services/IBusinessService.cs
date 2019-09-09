@@ -24,6 +24,7 @@ namespace EnvoyService.Core.Services
         //MessageReturn CallNotify(CallNotification CallNotification, BusinessModel bm);
         string GetResponseCode(string Channel);
         CommunicationReturn GetCommunication(TestingData chkUser);
+        RegisterReturn Register(ProfileData chkUser);
 
     }
 }

@@ -199,6 +199,58 @@ namespace EnvoyService
             webreturn.code = GenericStatusCodes.Success;
             return webreturn;
         }
+        public RegisterReturn Register(ProfileData chkUser)
+        {
+            RegisterReturn webreturn = new RegisterReturn();
+            string Client =  "CHAR" ;
+            string Unit = "CONS";
+            string App = "WEB";
+            //string Environ = ConfigurationManager.AppSettings["Environment"].ToString();
+
+            //IDbConnection cn = new SqlConnection();
+            string errdesc = "";
+            IDbConnection cn = new SqlConnection();
+            try
+            {
+                string strConnection = getConnectionString(chkUser.ENV.ToUpper(), Client, Unit, App);
+                cn.ConnectionString = strConnection;
+                cn.Open();
+                SessionFactory = Setup(strConnection).BuildSessionFactory();
+
+                CurrentSessionContext.Bind(SessionFactory.OpenSession(cn));
+                businessService = new BusinessService(SessionFactory);
+                if (businessService.GetGUID() == chkUser.GUID)
+                {
+                    webreturn = businessService.Register(chkUser);
+                    webreturn.status = "success";
+                    webreturn.code = RegistrationStatusCodes.Success;
+                    webreturn.desc = "";
+                }
+                else
+                {
+                    errdesc = "Incorrect GUID in save Cust Response";
+                    SendErrorEmail(errdesc, chkUser.ENV.ToUpper());
+                    webreturn.status = "N";
+                    webreturn.code = RegistrationStatusCodes.Other;
+                    webreturn.desc = "Error - " + errdesc;
+                }
+            }
+            catch (Exception ex)
+            {
+                webreturn.status = "fail";
+                webreturn.code = RegistrationStatusCodes.Other;
+                errdesc = ex.ToString();
+                webreturn.desc = errdesc;
+                SendErrorEmail(errdesc, chkUser.ENV);
+            }
+            finally
+            {
+                SessionFactory.Close();
+            }
+
+            return webreturn;
+        }
+
         public List<State> StateList(GenericData Search)
         {
             List<State> customerList = new List<State>();
