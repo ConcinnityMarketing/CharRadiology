@@ -51,7 +51,7 @@ label {
     color:#c7c7c7;
 }
 #header {
-    background-image: url(../images/main-image.jpg);
+    /*background-image: url(../images/main-image.png);*/
     
     background-repeat: no-repeat;
     background-size: cover;

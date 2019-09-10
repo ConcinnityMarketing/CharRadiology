@@ -246,7 +246,7 @@ namespace EnvoyService.Core.Services
                 //{
                 //  retuser = SaveCustProfile(chkUser);
                 retuser = SaveTankCustProfile(chkUser);
-                chkUser.INDIV_ID = retuser.indiv_id.ToString();
+                //chkUser.INDIV_ID = retuser.indiv_id.ToString();
                 //}
                 //else
                 //{
@@ -287,39 +287,34 @@ namespace EnvoyService.Core.Services
                 //retaddr = AddressStandardize(avfdata);
 
                 var parameters = new DynamicParameters();
-                parameters.Add("@WebUserId", chkUser.RESPONSE_CODE);
-                parameters.Add("@WebSource", "MultiWebSource");
-                parameters.Add("@WebVersion", "1.0");
-                parameters.Add("@IndivID", Convert.ToInt32(chkUser.INDIV_ID));
-                parameters.Add("@ResponseCode", chkUser.RESPONSE_CODE);
-                parameters.Add("@FirstName", chkUser.FIRST_NAME);
-                parameters.Add("@LastName", chkUser.LAST_NAME);
-                parameters.Add("@MidName", chkUser.MID_NAME);
-                parameters.Add("@Gender", chkUser.GENDER);
-                parameters.Add("@BirthDate ", Convert.ToDateTime(chkUser.BIRTH_DATE));
-                parameters.Add("@Address1 ", chkUser.ADDRESS1);
-                parameters.Add("@Address2 ", chkUser.ADDRESS2);
-                parameters.Add("@City", chkUser.CITY);
-                parameters.Add("@State", chkUser.STATE);
-                parameters.Add("@Zip", chkUser.ZIP);
-                parameters.Add("@EMail", chkUser.EMAIL);
-                parameters.Add("@Phone", chkUser.PHONE);
-                parameters.Add("@Status", "0");
-                parameters.Add("@EmailStatus", "");
-                parameters.Add("@MailStatus", "");
-                parameters.Add("@EmailOptCd", chkUser.EMAIL_OPT_CD);
-                parameters.Add("@MailOptCd", chkUser.USPS_OPT_CD);
-                parameters.Add("@TextOptCd", chkUser.TEXT_MESSAGE_OPT_CD);
-                parameters.Add("@MGMId", 0);
-                parameters.Add("@CustPwd", "");
-                parameters.Add("@Signature", "");
-                parameters.Add("@AVCode", "");
-                parameters.Add("@TheLat", string.IsNullOrEmpty(chkUser.LAT) ? 0 : Convert.ToDecimal(chkUser.LAT));
-                parameters.Add("@TheLong", string.IsNullOrEmpty(chkUser.LONG) ? 0 : Convert.ToDecimal(chkUser.LONG));
-                parameters.Add("@WebRecnumProf", dbType: DbType.Int32, direction: ParameterDirection.Output);
-                currentSession.Connection.Execute("usp_save_tank_cust_profile", parameters, commandType: CommandType.StoredProcedure);
-                retuser.TankRecNum = parameters.Get<int>("@WebRecnumProf");
-                retuser.indiv_id = Convert.ToInt32(chkUser.INDIV_ID);
+                parameters.Add("@NAME_PREFIX", chkUser.NAME_PREFIX);
+                parameters.Add("@FIRST_NAME", chkUser.FIRST_NAME);
+                parameters.Add("@LAST_NAME", chkUser.LAST_NAME);
+                parameters.Add("@MID_NAME", chkUser.MID_NAME);
+                parameters.Add("@NAME_SUFX", chkUser.NAME_SUFX);
+                parameters.Add("@GENDER", chkUser.GENDER);
+                parameters.Add("@BIRTH_DATE ", Convert.ToDateTime(chkUser.BIRTH_DATE));
+                parameters.Add("@ADDRESS1 ", chkUser.ADDRESS1);
+                parameters.Add("@ADDRESS2 ", chkUser.ADDRESS2);
+                parameters.Add("@CITY", chkUser.CITY);
+                parameters.Add("@STATE", chkUser.STATE);
+                parameters.Add("@ZIP", chkUser.ZIP);
+                parameters.Add("@ZIP4", chkUser.ZIP4);
+                parameters.Add("@EMAIL", chkUser.EMAIL);
+                parameters.Add("@PHONE", chkUser.PHONE);
+                parameters.Add("@SMS_NUMBER", chkUser.TEXT_MESSAGE);
+                parameters.Add("@STATUS", "0");
+                parameters.Add("@EMAIL_STATUS", "");
+                parameters.Add("@USPS_STATUS", "");
+                parameters.Add("@PHONE_STATUS", "");
+                parameters.Add("@SMS_STATUS", "");
+                parameters.Add("@EMAIL_OPT_CD", chkUser.EMAIL_OPT_CD);
+                parameters.Add("@USPS_OPT_CD", chkUser.USPS_OPT_CD);
+                parameters.Add("@PHONE_OPT_CD", chkUser.PHONE_OPT_CD);
+                parameters.Add("@SMS_OPT_CD", chkUser.TEXT_MESSAGE_OPT_CD);
+                parameters.Add("@RESPONSE_CODE", chkUser.RESPONSE_CODE);
+                currentSession.Connection.Execute("usp_save_tank_cust_registration", parameters, commandType: CommandType.StoredProcedure);
+               // retuser.indiv_id = Convert.ToInt32(chkUser.INDIV_ID);
                 retuser.code = RegistrationStatusCodes.Success;
                 retuser.status = "Success";
                 retuser.desc = "";

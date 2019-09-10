@@ -298,6 +298,8 @@ namespace EnvoyService.Core.Models
         [DataMember]
         public string LONG { get; set; }
         [DataMember]
+        public string NAME_PREFIX { get; set; }
+        [DataMember]
         public string NAME_SUFX { get; set; }
         [DataMember]
         public string HOUSENUM { get; set; }

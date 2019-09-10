@@ -98,7 +98,6 @@ namespace CharRadiologyWeb
         public int INDIV_ID { get; set; }
         public string REP_NAME { get; set; }
         public string NAME_PREFIX { get; set; }
-        public string COMPLETE_NAME { get; set; }
         public string FIRST_NAME { get; set; }
         public string MID_NAME { get; set; }
         public string LAST_NAME { get; set; }
@@ -147,8 +146,6 @@ namespace CharRadiologyWeb
         public string FIRST_RESPONSE { get; set; }
         public string LAST_RESPONSE_DATE { get; set; }
         public string LAST_RESPONSE { get; set; }
-        public string VIN { get; set; }
-        public string VEHICLE_MILES { get; set; }
     }
 
     public class User
