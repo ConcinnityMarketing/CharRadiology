@@ -77,6 +77,9 @@ namespace CharRadiologyWeb
                     ques.question_desc = "I would like to receive information from Charlotte Radiology about Breast Services. This may include a welcome email and regular newsletters.";
                     lq.Add(ques);
 
+                    tans = new Answer();
+                    ques = new Question();
+                    la = new List<Answer>();
                     tans.answer_desc = CheckBox2.Checked ? "Yes" : "No";
                     tans.answer_code = CheckBox2.Checked ? "Yes" : "No";
                     la.Add(tans);

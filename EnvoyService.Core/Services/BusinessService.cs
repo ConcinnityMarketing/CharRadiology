@@ -363,7 +363,7 @@ namespace EnvoyService.Core.Services
                                     parameters.Add("@TankRecnum", Convert.ToInt32(chkUser.TANKRECNUM));
                                     parameters.Add("@Question", sv.question_code);
                                     parameters.Add("@Answer", ans.answer_desc);
-                                    currentSession.Connection.Execute("[sp_save_tank_cust_qa", parameters, commandType: CommandType.StoredProcedure);
+                                    currentSession.Connection.Execute("usp_save_tank_cust_qa", parameters, commandType: CommandType.StoredProcedure);
 
                                 }
                             }
