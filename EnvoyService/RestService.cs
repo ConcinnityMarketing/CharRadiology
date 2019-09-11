@@ -199,7 +199,7 @@ namespace EnvoyService
             webreturn.code = GenericStatusCodes.Success;
             return webreturn;
         }
-        public RegisterReturn Register(ProfileData chkUser)
+        public RegisterReturn Register(SignUpData chkUser)
         {
             RegisterReturn webreturn = new RegisterReturn();
             string Client =  "CHAR" ;
@@ -575,57 +575,57 @@ namespace EnvoyService
 
             return webreturn;
         }
-        public SurveyReturn SaveCustQA(QAData chkUser)
-        {
-            SurveyReturn webreturn = new SurveyReturn();
-            string Client = "CRAD";
-            string Unit = "CONS";
-            string App = "WEB";
-            //string Environ = ConfigurationManager.AppSettings["Environment"].ToString();
+        //public SurveyReturn SaveCustQA(QAData chkUser)
+        //{
+        //    SurveyReturn webreturn = new SurveyReturn();
+        //    string Client = "CRAD";
+        //    string Unit = "CONS";
+        //    string App = "WEB";
+        //    //string Environ = ConfigurationManager.AppSettings["Environment"].ToString();
 
-            //IDbConnection cn = new SqlConnection();
-            string errdesc = "";
-            IDbConnection cn = new SqlConnection();
-            try
-            {
-                string strConnection = getConnectionString(chkUser.ENV.ToUpper(), Client, Unit, App);
-                cn.ConnectionString = strConnection;
-                cn.Open();
-                SessionFactory = Setup(strConnection).BuildSessionFactory();
+        //    //IDbConnection cn = new SqlConnection();
+        //    string errdesc = "";
+        //    IDbConnection cn = new SqlConnection();
+        //    try
+        //    {
+        //        string strConnection = getConnectionString(chkUser.ENV.ToUpper(), Client, Unit, App);
+        //        cn.ConnectionString = strConnection;
+        //        cn.Open();
+        //        SessionFactory = Setup(strConnection).BuildSessionFactory();
 
-                CurrentSessionContext.Bind(SessionFactory.OpenSession(cn));
-                businessService = new BusinessService(SessionFactory);
-                if (businessService.GetGUID() == chkUser.GUID)
-                {
-                    webreturn = businessService.SaveCustQA(chkUser);
-                    webreturn.status = "success";
-                    webreturn.code = SurveyStatusCodes.Success;
-                    webreturn.desc = "";
-                }
-                else
-                {
-                    errdesc = "Incorrect GUID in save cust QA";
-                    SendErrorEmail(errdesc, chkUser.ENV.ToUpper());
-                    webreturn.status = "N";
-                    webreturn.code = SurveyStatusCodes.Other;
-                    webreturn.desc = "Error - " + errdesc;
-                }
-            }
-            catch (Exception ex)
-            {
-                webreturn.status = "fail";
-                webreturn.code = SurveyStatusCodes.Other;
-                errdesc = ex.ToString();
-                webreturn.desc = errdesc;
-                SendErrorEmail(errdesc, chkUser.ENV);
-            }
-            finally
-            {
-                SessionFactory.Close();
-            }
+        //        CurrentSessionContext.Bind(SessionFactory.OpenSession(cn));
+        //        businessService = new BusinessService(SessionFactory);
+        //        if (businessService.GetGUID() == chkUser.GUID)
+        //        {
+        //            webreturn = businessService.SaveCustQA(chkUser);
+        //            webreturn.status = "success";
+        //            webreturn.code = SurveyStatusCodes.Success;
+        //            webreturn.desc = "";
+        //        }
+        //        else
+        //        {
+        //            errdesc = "Incorrect GUID in save cust QA";
+        //            SendErrorEmail(errdesc, chkUser.ENV.ToUpper());
+        //            webreturn.status = "N";
+        //            webreturn.code = SurveyStatusCodes.Other;
+        //            webreturn.desc = "Error - " + errdesc;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        webreturn.status = "fail";
+        //        webreturn.code = SurveyStatusCodes.Other;
+        //        errdesc = ex.ToString();
+        //        webreturn.desc = errdesc;
+        //        SendErrorEmail(errdesc, chkUser.ENV);
+        //    }
+        //    finally
+        //    {
+        //        SessionFactory.Close();
+        //    }
 
-            return webreturn;
-        }
+        //    return webreturn;
+        //}
 
 
         public CompositeType GetDataUsingDataContract(CompositeType composite)

@@ -208,7 +208,7 @@ namespace EnvoyService.Core.Services
             return MatchID;
         }
 
-        public RegisterReturn Register(ProfileData chkUser)
+        public RegisterReturn Register(SignUpData chkUser)
         {
             RegisterReturn retuser = new RegisterReturn();
             ConsumerClass CustomerObject = new ConsumerClass();
@@ -246,16 +246,26 @@ namespace EnvoyService.Core.Services
                 //{
                 //  retuser = SaveCustProfile(chkUser);
                 retuser = SaveTankCustProfile(chkUser);
-                //chkUser.INDIV_ID = retuser.indiv_id.ToString();
-                //}
-                //else
-                //{
-                //    chkUser.INDIV_ID = intIndivID;
-                //    retuser = UpdateCustProfile(chkUser);
-                //}
-                //retuser = SaveCustResponse(chkUser);
+                if (chkUser.SURVEYS != null)
+                {
+                    QAData qd = new QAData();
+                    qd.q_and_a = chkUser.SURVEYS;
+                    qd.TANKRECNUM = retuser.TankRecNum;
+                    qd.RESPONSE_CODE = chkUser.RESPONSE_CODE;
+                    qd.RESPONSE_DATE = DateTime.Now.ToString();
+                    retuser = SaveCustQA(qd);
+                }
 
-                retuser.code = RegistrationStatusCodes.Success;
+                    //chkUser.INDIV_ID = retuser.indiv_id.ToString();
+                    //}
+                    //else
+                    //{
+                    //    chkUser.INDIV_ID = intIndivID;
+                    //    retuser = UpdateCustProfile(chkUser);
+                    //}
+                    //retuser = SaveCustResponse(chkUser);
+
+                    retuser.code = RegistrationStatusCodes.Success;
                 retuser.status = "Success";
                 retuser.desc = "";
 
@@ -268,7 +278,7 @@ namespace EnvoyService.Core.Services
             return retuser;
 
         }
-        protected RegisterReturn SaveTankCustProfile(ProfileData chkUser)
+        protected RegisterReturn SaveTankCustProfile(SignUpData chkUser)
         {
             RegisterReturn retuser = new RegisterReturn();
             try
@@ -313,7 +323,10 @@ namespace EnvoyService.Core.Services
                 parameters.Add("@PHONE_OPT_CD", chkUser.PHONE_OPT_CD);
                 parameters.Add("@SMS_OPT_CD", chkUser.TEXT_MESSAGE_OPT_CD);
                 parameters.Add("@RESPONSE_CODE", chkUser.RESPONSE_CODE);
+                parameters.Add("@TankRecnum", dbType: DbType.Int32, direction: ParameterDirection.Output);
                 currentSession.Connection.Execute("usp_save_tank_cust_registration", parameters, commandType: CommandType.StoredProcedure);
+                retuser.TankRecNum = parameters.Get<int>("@TankRecnum");
+
                // retuser.indiv_id = Convert.ToInt32(chkUser.INDIV_ID);
                 retuser.code = RegistrationStatusCodes.Success;
                 retuser.status = "Success";
@@ -323,6 +336,48 @@ namespace EnvoyService.Core.Services
             catch (Exception ex)
             {
                 throw new Exception("SaveTankCustProfile Exception: " + ex.ToString());
+            }
+
+            return retuser;
+
+        }
+        protected RegisterReturn SaveCustQA(QAData chkUser)
+        {
+            RegisterReturn retuser = new RegisterReturn();
+            try
+            {
+                var currentSession = sessionFactory.GetCurrentSession();
+                // Store Q & A data
+                if (chkUser.q_and_a != null)
+                {
+                    foreach (Question sv in chkUser.q_and_a)
+                    {
+                        if (sv.answers != null)
+                        {
+                            foreach (Answer ans in sv.answers)
+                            {
+                                // if (ans.answer_code != 0)
+                                if (!(ans == null))
+                                {
+                                    var parameters = new DynamicParameters();
+                                    parameters.Add("@TankRecnum", Convert.ToInt32(chkUser.TANKRECNUM));
+                                    parameters.Add("@Question", sv.question_code);
+                                    parameters.Add("@Answer", ans.answer_desc);
+                                    currentSession.Connection.Execute("[sp_save_tank_cust_qa", parameters, commandType: CommandType.StoredProcedure);
+
+                                }
+                            }
+                        }
+                    }
+                }
+                retuser.code = RegistrationStatusCodes.Success;
+                retuser.status = "Success";
+                retuser.desc = "";
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("SaveCRTankQA Exception: " + ex.ToString());
             }
 
             return retuser;
@@ -446,134 +501,134 @@ namespace EnvoyService.Core.Services
             }
             return user;
         }
-        public MessageReturn Notify(Notification TextNotification, BusinessModel bm)
-        {
-            MessageReturn webreturn = new MessageReturn();
-            SurveyReturn svyreturn = new SurveyReturn();
-            ProfileData profile = new ProfileData();
-            QAData qa = new QAData();
-            PinEntryData pindata = new PinEntryData();
-            PinEntryReturn pinreturn = new PinEntryReturn();
-            StringBuilder sb = new StringBuilder();
-            TestingData td = new TestingData();
-            CommunicationReturn cr = new CommunicationReturn();
+        //public MessageReturn Notify(Notification TextNotification, BusinessModel bm)
+        //{
+        //    MessageReturn webreturn = new MessageReturn();
+        //    SurveyReturn svyreturn = new SurveyReturn();
+        //    ProfileData profile = new ProfileData();
+        //    QAData qa = new QAData();
+        //    PinEntryData pindata = new PinEntryData();
+        //    PinEntryReturn pinreturn = new PinEntryReturn();
+        //    StringBuilder sb = new StringBuilder();
+        //    TestingData td = new TestingData();
+        //    CommunicationReturn cr = new CommunicationReturn();
 
-            try
-            {
-                webreturn = SaveTextNotificationCallback(TextNotification);
-                //string strPhone = TextNotification.Text.FromNumber.Substring(1, TextNotification.Text.FromNumber.Length - 1);
+        //    try
+        //    {
+        //        webreturn = SaveTextNotificationCallback(TextNotification);
+        //        //string strPhone = TextNotification.Text.FromNumber.Substring(1, TextNotification.Text.FromNumber.Length - 1);
 
-                sb.Append(TextNotification.Text.FromNumber);
-                sb.Remove(0, 1);
-                pindata.env = bm.environ;
-                pindata.guid = CheckGUID;
-                pindata.ip = bm.ipaddress;
-                pindata.pin = GetIndivIDbyPhone(sb.ToString()).ToString();
+        //        sb.Append(TextNotification.Text.FromNumber);
+        //        sb.Remove(0, 1);
+        //        pindata.env = bm.environ;
+        //        pindata.guid = CheckGUID;
+        //        pindata.ip = bm.ipaddress;
+        //        pindata.pin = GetIndivIDbyPhone(sb.ToString()).ToString();
 
-                pinreturn = GetCustomerInfo(pindata);
-                //string strResponseCode = "SPWEB16RES";
-                string strChannel = "TXT";
-                string strResponseCode = GetResponseCode(strChannel);
-                if (pinreturn.code == PinEntryStatusCodes.Success)
-                {
-                    profile.FIRST_NAME = pinreturn.pinProfile.first_name;
-                    profile.LAST_NAME = pinreturn.pinProfile.last_name;
-                    profile.ADDRESS1 = pinreturn.pinProfile.address1;
-                    profile.ADDRESS2 = pinreturn.pinProfile.address2;
-                    profile.CITY = pinreturn.pinProfile.city;
-                    profile.STATE = pinreturn.pinProfile.state;
-                    profile.ZIP = pinreturn.pinProfile.zip;
-                    profile.BIRTH_DATE = pinreturn.pinProfile.birth_date.ToString();
-                    profile.EMAIL = pinreturn.pinProfile.email;
-                    profile.PHONE = pinreturn.pinProfile.phone;
+        //        pinreturn = GetCustomerInfo(pindata);
+        //        //string strResponseCode = "SPWEB16RES";
+        //        string strChannel = "TXT";
+        //        string strResponseCode = GetResponseCode(strChannel);
+        //        if (pinreturn.code == PinEntryStatusCodes.Success)
+        //        {
+        //            profile.FIRST_NAME = pinreturn.pinProfile.first_name;
+        //            profile.LAST_NAME = pinreturn.pinProfile.last_name;
+        //            profile.ADDRESS1 = pinreturn.pinProfile.address1;
+        //            profile.ADDRESS2 = pinreturn.pinProfile.address2;
+        //            profile.CITY = pinreturn.pinProfile.city;
+        //            profile.STATE = pinreturn.pinProfile.state;
+        //            profile.ZIP = pinreturn.pinProfile.zip;
+        //            profile.BIRTH_DATE = pinreturn.pinProfile.birth_date.ToString();
+        //            profile.EMAIL = pinreturn.pinProfile.email;
+        //            profile.PHONE = pinreturn.pinProfile.phone;
 
-                }
+        //        }
 
-                profile.EMAIL_OPT_CD = "I";
-                profile.ENV = bm.environ;
-                profile.USER_ID = "SCMonitorWeb";
-                profile.USPS_OPT_CD = "I";
-                profile.RESPONSE_TYPE = "S";
-                profile.RESPONSE_CODE = strResponseCode;
-                profile.WEB_USER_ID = strResponseCode;
-                profile.WEB_SOURCE = "MultiWebSource";
-                profile.WEB_VERSION = "1.0";
-                DateTime dateValue;
-                if (profile.COA_DATE == null || !(DateTime.TryParse(profile.COA_DATE.ToString(), out dateValue)) || Convert.ToDateTime(profile.COA_DATE) < Convert.ToDateTime("01/01/1900"))
-                {
-                    profile.COA_DATE = "01/01/1900";
-                }
-                if (!string.IsNullOrEmpty(pindata.pin))
-                {
-                    profile.INDIV_ID = pindata.pin;
-                }
-                profile.GUID = CheckGUID;
+        //        profile.EMAIL_OPT_CD = "I";
+        //        profile.ENV = bm.environ;
+        //        profile.USER_ID = "SCMonitorWeb";
+        //        profile.USPS_OPT_CD = "I";
+        //        profile.RESPONSE_TYPE = "S";
+        //        profile.RESPONSE_CODE = strResponseCode;
+        //        profile.WEB_USER_ID = strResponseCode;
+        //        profile.WEB_SOURCE = "MultiWebSource";
+        //        profile.WEB_VERSION = "1.0";
+        //        DateTime dateValue;
+        //        if (profile.COA_DATE == null || !(DateTime.TryParse(profile.COA_DATE.ToString(), out dateValue)) || Convert.ToDateTime(profile.COA_DATE) < Convert.ToDateTime("01/01/1900"))
+        //        {
+        //            profile.COA_DATE = "01/01/1900";
+        //        }
+        //        if (!string.IsNullOrEmpty(pindata.pin))
+        //        {
+        //            profile.INDIV_ID = pindata.pin;
+        //        }
+        //        profile.GUID = CheckGUID;
 
-                //
-                //uncomment following lines after test
-                //
-                //qa = BuildCheckedItems();
-                //Question[] questions = new Question[1];
-                List<Question> questions = new List<Question>();
-                //questions = qa.q_and_a;
-                // add the Textbox answers
-                Answer tans = new Answer();
-                //Answer[] answers = new Answer[1];
-                Question ques = new Question();
-                List<Answer> answers = new List<Answer>();
-                tans.answer_desc = TextNotification.Text.TextRecord.Message.ToUpper();
-                answers.Add(tans);
-                //Array.Resize(ref questions, questions.Length + 1);
-                //ques.question_code = 100;
-                DateTime dtToday = DateTime.Today;
-                DateTime dtTest2 = Convert.ToDateTime("01/01/1900");
+        //        //
+        //        //uncomment following lines after test
+        //        //
+        //        //qa = BuildCheckedItems();
+        //        //Question[] questions = new Question[1];
+        //        List<Question> questions = new List<Question>();
+        //        //questions = qa.q_and_a;
+        //        // add the Textbox answers
+        //        Answer tans = new Answer();
+        //        //Answer[] answers = new Answer[1];
+        //        Question ques = new Question();
+        //        List<Answer> answers = new List<Answer>();
+        //        tans.answer_desc = TextNotification.Text.TextRecord.Message.ToUpper();
+        //        answers.Add(tans);
+        //        //Array.Resize(ref questions, questions.Length + 1);
+        //        //ques.question_code = 100;
+        //        DateTime dtToday = DateTime.Today;
+        //        DateTime dtTest2 = Convert.ToDateTime("01/01/1900");
 
-                td.env = bm.environ;
-                td.indiv_id = pindata.pin;
+        //        td.env = bm.environ;
+        //        td.indiv_id = pindata.pin;
 
-                cr = GetCommunication(td);
-                //strTestNumber = dtToday < cr.test2_date ? "1" : "2";
-                int TestNumber = (cr.test2_date == dtTest2) || (dtToday < cr.test2_date) ? 1 : 2;
+        //        cr = GetCommunication(td);
+        //        //strTestNumber = dtToday < cr.test2_date ? "1" : "2";
+        //        int TestNumber = (cr.test2_date == dtTest2) || (dtToday < cr.test2_date) ? 1 : 2;
 
-                ques.question_code = TestNumber;
+        //        ques.question_code = TestNumber;
 
-                ques.answers = answers;
-                //questions[0] = ques;
-                questions.Add(ques);
-                qa.q_and_a = questions;
-                svyreturn = SaveCustResponse(profile);
-                if (svyreturn.code == SurveyStatusCodes.Success)
-                {
-                    if (svyreturn.code == SurveyStatusCodes.Success)
-                    {
-                        qa.EXTERNAL_REF_NUMBER = svyreturn.TankRecNum.ToString();
-                        qa.ENV = bm.environ;
-                        qa.GUID = CheckGUID;
-                        qa.INDIV_ID = pindata.pin;
-                        qa.RESPONSE_CODE = strResponseCode;
-                        qa.RESPONSE_DATE = DateTime.Today.ToString();
-                        if (qa.RESPONSE_DATE == null || !(DateTime.TryParse(qa.RESPONSE_DATE.ToString(), out dateValue)) || Convert.ToDateTime(qa.RESPONSE_DATE) < Convert.ToDateTime("01/01/1900"))
-                        {
-                            qa.RESPONSE_DATE = DateTime.Today.ToString(); ;
-                        }
-                        svyreturn = SaveCustQA(qa);
-                    }
-                }
-                if (!(TextNotification.Text.TextRecord.Message.ToUpper() == "DNT"))
-                {
-                    td.env = bm.environ;
-                    td.indiv_id = pindata.pin;
-                    webreturn = UpdateTestingRecords(td);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Notify: " + ex.ToString());
-            }
+        //        ques.answers = answers;
+        //        //questions[0] = ques;
+        //        questions.Add(ques);
+        //        qa.q_and_a = questions;
+        //        svyreturn = SaveCustResponse(profile);
+        //        if (svyreturn.code == SurveyStatusCodes.Success)
+        //        {
+        //            if (svyreturn.code == SurveyStatusCodes.Success)
+        //            {
+        //                qa.EXTERNAL_REF_NUMBER = svyreturn.TankRecNum.ToString();
+        //                qa.ENV = bm.environ;
+        //                qa.GUID = CheckGUID;
+        //                qa.INDIV_ID = pindata.pin;
+        //                qa.RESPONSE_CODE = strResponseCode;
+        //                qa.RESPONSE_DATE = DateTime.Today.ToString();
+        //                if (qa.RESPONSE_DATE == null || !(DateTime.TryParse(qa.RESPONSE_DATE.ToString(), out dateValue)) || Convert.ToDateTime(qa.RESPONSE_DATE) < Convert.ToDateTime("01/01/1900"))
+        //                {
+        //                    qa.RESPONSE_DATE = DateTime.Today.ToString(); ;
+        //                }
+        //                svyreturn = SaveCustQA(qa);
+        //            }
+        //        }
+        //        if (!(TextNotification.Text.TextRecord.Message.ToUpper() == "DNT"))
+        //        {
+        //            td.env = bm.environ;
+        //            td.indiv_id = pindata.pin;
+        //            webreturn = UpdateTestingRecords(td);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception("Notify: " + ex.ToString());
+        //    }
 
-            return webreturn;
+        //    return webreturn;
 
-        }
+        //}
         //public MessageReturn CallNotify(CallNotification CallNotification, BusinessModel bm)
         //{
         //    MessageReturn webreturn = new MessageReturn();
@@ -1152,51 +1207,6 @@ namespace EnvoyService.Core.Services
             catch (Exception ex)
             {
                 throw new Exception("SaveCustResponseException: " + ex.ToString());
-            }
-
-            return retuser;
-
-        }
-        public SurveyReturn SaveCustQA(QAData chkUser)
-        {
-            SurveyReturn retuser = new SurveyReturn();
-            try
-            {
-                var currentSession = sessionFactory.GetCurrentSession();
-                // Store Q & A data
-                if (chkUser.q_and_a != null)
-                {
-                    foreach (Question sv in chkUser.q_and_a)
-                    {
-                        if (sv.answers != null)
-                        {
-                            foreach (Answer ans in sv.answers)
-                            {
-                                // if (ans.answer_code != 0)
-                                if (!(ans == null))
-                                {
-                                    var parameters = new DynamicParameters();
-                                    parameters.Add("@ExternalRefNumber", Convert.ToInt32(chkUser.EXTERNAL_REF_NUMBER));
-                                    parameters.Add("@IndivID", Convert.ToInt32(chkUser.INDIV_ID));
-                                    parameters.Add("@ResponseCode", chkUser.RESPONSE_CODE);
-                                    parameters.Add("@Question", sv.question_code);
-                                    parameters.Add("@Answer", ans.answer_desc);
-                                    parameters.Add("@ResponseDate ", chkUser.RESPONSE_DATE);
-                                    currentSession.Connection.Execute("usp_savecustqa", parameters, commandType: CommandType.StoredProcedure);
-
-                                }
-                            }
-                        }
-                    }
-                }
-                retuser.code = SurveyStatusCodes.Success;
-                retuser.status = "Success";
-                retuser.desc = "";
-
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("SaveCRTankQA Exception: " + ex.ToString());
             }
 
             return retuser;

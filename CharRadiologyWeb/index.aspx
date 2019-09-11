@@ -73,8 +73,16 @@
                                 <label for="txtEmail">Email</label>
                                 <asp:TextBox ID="txtEmail" runat="server" placeholder="Email" class="form-control" TextMode="Email"></asp:TextBox>
                             </div>
-                    
-                     <div class="form-group col-xs-11 col-sm-4 col-md-4 col-lg-4">
+                  <br />
+                            <div class="form-group col-xs-11 ">
+                                <asp:CheckBox ID="CheckBox1" runat="server" Text=" I would like to receive information from Charlotte Radiology about Breast Services. This may include a welcome email and regular newsletters." />
+                                </div>
+                  <br />
+                            <div class="form-group col-xs-11 ">
+                                <asp:CheckBox ID="CheckBox2" runat="server" Text=" I would like to receive information from Charlotte Radiology about Vein Services. This may include a welcome email and regular newsletters." />
+                                </div>
+            
+                     <div class="form-group col-xs-11 ">
                         <label for="btnSubmit">&nbsp;</label>
 <%--                        <input type="button" class="form-control btn btn-primary" id="submit" value="Submit PIN" onclick="clkSave()">--%>
                         <asp:Button ID="btnSubmit" runat="server" Text="Submit" class="form-control btn btn-primary" OnClick="btnSubmit_Click" />

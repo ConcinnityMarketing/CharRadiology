@@ -18,13 +18,13 @@ namespace EnvoyService.Core.Services
         PinEntryReturn GetCustomerInfo(PinEntryData chkUser);
         string GetGUID();
         SurveyReturn SaveCustResponse(ProfileData chkUser);
-        SurveyReturn SaveCustQA(QAData chkUser);
-        MessageReturn Notify(Notification TextNotification, BusinessModel bm);
+        //RegisterReturn SaveCustQA(QAData chkUser);
+        //MessageReturn Notify(Notification TextNotification, BusinessModel bm);
         MessageReturn UpdateTestingRecords(TestingData chkUser);
         //MessageReturn CallNotify(CallNotification CallNotification, BusinessModel bm);
         string GetResponseCode(string Channel);
         CommunicationReturn GetCommunication(TestingData chkUser);
-        RegisterReturn Register(ProfileData chkUser);
+        RegisterReturn Register(SignUpData chkUser);
 
     }
 }

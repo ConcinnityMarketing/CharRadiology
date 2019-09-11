@@ -53,7 +53,7 @@ namespace CharRadiologyWeb
         {
             try
             {
-                ProfileData Customer = new ProfileData();
+                SignUpData Customer = new SignUpData();
                 _dataService = new DataService();
                 //string fixVal = txtMobilePhone.Text;
                 //fixVal = fixVal.Replace("(", "");
@@ -63,14 +63,38 @@ namespace CharRadiologyWeb
                 string strResponse = Session["RESPONSE_CODE"] == null ? Brand.ToUpper() + "WEB19" : Session["RESPONSE_CODE"].ToString();
                 if (ValidateInput())
                 {
+                    // If questions are there
+                    Answer tans = new Answer();
+                    Question ques = new Question();
+                    List<Question> lq = new List<Question>();
+                    List<Answer> la = new List<Answer>();
+                    tans.answer_desc = CheckBox1.Checked ? "Yes" : "No";
+                    tans.answer_code = CheckBox1.Checked ? "Yes" : "No";
+                    la.Add(tans);
+                    ques.answers = la;
+                    //ques.question_codeSpecified = true;
+                    ques.question_code = "800";
+                    ques.question_desc = "I would like to receive information from Charlotte Radiology about Breast Services. This may include a welcome email and regular newsletters.";
+                    lq.Add(ques);
 
-                    Customer = new ProfileData
+                    tans.answer_desc = CheckBox2.Checked ? "Yes" : "No";
+                    tans.answer_code = CheckBox2.Checked ? "Yes" : "No";
+                    la.Add(tans);
+                    ques.answers = la;
+                    ques.question_code = "801";
+                    ques.question_desc = "I would like to receive information from Charlotte Radiology about Vein Services. This may include a welcome email and regular newsletters.";
+                    lq.Add(ques);
+                    //Array.Resize(ref questions, questions.Length + 1);
+
+                    //questions[questions.Length - 1] = ques;
+                    //qa.q_and_a = questions;
+                    Customer = new SignUpData
                     {
                         //brand = user.Brand,
                         ENV = Environ,
                         GUID = CheckGUID,
                         CLIENT = Client,
-                        INDIV_ID = Session["INDIV_ID"] == null ? 0 : (int)Session["INDIV_ID"],
+                        //INDIV_ID = Session["INDIV_ID"] == null ? 0 : (int)Session["INDIV_ID"],
                         FIRST_NAME = txtFirstName.Text,
                         LAST_NAME = txtLastName.Text,
                         //ADDRESS1 = txtAddress1.Text,
@@ -93,6 +117,7 @@ namespace CharRadiologyWeb
                         EMAIL = txtEmail.Text,
                         //TEXT_MESSAGE = fixVal,
                         RESPONSE_CODE = strResponse,
+                        SURVEYS = lq
                     };
                     Object DataRequest = new Object();
                     RegisterResultDtoWrapper dataResultDtoWrapper = new RegisterResultDtoWrapper();

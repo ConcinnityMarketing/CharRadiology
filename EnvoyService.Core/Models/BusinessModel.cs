@@ -355,7 +355,7 @@ namespace EnvoyService.Core.Models
         public string PROCEDURE_DATE { get; set; }
     }
     [DataContract]
-    public class QAData
+    public class SignUpData
     {
         [DataMember]
         public string GUID { get; set; }
@@ -364,11 +364,120 @@ namespace EnvoyService.Core.Models
         [DataMember]
         public string INDIV_ID { get; set; }
         [DataMember]
+        public string FIRST_NAME { get; set; }
+        [DataMember]
+        public string MID_NAME { get; set; }
+        [DataMember]
+        public string LAST_NAME { get; set; }
+        [DataMember]
+        public string GENDER { get; set; }
+        [DataMember]
+        public string BIRTH_DATE { get; set; }
+        [DataMember]
+        public string ADDRESS1 { get; set; }
+        [DataMember]
+        public string ADDRESS2 { get; set; }
+        [DataMember]
+        public string CITY { get; set; }
+        [DataMember]
+        public string STATE { get; set; }
+        [DataMember]
+        public string ZIP { get; set; }
+        [DataMember]
+        public string ZIP4 { get; set; }
+        [DataMember]
+        public string STATUS { get; set; }
+        [DataMember]
+        public string USPS_STATUS { get; set; }
+        [DataMember]
+        public string USPS_OPT_CD { get; set; }
+        [DataMember]
+        public string AV_CODE { get; set; }
+        [DataMember]
+        public string PHONE { get; set; }
+        [DataMember]
+        public string EMAIL { get; set; }
+        [DataMember]
+        public string TEXT_MESSAGE { get; set; }
+        [DataMember]
+        public string EMAIL_STATUS { get; set; }
+        [DataMember]
+        public string PHONE_STATUS { get; set; }
+        [DataMember]
+        public string TEXT_MESSAGE_STATUS { get; set; }
+        [DataMember]
+        public string PHONE_OPT_CD { get; set; }
+        [DataMember]
+        public string EMAIL_OPT_CD { get; set; }
+        [DataMember]
+        public string TEXT_MESSAGE_OPT_CD { get; set; }
+        [DataMember]
+        public string SIGNATURE { get; set; }
+        [DataMember]
+        public string RESPONSE_CODE { get; set; }
+        [DataMember]
+        public string LAT { get; set; }
+        [DataMember]
+        public string LONG { get; set; }
+        [DataMember]
+        public string NAME_PREFIX { get; set; }
+        [DataMember]
+        public string NAME_SUFX { get; set; }
+        [DataMember]
+        public string HOUSENUM { get; set; }
+        [DataMember]
+        public string COUNTRY { get; set; }
+        [DataMember]
+        public string DPBC { get; set; }
+        [DataMember]
+        public string COA_DATE { get; set; }
+        [DataMember]
+        public string FIPS { get; set; }
+        [DataMember]
+        public string EXTERNAL_REF_NUMBER { get; set; }
+        [DataMember]
+        public string COUNTY { get; set; }
+        [DataMember]
+        public string GEOCODE_LEVEL { get; set; }
+        [DataMember]
+        public string MATCH_KEY { get; set; }
+        [DataMember]
+        public string RESPONSE_TYPE { get; set; }
+        [DataMember]
+        public string MEDIA_CODE { get; set; }
+        [DataMember]
+        public string KEY_BATCH_ID { get; set; }
+        [DataMember]
+        public string USER_ID { get; set; }
+        [DataMember]
+        public string TankRecNum { get; set; }
+        [DataMember]
+        public string FIRST_RESPONSE_DATE { get; set; }
+        [DataMember]
+        public string FIRST_RESPONSE { get; set; }
+        [DataMember]
+        public string LAST_RESPONSE_DATE { get; set; }
+        [DataMember]
+        public string LAST_RESPONSE { get; set; }
+        [DataMember]
+        public string FULL_NAME { get; set; }
+        [DataMember]
+        public string CHECK_DIGIT { get; set; }
+        [DataMember]
+        public string CUST_PWD { get; set; }
+        [DataMember]
+        public List<Question> SURVEYS { get; set; }
+
+    }
+    [DataContract]
+    public class QAData
+    {
+        [DataMember]
+        public int TANKRECNUM { get; set; }
+        [DataMember]
         public string RESPONSE_CODE { get; set; }
         [DataMember]
         public string RESPONSE_DATE { get; set; }
-        [DataMember]
-        public string EXTERNAL_REF_NUMBER { get; set; }
         [DataMember]
         public List<Question> q_and_a { get; set; }
 
@@ -392,7 +501,7 @@ namespace EnvoyService.Core.Models
     public class Question
     {
         [DataMember]
-        public int question_code;
+        public string question_code;
         [DataMember]
         public string question_desc;
         [DataMember]
@@ -406,7 +515,7 @@ namespace EnvoyService.Core.Models
         public Question()
         {
         }
-        public Question(int equestion_code, string equestion_desc, int equestion_order, string eanswer_table, string emultiple_answers, List<Answer> eanswers)
+        public Question(string equestion_code, string equestion_desc, int equestion_order, string eanswer_table, string emultiple_answers, List<Answer> eanswers)
         {
             this.question_code = equestion_code;
             this.question_desc = equestion_desc;
@@ -418,13 +527,13 @@ namespace EnvoyService.Core.Models
     }
     public class Answer
     {
-        public int answer_code;
+        public string answer_code;
         public string answer_desc;
         public int answer_order;
         public Answer()
         {
         }
-        public Answer(int eanswer_code, string eanswer_desc, int eanswer_order)
+        public Answer(string eanswer_code, string eanswer_desc, int eanswer_order)
         {
             this.answer_code = eanswer_code;
             this.answer_desc = eanswer_desc;

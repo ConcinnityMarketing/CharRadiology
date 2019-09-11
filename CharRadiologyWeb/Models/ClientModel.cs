@@ -147,7 +147,82 @@ namespace CharRadiologyWeb
         public string LAST_RESPONSE_DATE { get; set; }
         public string LAST_RESPONSE { get; set; }
     }
+    public class SignUpData
+    {
+        public string GUID { get; set; }
+        public string ENV { get; set; }
+        public string CLIENT { get; set; }
+        public string INDIV_ID { get; set; }
+        public string FIRST_NAME { get; set; }
+        public string MID_NAME { get; set; }
+        public string LAST_NAME { get; set; }
+        public string GENDER { get; set; }
+        public string BIRTH_DATE { get; set; }
+        public string ADDRESS1 { get; set; }
+        public string ADDRESS2 { get; set; }
+        public string CITY { get; set; }
+        public string STATE { get; set; }
+        public string ZIP { get; set; }
+        public string ZIP4 { get; set; }
+        public string STATUS { get; set; }
+        public string USPS_STATUS { get; set; }
+        public string USPS_OPT_CD { get; set; }
+        public string AV_CODE { get; set; }
+        public string PHONE { get; set; }
+        public string EMAIL { get; set; }
+        public string TEXT_MESSAGE { get; set; }
+        public string EMAIL_STATUS { get; set; }
+        public string PHONE_STATUS { get; set; }
+        public string TEXT_MESSAGE_STATUS { get; set; }
+        public string PHONE_OPT_CD { get; set; }
+        public string EMAIL_OPT_CD { get; set; }
+        public string TEXT_MESSAGE_OPT_CD { get; set; }
+        public string SIGNATURE { get; set; }
+        public string RESPONSE_CODE { get; set; }
+        public string LAT { get; set; }
+        public string LONG { get; set; }
+        public string NAME_PREFIX { get; set; }
+        public string NAME_SUFX { get; set; }
+        public string HOUSENUM { get; set; }
+        public string COUNTRY { get; set; }
+        public string DPBC { get; set; }
+        public string COA_DATE { get; set; }
+        public string FIPS { get; set; }
+        public string EXTERNAL_REF_NUMBER { get; set; }
+        public string COUNTY { get; set; }
+        public string GEOCODE_LEVEL { get; set; }
+        public string MATCH_KEY { get; set; }
+        public string RESPONSE_TYPE { get; set; }
+        public string MEDIA_CODE { get; set; }
+        public string KEY_BATCH_ID { get; set; }
+        public string USER_ID { get; set; }
+        public string TankRecNum { get; set; }
+        public string FIRST_RESPONSE_DATE { get; set; }
+        public string FIRST_RESPONSE { get; set; }
+        public string LAST_RESPONSE_DATE { get; set; }
+        public string LAST_RESPONSE { get; set; }
+        public string FULL_NAME { get; set; }
+        public string CHECK_DIGIT { get; set; }
+        public string CUST_PWD { get; set; }
+        public List<Question> SURVEYS { get; set; }
 
+    }
+
+    public class Question
+    {
+        public string question_code;
+        public string question_desc;
+        public int question_order;
+        public string answer_table;
+        public string multiple_answers;
+        public List<Answer> answers;
+    }
+    public class Answer
+    {
+        public string answer_code;
+        public string answer_desc;
+        public int answer_order;
+    }
     public class User
     {
         public string userid { get; set; }
