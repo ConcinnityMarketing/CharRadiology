@@ -114,7 +114,7 @@ namespace EnvoyService.Core
             List<MessageModel> emailList = new List<MessageModel>();
             try
             {
-                IEnumerable results = currentSession.Connection.Query(@"SELECT e.INDIV_ID, e.EMAIL, e.MESSAGE_DT, e.CHANNEL, e.STATUS, e.UPDATE_DT, p.FIRST_NAME, p.LAST_NAME, p.ADDRESS1, p.CITY, p.STATE, p.ZIP, e.MESSAGE_SEQ, e.MD_RECNUM, e.PHONE, e.MFID
+                IEnumerable results = currentSession.Connection.Query(@"SELECT DISTINCT e.INDIV_ID, e.EMAIL, e.MESSAGE_DT, e.CHANNEL, e.STATUS, e.UPDATE_DT, p.FIRST_NAME, p.LAST_NAME, p.ADDRESS1, p.CITY, p.STATE, p.ZIP, e.MESSAGE_SEQ, e.MD_RECNUM, e.PHONE, e.MFID
                                                                     FROM CUSTOMER_MESSAGE_DETAIL e inner join CUSTOMER_PROFILE p on p.INDIV_ID = e.INDIV_ID
                                                                     inner join CUSTOMER_COMMUNICATIONS c on c.INDIV_ID = e.INDIV_ID and c.MFID = e.MFID
                                                                     WHERE (e.STATUS IS NULL) AND e.CHANNEL = @type", new { @type = RecurType });
@@ -898,12 +898,15 @@ namespace EnvoyService.Core
                 IEnumerable results = currentSession.Connection.Query(@" exec usp_get_customer_info @IndivID", new { @IndivID = strIndivID });
                 foreach (dynamic row in results)
                 {
-                    customerSearchList.Add(new CustomerSearch(row.INDIV_ID, row.MRN, row.NAME_PREFIX, row.FIRST_NAME, row.MID_NAME, row.LAST_NAME, row.NAME_SUFX, row.GENDER, row.BIRTH_DATE,
-                                                              row.ADDRESS1, row.ADDRESS2, row.CITY, row.STATE, row.ZIP, row.ZIP4, row.STATUS, row.USPS_STATUS, row.USPS_OPT_CD, row.SMS_NUMBER,
-                                                              row.PHONE, row.EMAIL, row.SMS_STATUS, row.EMAIL_STATUS, row.PHONE_STATUS, row.INSURANCE_PROVIDER, row.PHONE_OPT_CD, row.EMAIL_OPT_CD,
-                                                              row.TEXT_MESSAGE_OPT_CD, row.EXAM_SCHEDULE, row.FIRST_RESPONSE_DATE, row.MAM_PATIENT_TYPE, row.CALLBACK_STATUS, row.RETURN_DATE, row.FULL_NAME,
-                                                              row.CITY_STATE_ZIP, row.RECORD_CREATE_DATE, row.RETURN_EXAM_TYPE, row.LAST_TRANS_DATE, row.LAST_UPDATE_DATE, row.EXTERNAL_REF_NUMBER,
-                                                              row.LOAD_PG_ID, row.CM_CREATE_DATE, row.YOB, row.EFirst_Name, row.ELast_Name, row.EAddress1, row.EBirth_Date, row.MOB));
+                    customerSearchList.Add(new CustomerSearch(row.INDIV_ID, row.MRN, row.NAME_PREFIX, row.FIRST_NAME, row.MID_NAME, row.LAST_NAME, row.NAME_SUFX, row.GENDER,
+                                                              row.BIRTH_DATE, row.ADDRESS1, row.ADDRESS2, row.CITY, row.STATE, row.ZIP, row.ZIP4, row.STATUS, row.USPS_STATUS,
+                                                              row.USPS_OPT_CD, row.SMS_NUMBER, row.PHONE, row.EMAIL, row.SMS_STATUS,  row.EMAIL_STATUS, row.PHONE_STATUS, row.INSURANCE_PROVIDER,
+                                                              row.PHONE_OPT_CD, row.EMAIL_OPT_CD, row.SMS_OPT_CD, row.EXAM_SCHEDULE, row.MAM_PATIENT_TYPE,
+                                                              row.CALLBACK_STATUS, row.RETURN_DATE, row.FULL_NAME, row.CITY_STATE_ZIP, row.RECORD_CREATE_DATE, row.RETURN_EXAM_TYPE, row.LAST_TRANS_DATE,
+                                                              row.LAST_UPDATE_DATE, row.EXTERNAL_REF_NUMBER, row.LOAD_PG_ID, row.CM_CREATE_DATE, row.YOB, 
+                                                              //row.EFirst_Name, row.ELast_Name, row.EAddress1,
+                                                              //row.EBirth_Date, 
+                                                              row.MOB));
                 }
             }
             catch (Exception ex)
@@ -951,7 +954,7 @@ namespace EnvoyService.Core
                     cd.LAST_NAME = row.LAST_NAME;
                     cd.NAME_SUFX = row.NAME_SUFX;
                     cd.GENDER = row.GENDER;
-                    cd.BIRTH_DATE = row.BIRTH_DATE;
+                    cd.BIRTH_DATE = Convert.ToDateTime(row.BIRTH_DATE);
                     cd.ADDRESS1 = row.ADDRESS1;
                     cd.ADDRESS2 = row.ADDRESS2;
                     cd.CITY = row.CITY;
@@ -1056,16 +1059,20 @@ namespace EnvoyService.Core
                 parameters.Add("@ZIP", chkUser.ZIP);
                 parameters.Add("@ZIP4", chkUser.ZIP4);
                 parameters.Add("@CITYSTATEZIP", chkUser.CITYSTATEZIP);
-                parameters.Add("@EMAIL_OPT_CODE", chkUser.EMAIL_OPT_CD);
-                parameters.Add("@USPS_OPT_CODE", chkUser.USPS_OPT_CD);
-                parameters.Add("@TEXT_MSG_OPT_CD", chkUser.TEXT_MESSAGE_OPT_CD);
+                parameters.Add("@EMAIL_OPT_CD", chkUser.EMAIL_OPT_CD);
+                parameters.Add("@USPS_OPT_CD", chkUser.USPS_OPT_CD);
+                parameters.Add("@PHONE_OPT_CD", chkUser.PHONE_OPT_CD);
+                parameters.Add("@TEXT_MESSAGE_OPT_CD", chkUser.TEXT_MESSAGE_OPT_CD);
                 parameters.Add("@PHONE", chkUser.PHONE);
                 parameters.Add("@EMAIL", chkUser.EMAIL);
+                parameters.Add("@TEXT_MESSAGE", chkUser.TEXT_MESSAGE);
                 parameters.Add("@SIGNATURE", chkUser.SIGNATURE);
                 parameters.Add("@HHKEY", chkUser.HHKEY);
                 parameters.Add("@STATUS", chkUser.STATUS);
                 parameters.Add("@EMAIL_STATUS", chkUser.EMAIL_STATUS);
                 parameters.Add("@USPS_STATUS", chkUser.USPS_STATUS);
+                parameters.Add("@PHONE_STATUS", chkUser.PHONE_STATUS);
+                parameters.Add("@TEXT_MESSAGE_STATUS", chkUser.TEXT_MESSAGE_STATUS);
                 parameters.Add("@UNDELIV_FLG", chkUser.UNDELIV_FLG);
                 parameters.Add("@SIGNATURE", chkUser.SIGNATURE);
                 parameters.Add("@UNDELIV_REASON_CD", chkUser.UNDELIV_REASON_CD);

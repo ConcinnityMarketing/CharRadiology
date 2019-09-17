@@ -768,7 +768,7 @@ namespace EnvoyService.Core.Models
         public string LAST_NAME { get; set; }
         public string NAME_SUFX { get; set; }
         public string GENDER { get; set; }
-        public DateTime BIRTH_DATE { get; set; }
+        public string BIRTH_DATE { get; set; }
         public string ADDRESS1 { get; set; }
         public string ADDRESS2 { get; set; }
         public string CITY { get; set; }
@@ -791,21 +791,21 @@ namespace EnvoyService.Core.Models
         public string EXAM_SCHEDULE { get; set; }
         public string MAM_PATIENT_TYPE { get; set; }
         public string CALLBACK_STATUS { get; set; }
-        public DateTime RETURN_DATE { get; set; }
+        public string RETURN_DATE { get; set; }
         public string FULL_NAME { get; set; }
         public string CITY_STATE_ZIP { get; set; }
         public string RETURN_EXAM_TYPE { get; set; }
-        public DateTime RECORD_CREATE_DATE { get; set; }
-        public DateTime LAST_TRANS_DATE { get; set; }
-        public DateTime LAST_UPDATE_DATE { get; set; }
+        public string RECORD_CREATE_DATE { get; set; }
+        public string LAST_TRANS_DATE { get; set; }
+        public string LAST_UPDATE_DATE { get; set; }
         public string EXTERNAL_REF_NUMBER { get; set; }
         public string LOAD_PG_ID { get; set; }
-        public DateTime CM_CREATE_DATE { get; set; }
+        public string CM_CREATE_DATE { get; set; }
         public string YOB { get; set; }
-        public string EFirst_Name { get; set; }
-        public string ELast_Name { get; set; }
-        public string EAddress1 { get; set; }
-        public DateTime EBirth_Date { get; set; }
+        //public string EFirst_Name { get; set; }
+        //public string ELast_Name { get; set; }
+        //public string EAddress1 { get; set; }
+        //public string EBirth_Date { get; set; }
         public string MOB { get; set; }
         public CustomerSearch()
         {
@@ -820,7 +820,7 @@ namespace EnvoyService.Core.Models
             string eLAST_NAME,
             string eNAME_SUFX,
             string eGENDER,
-            DateTime eBIRTH_DATE,
+            string eBIRTH_DATE,
             string eADDRESS1,
             string eADDRESS2,
             string eCITY,
@@ -841,24 +841,23 @@ namespace EnvoyService.Core.Models
             string eEMAIL_OPT_CD,
             string eTEXT_MESSAGE_OPT_CD,
             string eEXAM_SCHEDULE,
-            DateTime eFIRST_RESPONSE_DATE,
             string eMAM_PATIENT_TYPE,
             string eCALLBACK_STATUS,
-            DateTime eRETURN_DATE,
+            string eRETURN_DATE,
             string eFULL_NAME,
             string eCITY_STATE_ZIP,
-            DateTime eRECORD_CREATE_DATE,
+            string eRECORD_CREATE_DATE,
             string eRETURN_EXAM_TYPE,
-            DateTime eLAST_TRANS_DATE,
-            DateTime eLAST_UPDATE_DATE,
+            string eLAST_TRANS_DATE,
+            string eLAST_UPDATE_DATE,
             string eEXTERNAL_REF_NUMBER,
             string eLOAD_PG_ID,
-            DateTime eCM_CREATE_DATE,
+            string eCM_CREATE_DATE,
             string eYOB,
-            string eEFirst_Name,
-            string eELast_Name,
-            string eEAddress1,
-            DateTime eEBirth_Date,
+            //string eEFirst_Name,
+            //string eELast_Name,
+            //string eEAddress1,
+            //string eEBirth_Date,
             string eMOB
             )
         {
@@ -904,10 +903,10 @@ namespace EnvoyService.Core.Models
             this.LOAD_PG_ID = eLOAD_PG_ID;
             this.CM_CREATE_DATE = eCM_CREATE_DATE;
             this.YOB = eYOB;
-            this.EFirst_Name = eEFirst_Name;
-            this.ELast_Name = eELast_Name;
-            this.EAddress1 = eEAddress1;
-            this.EBirth_Date = eEBirth_Date;
+            //this.EFirst_Name = eEFirst_Name;
+            //this.ELast_Name = eELast_Name;
+            //this.EAddress1 = eEAddress1;
+            //this.EBirth_Date = eEBirth_Date;
             this.MOB = eMOB;
         }
     }
