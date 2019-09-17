@@ -75,11 +75,11 @@
                             </div>
                   <br />
                             <div class="form-group col-xs-11 ">
-                                <asp:CheckBox ID="CheckBox1" runat="server" Text=" I would like to receive information from Charlotte Radiology about Breast Services. This may include a welcome email and regular newsletters." />
+                                <asp:CheckBox ID="CheckBox1" runat="server" Text=" I would like to receive information from Charlotte Radiology about Breast Services. This may include a welcome email and regular newsletters." Checked="True" />
                                 </div>
                   <br />
                             <div class="form-group col-xs-11 ">
-                                <asp:CheckBox ID="CheckBox2" runat="server" Text=" I would like to receive information from Charlotte Radiology about Vein Services. This may include a welcome email and regular newsletters." />
+                                <asp:CheckBox ID="CheckBox2" runat="server" Text=" I would like to receive information from Charlotte Radiology about Vein Services. This may include a welcome email and regular newsletters." Checked="True" />
                                 </div>
             
                      <div class="form-group col-xs-11 ">
