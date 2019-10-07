@@ -66,7 +66,7 @@
                                 <asp:TextBox ID="txtFirstName" runat="server" placeholder="First Name" class="form-control" ></asp:TextBox>
                             </div>
                             <div class="form-group col-xs-11 col-sm-4 col-md-4 col-lg-4">
-                                <label for="txtLastName">First Name</label>
+                                <label for="txtLastName">Last Name</label>
                                 <asp:TextBox ID="txtLastName" runat="server" placeholder="Last Name" class="form-control" ></asp:TextBox>
                             </div>
                             <div class="form-group col-xs-11 col-sm-4 col-md-4 col-lg-4">
