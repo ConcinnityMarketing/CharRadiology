@@ -169,5 +169,12 @@
         InvalidIndivID = 4,
         Other = 5
     }
+    public enum AddressStatusCodes
+    {
+        Success = 1,
+        AddressNotFound = 2,
+        Fail = 3,
+        Other = 4
+    }
 
 }

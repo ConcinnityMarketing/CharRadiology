@@ -34,6 +34,7 @@ using MailBee.DnsMX;
 using Cobisi.EmailVerify;
 using cmextwebsvc.PRODAVLayer;
 using CryptSharp;
+using Newtonsoft.Json;
 
 namespace EnvoyService.Core.Services
 {
@@ -1246,10 +1247,12 @@ namespace EnvoyService.Core.Services
         }
         public AddrStndReturn AddressStandardize(AgeVerifData chkUser)
         {
+            RestClient addrclient = new RestClient();
+
             AddrStndReturn retuser = new AddrStndReturn();
-            AddrService.AddrStndReturn retaddr = new AddrService.AddrStndReturn();
-            AddrService.AddrStndData addr = new AddrService.AddrStndData();
-            AddrService.RestService addrclient = new AddrService.RestService();
+            AddrReturn retaddr = new AddrReturn();
+            AddrStndData addr = new AddrStndData();
+            //AddrService.RestService addrclient = new AddrService.RestService();
             string GeoGUID = "963b4e28-15a2-46aa-bbc7-3dcbc44c62b4";
             //string stdAddress1 = "";
             //string stdAddress2 = "";
@@ -1258,6 +1261,10 @@ namespace EnvoyService.Core.Services
             //string stdZip = "";
             //string stdZip4 = "";
             string strEmpty = String.Empty;
+            string sResponse = null;
+            string parms = "";
+            chkUser.END_POINT = "https://www.envoypro.com/AddrStndService/GetStndAddress"; //MUST GET RID OF THIS HARD-CODING for Production
+            //chkUser.END_POINT = "http://localhost:50560/Service.svc/GetStndAddress"; //MUST GET RID OF THIS HARD-CODING for testing
             try
             {
                 var currentSession = sessionFactory.GetCurrentSession();
@@ -1270,9 +1277,49 @@ namespace EnvoyService.Core.Services
                 addr.guid = GeoGUID;
                 retuser.LAT = 0;
                 retuser.LONG = 0;
-                retaddr = addrclient.GetStndAddress(addr);
-                //if (retaddr.code == AddrService.AddressStatusCodes.Success)
-                //{
+
+                Uri uri = new Uri(chkUser.END_POINT);
+                addrclient.EndPoint = uri.ToString();
+                var jsonSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+                var stringwriter = new System.IO.StringWriter();
+                string json = jsonSerializer.Serialize(addr);
+                json = "{\"chkUser\":" + json + "}";
+                string data = json;
+                sResponse = "";
+                addrclient.Method = HttpVerb.POST;
+                addrclient.ContentType = "application/json";
+                addrclient.PostData = json;
+                sResponse = addrclient.MakeRequest(parms);
+                //messages retmsg = new messages();
+                GetStndAddressResultDtoWrapper dataResultDtoWrapper = new GetStndAddressResultDtoWrapper();
+
+                var dict = jsonSerializer.Deserialize<Dictionary<string, dynamic>>(sResponse);
+                if (!string.IsNullOrWhiteSpace(sResponse))
+                {
+                    dataResultDtoWrapper = JsonConvert.DeserializeObject<GetStndAddressResultDtoWrapper>(sResponse);
+                    Debug.WriteLine("Got DataDTO");
+                }
+
+                //PinEntryReturn retResp = new PinEntryReturn();
+
+                retaddr = (AddrReturn)dataResultDtoWrapper?.GetStndAddressResult;
+                switch (retaddr.code)
+                {
+                    case AddressStatusCodes.Success:
+                        //}
+                        retuser.code = GenericStatusCodes.Success;
+                        retuser.status = "Success";
+                        retuser.desc = "";
+                        break;
+                    case AddressStatusCodes.AddressNotFound:
+                        break;
+                    case AddressStatusCodes.Fail:
+                        break;
+                    case AddressStatusCodes.Other:
+                        break;
+                    default:
+                        break;
+                }
                 retuser.ADDRESS1 = string.IsNullOrEmpty(retaddr.ADDRESS1) ? chkUser.ADDRESS1 : retaddr.ADDRESS1;
                 retuser.ADDRESS2 = string.IsNullOrEmpty(retaddr.ADDRESS2) ? chkUser.ADDRESS2 : retaddr.ADDRESS2;
                 retuser.CITY = string.IsNullOrEmpty(retaddr.CITY) ? chkUser.CITY : retaddr.CITY;
@@ -1281,10 +1328,9 @@ namespace EnvoyService.Core.Services
                 retuser.ZIP4 = string.IsNullOrEmpty(retaddr.ZIP4) ? "0000" : retaddr.ZIP4;
                 retuser.LAT = retaddr.LAT;
                 retuser.LONG = retaddr.LONG;
-                //}
-                retuser.code = GenericStatusCodes.Success;
-                retuser.status = "Success";
-                retuser.desc = "";
+
+                //if (retaddr.code == AddrService.AddressStatusCodes.Success)
+                //{
             }
             catch (Exception ex)
             {
@@ -1292,6 +1338,55 @@ namespace EnvoyService.Core.Services
             }
             return retuser;
         }
+
+        //public AddrStndReturn AddressStandardize(AgeVerifData chkUser)
+        //{
+        //    AddrStndReturn retuser = new AddrStndReturn();
+        //    AddrService.AddrStndReturn retaddr = new AddrService.AddrStndReturn();
+        //    AddrService.AddrStndData addr = new AddrService.AddrStndData();
+        //    AddrService.RestService addrclient = new AddrService.RestService();
+        //    string GeoGUID = "963b4e28-15a2-46aa-bbc7-3dcbc44c62b4";
+        //    //string stdAddress1 = "";
+        //    //string stdAddress2 = "";
+        //    //string stdCity = "";
+        //    //string stdState = "";
+        //    //string stdZip = "";
+        //    //string stdZip4 = "";
+        //    string strEmpty = String.Empty;
+        //    try
+        //    {
+        //        var currentSession = sessionFactory.GetCurrentSession();
+        //        // 1. First we need to Address standardize the input address
+        //        addr.ADDRESS1 = chkUser.ADDRESS1;
+        //        addr.ADDRESS2 = chkUser.ADDRESS2;
+        //        addr.CITY = chkUser.CITY;
+        //        addr.STATE = chkUser.STATE;
+        //        addr.ZIP = chkUser.ZIP;
+        //        addr.guid = GeoGUID;
+        //        retuser.LAT = 0;
+        //        retuser.LONG = 0;
+        //        retaddr = addrclient.GetStndAddress(addr);
+        //        //if (retaddr.code == AddrService.AddressStatusCodes.Success)
+        //        //{
+        //        retuser.ADDRESS1 = string.IsNullOrEmpty(retaddr.ADDRESS1) ? chkUser.ADDRESS1 : retaddr.ADDRESS1;
+        //        retuser.ADDRESS2 = string.IsNullOrEmpty(retaddr.ADDRESS2) ? chkUser.ADDRESS2 : retaddr.ADDRESS2;
+        //        retuser.CITY = string.IsNullOrEmpty(retaddr.CITY) ? chkUser.CITY : retaddr.CITY;
+        //        retuser.STATE = string.IsNullOrEmpty(retaddr.STATE) ? chkUser.STATE : retaddr.STATE;
+        //        retuser.ZIP = string.IsNullOrEmpty(retaddr.ZIP) ? chkUser.ZIP : retaddr.ZIP;
+        //        retuser.ZIP4 = string.IsNullOrEmpty(retaddr.ZIP4) ? "0000" : retaddr.ZIP4;
+        //        retuser.LAT = retaddr.LAT;
+        //        retuser.LONG = retaddr.LONG;
+        //        //}
+        //        retuser.code = GenericStatusCodes.Success;
+        //        retuser.status = "Success";
+        //        retuser.desc = "";
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception("AddressStandardize Exception: " + ex.ToString());
+        //    }
+        //    return retuser;
+        //}
 
     }
 }

@@ -77,20 +77,16 @@ namespace CharRadiologyWeb
                     ques.question_desc = "I would like to receive information from Charlotte Radiology about Breast Services. This may include a welcome email and regular newsletters.";
                     lq.Add(ques);
 
-                    tans = new Answer();
-                    ques = new Question();
-                    la = new List<Answer>();
-                    tans.answer_desc = CheckBox2.Checked ? "Yes" : "No";
-                    tans.answer_code = CheckBox2.Checked ? "Yes" : "No";
-                    la.Add(tans);
-                    ques.answers = la;
-                    ques.question_code = "801";
-                    ques.question_desc = "I would like to receive information from Charlotte Radiology about Vein Services. This may include a welcome email and regular newsletters.";
-                    lq.Add(ques);
-                    //Array.Resize(ref questions, questions.Length + 1);
-
-                    //questions[questions.Length - 1] = ques;
-                    //qa.q_and_a = questions;
+                    //tans = new Answer();
+                    //ques = new Question();
+                    //la = new List<Answer>();
+                    //tans.answer_desc = CheckBox2.Checked ? "Yes" : "No";
+                    //tans.answer_code = CheckBox2.Checked ? "Yes" : "No";
+                    //la.Add(tans);
+                    //ques.answers = la;
+                    //ques.question_code = "801";
+                    //ques.question_desc = "I would like to receive information from Charlotte Radiology about Vein Services. This may include a welcome email and regular newsletters.";
+                    //lq.Add(ques);
                     Customer = new SignUpData
                     {
                         //brand = user.Brand,
@@ -232,8 +228,12 @@ namespace CharRadiologyWeb
             //}
             //else
             //    txtZip.BorderColor = Color.Black;
-            if (!string.IsNullOrEmpty(txtEmail.Text))
+            if (string.IsNullOrEmpty(txtEmail.Text))
             {
+                txtEmail.BorderColor = Color.Red;
+                sentBool = false;
+            }
+            else
                 if (!IsValidEmailAddress(txtEmail.Text))
                 {
                     txtEmail.BorderColor = Color.Red;
@@ -241,7 +241,7 @@ namespace CharRadiologyWeb
                 }
                 else
                     txtEmail.BorderColor = Color.Black;
-            }
+            
             return sentBool;
         }
         void ClearFields()

@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CharRadiologyWeb {
-    
-    
-    public partial class index {
-        
+namespace CharRadiologyWeb
+{
+
+
+    public partial class index
+    {
+
         /// <summary>
         /// form1 control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace CharRadiologyWeb {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
-        
+
         /// <summary>
         /// pnl control.
         /// </summary>
@@ -29,7 +31,7 @@ namespace CharRadiologyWeb {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Telerik.Web.UI.RadAjaxPanel pnl;
-        
+
         /// <summary>
         /// RadNotification1 control.
         /// </summary>
@@ -38,7 +40,7 @@ namespace CharRadiologyWeb {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Telerik.Web.UI.RadNotification RadNotification1;
-        
+
         /// <summary>
         /// RadAjaxManager1 control.
         /// </summary>
@@ -47,7 +49,7 @@ namespace CharRadiologyWeb {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Telerik.Web.UI.RadAjaxManager RadAjaxManager1;
-        
+
         /// <summary>
         /// Panel1 control.
         /// </summary>
@@ -56,7 +58,7 @@ namespace CharRadiologyWeb {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel Panel1;
-        
+
         /// <summary>
         /// txtFirstName control.
         /// </summary>
@@ -65,7 +67,7 @@ namespace CharRadiologyWeb {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtFirstName;
-        
+
         /// <summary>
         /// txtLastName control.
         /// </summary>
@@ -74,7 +76,7 @@ namespace CharRadiologyWeb {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtLastName;
-        
+
         /// <summary>
         /// txtEmail control.
         /// </summary>
@@ -83,7 +85,7 @@ namespace CharRadiologyWeb {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtEmail;
-        
+
         /// <summary>
         /// CheckBox1 control.
         /// </summary>
@@ -92,16 +94,7 @@ namespace CharRadiologyWeb {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox CheckBox1;
-        
-        /// <summary>
-        /// CheckBox2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox CheckBox2;
-        
+
         /// <summary>
         /// btnSubmit control.
         /// </summary>
@@ -110,7 +103,7 @@ namespace CharRadiologyWeb {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnSubmit;
-        
+
         /// <summary>
         /// MySource control.
         /// </summary>

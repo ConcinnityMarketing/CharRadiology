@@ -115,7 +115,7 @@ h2 {
 }
 .btn-submit {
     color: #fff;
-    background-color: #fbae17;
+    background-color: #D76E6B;
     border-color: #eea236;
 }
 #info {
@@ -258,5 +258,20 @@ h2 {
     #header h2 {
         padding: 0 30px;
         font-size: 2.5rem;
+    }
+    .thank_you {
+        text-align: center;
+        font-size: 30px;
+        margin: 20px;
+    }
+    .new-to-service {
+        text-align: center;
+        font-size: 4.4rem;
+        margin: 20px;
+        color: #D76E6B !important;
+    }
+    .panel {
+        text-align: center;
+        margin: 20px;
     }
 }

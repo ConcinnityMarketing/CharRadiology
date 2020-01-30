@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/AddrStnd.Core.Models" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/AddrStnd.Core.Models" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://restservices.concinnitymarketing.biz/AddrStndService/RestService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/AddrStnd.Core.Enums" />
+  <xs:complexType name="AddrStndData">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ADDRESS1" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ADDRESS2" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CITY" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CLIENT" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="INDIV_ID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="STATE" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ZIP" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="guid" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AddrStndData" nillable="true" type="tns:AddrStndData" />
+  <xs:complexType name="AddrStndReturn">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ADDRESS1" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ADDRESS2" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CITY" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LAT" type="xs:double" />
+      <xs:element minOccurs="0" name="LONG" type="xs:double" />
+      <xs:element minOccurs="0" name="STATE" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ZIP" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ZIP4" nillable="true" type="xs:string" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/AddrStnd.Core.Enums" minOccurs="0" name="code" type="q1:AddressStatusCodes" />
+      <xs:element minOccurs="0" name="desc" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="status" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AddrStndReturn" nillable="true" type="tns:AddrStndReturn" />
+  <xs:complexType name="GeoCodeData">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ZIP" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ZIP4" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="guid" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GeoCodeData" nillable="true" type="tns:GeoCodeData" />
+  <xs:complexType name="GeoCodeReturn">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="GeoDS" nillable="true">
+        <xs:complexType>
+          <xs:annotation>
+            <xs:appinfo>
+              <ActualType Name="DataSet" Namespace="http://schemas.datacontract.org/2004/07/System.Data" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:sequence>
+            <xs:element ref="xs:schema" />
+            <xs:any />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/AddrStnd.Core.Enums" minOccurs="0" name="code" type="q2:AddressStatusCodes" />
+      <xs:element minOccurs="0" name="desc" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="status" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GeoCodeReturn" nillable="true" type="tns:GeoCodeReturn" />
+</xs:schema>

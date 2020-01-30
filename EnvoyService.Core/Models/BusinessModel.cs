@@ -735,6 +735,54 @@ namespace EnvoyService.Core.Models
         public string AgeVerify { get; set; }
     }
     [DataContract]
+    public class AddrStndData
+    {
+        [DataMember]
+        public string guid { get; set; }
+        [DataMember]
+        public string INDIV_ID { get; set; }
+        [DataMember]
+        public string CLIENT { get; set; }
+        [DataMember]
+        public string ADDRESS1 { get; set; }
+        [DataMember]
+        public string ADDRESS2 { get; set; }
+        [DataMember]
+        public string CITY { get; set; }
+        [DataMember]
+        public string STATE { get; set; }
+        [DataMember]
+        public string ZIP { get; set; }
+    }
+
+    [DataContract]
+    public class AddrReturn
+    {
+        [DataMember]
+        public string status { get; set; }
+        [DataMember]
+        public AddressStatusCodes code { get; set; }
+        [DataMember]
+        public string desc { get; set; }
+        [DataMember]
+        public string ADDRESS1 { get; set; }
+        [DataMember]
+        public string ADDRESS2 { get; set; }
+        [DataMember]
+        public string CITY { get; set; }
+        [DataMember]
+        public string STATE { get; set; }
+        [DataMember]
+        public string ZIP { get; set; }
+        [DataMember]
+        public string ZIP4 { get; set; }
+        [DataMember]
+        public double LAT { get; set; }
+        [DataMember]
+        public double LONG { get; set; }
+    }
+
+    [DataContract]
     public class AgeVerifData
     {
         [DataMember]
@@ -757,6 +805,16 @@ namespace EnvoyService.Core.Models
         public string ZIP { get; set; }
         [DataMember]
         public DateTime BIRTH_DATE { get; set; }
+        [DataMember]
+        public string END_POINT { get; set; }
+    }
+    public class GetStndAddressResultDtoWrapper
+    {
+        public AddrReturn GetStndAddressResult
+        {
+            get;
+            set;
+        }
     }
     public class CustomerSearch
     {
