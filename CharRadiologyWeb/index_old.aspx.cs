@@ -80,8 +80,8 @@ namespace CharRadiologyWeb
                     tans = new Answer();
                     ques = new Question();
                     la = new List<Answer>();
-                    tans.answer_desc = CheckBox2.Checked ? "Yes" : "No";
-                    tans.answer_code = CheckBox2.Checked ? "Yes" : "No";
+                    //tans.answer_desc = CheckBox2.Checked ? "Yes" : "No";
+                    //tans.answer_code = CheckBox2.Checked ? "Yes" : "No";
                     la.Add(tans);
                     ques.answers = la;
                     ques.question_code = "801";

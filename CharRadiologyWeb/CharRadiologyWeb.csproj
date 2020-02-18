@@ -189,6 +189,7 @@
     <Content Include="images\main-image.png" />
     <Content Include="images\NTP-tumbler.png" />
     <Content Include="index.aspx" />
+    <Content Include="index_2.aspx" />
     <Content Include="index_old.aspx" />
     <Content Include="js\bootstrap.js" />
     <Content Include="js\bootstrap.min.js" />
@@ -196,6 +197,7 @@
     <Content Include="js\npm.js" />
     <Content Include="REF_STATES.xml" />
     <Content Include="schedule-an-appointment.html" />
+    <Content Include="Schedule-an-appt-new.html" />
     <Content Include="thankyou.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -219,6 +221,13 @@
     </Compile>
     <Compile Include="index.aspx.designer.cs">
       <DependentUpon>index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="index_2.aspx.cs">
+      <DependentUpon>index_2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="index_2.aspx.designer.cs">
+      <DependentUpon>index_2.aspx</DependentUpon>
     </Compile>
     <Compile Include="index_old.aspx.cs">
       <DependentUpon>index_old.aspx</DependentUpon>
@@ -305,7 +314,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties UseAjaxifiedTemplates="True" UseJQuerySupport="True" />
+      <UserProperties UseJQuerySupport="True" UseAjaxifiedTemplates="True" />
     </VisualStudio>
   </ProjectExtensions>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
