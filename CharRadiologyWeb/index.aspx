@@ -239,18 +239,10 @@
                                     <li id="menu-item-326" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-326"><a href="http://charlotte.s1077.sureserver.com/find-a-location/" itemprop="url"><span itemprop="name">Find a Location</span></a></li>
                                 </ul>
                             </li>
-                            <li class="menu-item search-bar">
-                                <%--                                <form class="search-form" method="get" action="http://charlotte.s1077.sureserver.com/" role="search" itemprop="potentialAction" itemscope itemtype="https://schema.org/SearchAction">
-                                    <label class="search-form-label screen-reader-text" for="searchform-1">Search this website</label><input class="search-form-input" type="search" name="s" id="searchform-1" placeholder="Search this website" itemprop="query-input"><button type="submit" class="search-form-submit" aria-label="Search">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52.966 52.966" class="search-icon">
-                                            <path d="M51.704,51.273L36.845,35.82c3.79-3.801,6.138-9.041,6.138-14.82c0-11.58-9.42-21-21-21s-21,9.42-21,21s9.42,21,21,21
+                            <li class="menu-item search-bar"><form class="search-form" method="get" action="http://charlotte.s1077.sureserver.com/" role="search" itemprop="potentialAction" itemscope itemtype="https://schema.org/SearchAction"><label class="search-form-label screen-reader-text" for="searchform-1">Search this website</label><input class="search-form-input" type="search" name="s" id="searchform-1" placeholder="Search this website" itemprop="query-input"><button type="submit" class="search-form-submit" aria-label="Search"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52.966 52.966" class="search-icon"><path d="M51.704,51.273L36.845,35.82c3.79-3.801,6.138-9.041,6.138-14.82c0-11.58-9.42-21-21-21s-21,9.42-21,21s9.42,21,21,21
 	c5.083,0,9.748-1.817,13.384-4.832l14.895,15.491c0.196,0.205,0.458,0.307,0.721,0.307c0.25,0,0.499-0.093,0.693-0.279
 	C52.074,52.304,52.086,51.671,51.704,51.273z M21.983,40c-10.477,0-19-8.523-19-19s8.523-19,19-19s19,8.523,19,19
-	S32.459,40,21.983,40z"></path>
-                                        </svg><span class="screen-reader-text">Search</span>
-                                    </button><meta content="http://charlotte.s1077.sureserver.com/?s={s}" itemprop="target">
-                                </form>--%>
-                            </li>
+	S32.459,40,21.983,40z"></path></svg><span class="screen-reader-text">Search</span></button><meta content="http://charlotte.s1077.sureserver.com/?s={s}" itemprop="target"></form></li>
                         </ul>
                     </div>
                 </nav>
@@ -265,7 +257,7 @@
                         </header>
                         <div class="entry-content" itemprop="text">
                             <div class="fl-builder-content fl-builder-content-254 fl-builder-content-primary fl-builder-global-templates-locked" data-post-id="254">
-                                <div class="fl-row fl-row-full-width fl-row-bg-photo fl-node-5e33949759b54 hero-area-md flex-align-left" data-node="5e33949759b54">
+<%--                                <div class="fl-row fl-row-full-width fl-row-bg-photo fl-node-5e33949759b54 hero-area-md flex-align-left" data-node="5e33949759b54">
                                     <div class="fl-row-content-wrap">
                                         <div class="fl-row-content fl-row-fixed-width fl-node-content">
 
@@ -275,8 +267,8 @@
                                                         <div class="fl-module fl-module-heading fl-node-5e33949759b52" data-node="5e33949759b52">
                                                             <div class="fl-module-content fl-node-content">
                                                                 <h1 class="fl-heading">
-                                                                    <span class="fl-heading-text"><strong>Schedule an<br />
-                                                                        Appointment</strong></span>
+                                                                    <span class="fl-heading-text" style="color: #D76E6B"><strong>
+                                                                        </strong></span>
                                                                 </h1>
                                                             </div>
                                                         </div>
@@ -286,7 +278,7 @@
                                         </div>
                                     </div>
                                 </div>
-
+--%>
                                 <div class="container">
                                     <form id="form1" runat="server">
                                         <telerik:RadScriptManager runat="server"></telerik:RadScriptManager>
@@ -298,7 +290,13 @@
                                             </telerik:RadNotification>
                                         </telerik:RadAjaxPanel>
                                         <telerik:RadAjaxManager ID="RadAjaxManager1" runat="server"></telerik:RadAjaxManager>
-
+                                         <div class="footer-widgets" id="genesis-footer-widgets-0">
+                <p class="new-to-service" style="text-align: center; color: #D76E6B; font-size: 3.4rem; font-weight: 200;">
+                    New to Charlotte Radiology
+                    <br />
+                    Breast Services?
+                </p>
+            </div>
                                         <div class="clearfix"></div>
                                         <asp:Panel ID="Panel1" runat="server" CssClass="panel">
                                             <div>
@@ -306,7 +304,7 @@
                                                 <div class="row">
                                                     <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 
-                                                        <p>
+                                                        <p style="color: #D76E6B">
                                                             Whether looking to schedule your very first mammogram or new to the area and searching for an imaging specialist, we'd love to connect with you!  Enter your information below to sign up for e-news, women's health info & more.
                                                         </p>
                                                     </div>
@@ -427,8 +425,8 @@
                                     <li id="menu-item-853" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-853"><a href="http://charlotte.s1077.sureserver.com/about-us/" itemprop="url">About Us</a></li>
                                     <li id="menu-item-857" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-857"><a href="http://charlotte.s1077.sureserver.com/referring-physicians/" itemprop="url">Referring Physicians</a></li>
                                     <li id="menu-item-860" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-860"><a href="http://charlotte.s1077.sureserver.com/contact-us/" itemprop="url">Contact Us</a></li>
-                                    <li id="menu-item-855" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-855"><a href="http://charlotte.s1077.sureserver.com/careers/" itemprop="url">Careers</a></li>
                                     <li id="menu-item-856" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-856"><a href="http://charlotte.s1077.sureserver.com/faq/" itemprop="url">FAQ</a></li>
+                                    <li id="menu-item-855" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-855"><a href="http://charlotte.s1077.sureserver.com/careers/" itemprop="url">Careers</a></li>
                                     <li id="menu-item-854" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-854"><a href="http://charlotte.s1077.sureserver.com/additional-resources/" itemprop="url">Additional Resources</a></li>
                                 </ul>
                             </div>
@@ -437,11 +435,7 @@
                 </div>
             </div>
         </div>
-        <footer class="site-footer" itemscope itemtype="https://schema.org/WPFooter">
-            <div class="wrap">
-                <p>&#x000A9;&nbsp;2020 <a href="https://www.charlotteradiology.com/">Charlotte Radiology</a></p>
-            </div>
-        </footer>
+        <footer class="site-footer" itemscope itemtype="https://schema.org/WPFooter"><div class="wrap"><p>&#x000A9;&nbsp;2020 Charlotte Radiology PA.  All rights reserved. &nbsp;&nbsp;<a href="/terms-of-use">Terms of Use</a> &nbsp;| &nbsp;<a href="/non-discrimination">Non-Discrimination</a> &nbsp;| &nbsp;<a href="/privacy-info">Rights &amp; Privacy Information</a> &nbsp;| &nbsp;<a href="http://www.usradiology.com" target="_blank">US Radiology</a></p></div></footer>
     </div>
     <style type="text/css" media="screen">
         #simple-social-icons-2 ul li a, #simple-social-icons-2 ul li a:hover, #simple-social-icons-2 ul li a:focus {
